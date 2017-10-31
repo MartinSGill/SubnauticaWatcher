@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubnauticaWatcherMod", "SubnauticaWatcherMod\SubnauticaWatcherMod.csproj", "{00E75464-89BF-498A-BC72-8D72F47EF398}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubnauticaWatcher", "SubnauticaWatcherUi\SubnauticaWatcher.csproj", "{8B42808B-5907-4654-903A-BAD463C9C160}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{00E75464-89BF-498A-BC72-8D72F47EF398}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00E75464-89BF-498A-BC72-8D72F47EF398}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00E75464-89BF-498A-BC72-8D72F47EF398}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00E75464-89BF-498A-BC72-8D72F47EF398}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B42808B-5907-4654-903A-BAD463C9C160}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B42808B-5907-4654-903A-BAD463C9C160}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B42808B-5907-4654-903A-BAD463C9C160}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B42808B-5907-4654-903A-BAD463C9C160}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {747FA96B-7119-4AC7-AA70-BEE3D6ABB1F9}
+	EndGlobalSection
+EndGlobal
