@@ -2,6 +2,7 @@
 {
     #region imports
 
+    using System;
     using System.Reflection;
     using Harmony;
     using Server;
@@ -37,14 +38,12 @@
             private static void Postfix(Player __instance)
             {
                 var biome = __instance.GetBiomeString();
+                PlayerInfo.Instance.Biome = biome;
 
-                var pos =
-                    $"Position: {__instance.transform.position.x}, {__instance.transform.position.y}, {__instance.transform.position.z}";
-
-                var localPos =
-                    $"LPosition: {__instance.transform.localPosition.x}, {__instance.transform.localPosition.y}, {__instance.transform.localPosition.z}";
-
-                // Log($"{biome}; {pos}, {localPos}");
+                // Yes, Z and Y are supposed to be reversed. Converting Subnautica coords to something more traditional.
+                PlayerInfo.Instance.X = (int)Math.Round(__instance.transform.position.x, MidpointRounding.AwayFromZero);
+                PlayerInfo.Instance.Z = (int)Math.Round(__instance.transform.position.y, MidpointRounding.AwayFromZero);
+                PlayerInfo.Instance.Y = (int)Math.Round(__instance.transform.position.z, MidpointRounding.AwayFromZero);
             }
         }
     }

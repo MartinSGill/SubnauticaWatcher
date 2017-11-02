@@ -7,6 +7,8 @@
     using System.IO;
     using System.Net;
     using System.Reflection;
+    using System.Text;
+    using Newtonsoft.Json;
     using UnityEngine;
 
     #endregion
@@ -142,7 +144,6 @@
         private void ServeFile(HttpListenerContext context)
         {
             var filename = context.Request.Url.AbsolutePath;
-            Console.WriteLine(filename);
 
             filename = filename.Substring(1);
 
@@ -155,8 +156,7 @@
                         break;
                     }
                 }
-
-
+            
             filename = Path.Combine(_rootDirectory, filename);
 
             if (File.Exists(filename))
@@ -207,8 +207,63 @@
         {
             Log("Received Request");
             var context = _listener.EndGetContext(result);
-            ServeFile(context);
-            _listener.BeginGetContext(GetContextCallback, null);
+            try
+            {
+
+
+                foreach (string key in context.Request.QueryString.Keys)
+                {
+                    Log($"Query:      {key} = {context.Request.QueryString[key]}");
+                }
+
+                if (context.Request.QueryString.HasKeys())
+                {
+                    var qs = context.Request.QueryString;
+                    foreach (string key in qs.Keys)
+                    {
+                        if (key == "PlayerInfo")
+                        {
+                            Log("PlayerInfo request");
+                            var json = JsonConvert.SerializeObject(PlayerInfo.Instance, Formatting.Indented);
+                            Log($"JSON: {json}");
+                            byte[] buffer = Encoding.UTF8.GetBytes(json);
+
+                            Log($"Set Headers");
+                            context.Response.StatusCode = (int) HttpStatusCode.OK;
+                            context.Response.ContentType = "application/json";
+                            context.Response.ContentLength64 = buffer.Length;
+                            context.Response.AddHeader("Date", DateTime.Now.ToString("r"));
+                            context.Response.AddHeader("Last-Modified", DateTime.Now.ToString("r"));
+
+                            Log($"Stream PlayerInfo");
+                            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+                            Log($"Flush Content");
+                            context.Response.OutputStream.Flush();
+                        }
+                        else
+                        {
+                            context.Response.StatusCode = (int) HttpStatusCode.NotFound;
+                        }
+
+                        context.Response.OutputStream.Close();
+                    }
+                }
+                else
+                {
+                    ServeFile(context);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Log($"Error: {e.Message}");
+                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                context.Response.OutputStream.Close();
+            }
+            finally
+            {
+                _listener.BeginGetContext(GetContextCallback, null);
+            }
         }
     }
 }
