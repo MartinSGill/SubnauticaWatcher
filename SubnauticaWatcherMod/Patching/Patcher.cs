@@ -36,8 +36,6 @@
         {
             private static void Postfix(Player __instance)
             {
-                Debug.Log("PlayerPatchPostFix");
-
                 var biome = __instance.GetBiomeString();
 
                 var pos =
@@ -46,7 +44,7 @@
                 var localPos =
                     $"LPosition: {__instance.transform.localPosition.x}, {__instance.transform.localPosition.y}, {__instance.transform.localPosition.z}";
 
-                Log($"{biome}; {pos}, {localPos}");
+                // Log($"{biome}; {pos}, {localPos}");
             }
         }
     }

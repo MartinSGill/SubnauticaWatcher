@@ -1,0 +1,96 @@
+
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css">
+  <link rel="stylesheet" href="//code.getmdl.io/1.3.0/material.deep_purple-light_blue.min.css">
+  <script defer="" src="//code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <style>
+    .leaflet-container {
+      background: #000000;
+    }
+
+    .leaflet-popup-content {
+      margin: 0;
+    }
+
+    .leaflet-popup-content-wrapper {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      border: none;
+    }
+
+    /* Fix for main drawer icon not centred */
+    body > div > div > header > div.mdl-layout__drawer-button > i {
+      line-height: 2;
+    }
+
+    .leaflet-popup-content-wrapper mdl-card {
+      padding: 0;
+    }
+
+    #mapid {
+      /* title bar is 64px */
+      height:  calc(100% - (64px));
+      width: 100%;
+    }
+
+    #position-container {
+      text-align: right;
+      position:absolute;
+      bottom: 35px;
+      right: 10px;
+      background-color: transparent;
+      z-index: 1000;
+    }
+
+    .font-size-28 {
+      font-size: 28px;
+    }
+  </style>
+</head>
+<body>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <!-- Title -->
+      <span class="mdl-layout-title">Subnautica Map</span>
+      <!-- Spacer -->
+      <div class="mdl-layout-spacer"></div>
+      <!-- Navigation -->
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="https://github.com/MartinSGill/subnautica-map/issues/new">
+<i class="material-icons">bug_report</i>
+Report Issue</a>
+      </nav>
+    </div>
+  </header>
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">Links</span>
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" href="https://martinsgill.github.io/subnautica-map/">Homepage</a>
+      <a class="mdl-navigation__link" href="https://unknownworlds.com/subnautica/">Subnautica Site</a>
+      <a class="mdl-navigation__link" href="http://subnautica.wikia.com/wiki/Subnautica_Wiki">Subnautica Wiki</a>
+      <a class="mdl-navigation__link" href="https://github.com/MartinSGill/subnautica-map">Source Code</a>
+      <a class="mdl-navigation__link" href="https://github.com/MartinSGill/subnautica-map/issues/new">
+<i class="material-icons">bug_report</i>
+Report Issue</a>
+    </nav>
+  </div>
+  <main class="mdl-layout__content">
+    <div id="mapid" class="page-content"></div>
+    <div id="position-container">
+      <span class="mdl-chip mdl-chip--contact">
+        <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">P</span>
+        <span class="mdl-chip__text" id="position">0,0,0</span>
+      </span>
+    </div>
+  </main>
+</div>
+<script src="main-subnautica-map.bundle.js"></script>
+
+</body>
+</html>

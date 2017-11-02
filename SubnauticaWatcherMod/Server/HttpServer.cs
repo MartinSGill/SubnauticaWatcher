@@ -7,7 +7,6 @@
     using System.IO;
     using System.Net;
     using System.Reflection;
-    using System.Text;
     using UnityEngine;
 
     #endregion
@@ -102,10 +101,14 @@
         {
             try
             {
+                Log("Initialising HTTP Server.");
+                Log($"Assembly Path: {Assembly.GetExecutingAssembly().Location}");
+                Log($"DirName: {Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}");
                 _rootDirectory = Path.Combine(
-                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().FullName)
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
                     ?? throw new InvalidOperationException(),
-                    "map");
+                    @"map");
+                Log($"Root Dir: @{_rootDirectory}");
             }
             catch (InvalidOperationException)
             {
@@ -128,6 +131,7 @@
 
         public void Start()
         {
+            Log("Starting HTTP Server");
             const string address = "http://*:1234/";
             _listener.Prefixes.Add(address);
             _listener.Start();
@@ -161,8 +165,10 @@
                 {
                     Log($"Serving: {filename}");
                     Stream input = new FileStream(filename, FileMode.Open);
+                    context.Response.StatusCode = (int)HttpStatusCode.OK;
 
                     //Adding permanent http response headers
+                    Log($"Set Headers");
                     context.Response.ContentType =
                         MimeTypeMappings.TryGetValue(Path.GetExtension(filename), out var mime)
                             ? mime
@@ -171,6 +177,7 @@
                     context.Response.AddHeader("Date", DateTime.Now.ToString("r"));
                     context.Response.AddHeader("Last-Modified", File.GetLastWriteTime(filename).ToString("r"));
 
+                    Log($"Stream Content");
                     var buffer = new byte[1024 * 32];
                     int nbytes;
                     while ((nbytes = input.Read(buffer, 0, buffer.Length)) > 0)
@@ -178,9 +185,8 @@
                         context.Response.OutputStream.Write(buffer, 0, nbytes);
                     }
                     input.Close();
+                    Log($"Flush Content");
                     context.Response.OutputStream.Flush();
-
-                    context.Response.StatusCode = (int) HttpStatusCode.OK;
                 }
                 catch (Exception ex)
                 {
@@ -199,30 +205,9 @@
 
         public void GetContextCallback(IAsyncResult result)
         {
+            Log("Received Request");
             var context = _listener.EndGetContext(result);
-            var request = context.Request;
-            var response = context.Response;
-
-            var sb = new StringBuilder();
-
-            sb.Append("");
-            sb.Append($"HttpMethod: {request.HttpMethod}");
-            sb.Append($"Uri:        {request.Url.AbsoluteUri}");
-            sb.Append($"LocalPath:  {request.Url.LocalPath}");
-            foreach (string key in request.QueryString.Keys)
-            {
-                sb.Append($"Query:      {key} = {request.QueryString[key]}");
-            }
-            sb.Append("");
-
-            var responseString = sb.ToString();
-            var buffer = Encoding.UTF8.GetBytes(responseString);
-            response.ContentLength64 = buffer.Length;
-
-            using (var outputStream = response.OutputStream)
-            {
-                outputStream.Write(buffer, 0, buffer.Length);
-            }
+            ServeFile(context);
             _listener.BeginGetContext(GetContextCallback, null);
         }
     }
