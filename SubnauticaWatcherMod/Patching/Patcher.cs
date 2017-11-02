@@ -1,38 +1,52 @@
-﻿namespace SubnauticaWatcher.Patching
+﻿namespace SubnauticaWatcherMod.Patching
 {
-    using System;
+    #region imports
+
     using System.Reflection;
     using Harmony;
+    using Server;
+    using UnityEngine;
+
+    #endregion
 
     public static class Patcher
     {
-        public static void Patch()
+        private static readonly HttpServer _httpServer = new HttpServer();
+
+        private static void Log(string message)
         {
-            UnityEngine.Debug.Log("Init Harmony");
-            var harmony = HarmonyInstance.Create("com.github.martinsgill.subnauticawatcher.mod");
-            UnityEngine.Debug.Log("Start Patching");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
-            UnityEngine.Debug.Log("Done Patching");
+            Debug.Log($"[SNWatcher] {message}");
         }
 
+        public static void Patch()
+        {
+            Log("Init Harmony");
+            var harmony = HarmonyInstance.Create("com.github.martinsgill.subnauticawatcher.mod");
+            Log("Start Patching");
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            Log("Done Patching");
+
+            Log("Starting HTTP Server");
+            _httpServer.Start();
+        }
 
         [HarmonyPatch(typeof(Player))]
         [HarmonyPatch("Update")]
-        class PlayerPatch
+        private class PlayerPatch
         {
-            static void Postfix(Player __instance)
+            private static void Postfix(Player __instance)
             {
-                UnityEngine.Debug.Log("PlayerPatchPostFix");
+                Debug.Log("PlayerPatchPostFix");
 
                 var biome = __instance.GetBiomeString();
 
                 var pos =
                     $"Position: {__instance.transform.position.x}, {__instance.transform.position.y}, {__instance.transform.position.z}";
 
-                var LocalPos =
+                var localPos =
                     $"LPosition: {__instance.transform.localPosition.x}, {__instance.transform.localPosition.y}, {__instance.transform.localPosition.z}";
 
-                UnityEngine.Debug.Log($"{biome}; {pos}, {LocalPos}");
+                Log($"{biome}; {pos}, {localPos}");
             }
         }
     }
