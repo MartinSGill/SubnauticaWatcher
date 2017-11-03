@@ -47,6 +47,15 @@
       z-index: 1000;
     }
 
+    #player-container {
+      text-align: left;
+      position:absolute;
+      bottom: 35px;
+      left: 10px;
+      background-color: transparent;
+      z-index: 1000;
+    }
+
     .font-size-28 {
       font-size: 28px;
     }
@@ -82,9 +91,15 @@ Report Issue</a>
   </div>
   <main class="mdl-layout__content">
     <div id="mapid" class="page-content"></div>
-    <div id="position-container">
+    <div id="player-container">
       <span class="mdl-chip mdl-chip--contact">
         <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">P</span>
+        <span class="mdl-chip__text" id="player-position">0,0,0</span>
+      </span>
+    </div>
+    <div id="position-container">
+      <span class="mdl-chip mdl-chip--contact">
+        <span class="mdl-chip__contact mdl-color--purple mdl-color-text--white">M</span>
         <span class="mdl-chip__text" id="position">0,0,0</span>
       </span>
     </div>

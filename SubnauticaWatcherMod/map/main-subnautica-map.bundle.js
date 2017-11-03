@@ -113,12 +113,13 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// import * as k
         "Inactive Lave Zone": layerInactiveLavaZoneImage
     };
     var coordFormat = 'game';
-    function toCoordString(position) {
+    function toCoordString(position, depth) {
+        if (depth === void 0) { depth = 0; }
         if (coordFormat === 'game') {
-            return Math.round(position.lng) + ", 0, " + Math.round(position.lat);
+            return Math.round(position.lng) + ", " + depth + ", " + Math.round(position.lat);
         }
         else {
-            return Math.round(position.lng) + ", " + Math.round(position.lat) + ", 0";
+            return Math.round(position.lng) + ", " + Math.round(position.lat) + ", " + depth;
         }
     }
     // Reset the view to something sensible
@@ -134,6 +135,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// import * as k
     var layerTransitions = L.layerGroup([]).addTo(mymap);
     var layerAlien = L.layerGroup([]).addTo(mymap);
     var layerOther = L.layerGroup([]).addTo(mymap);
+    var layerPlayer = L.layerGroup([]).addTo(mymap);
     function markerIconName(type) {
         switch (type) {
             case 'ThermalVent':
@@ -224,10 +226,33 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// import * as k
         "Transitions": layerTransitions,
         "Precursor": layerAlien,
         "Miscellaneous": layerOther,
+        "Player": layerPlayer
     };
     L.control.layers(baseMaps, overlays).addTo(mymap);
     L.control.scale({ maxWidth: 500, metric: true, imperial: false, position: "bottomleft" }).addTo(mymap);
     mymap.on("mousemove", function (ev) { $("#position").text(toCoordString(ev.latlng)); });
+    var diverMarkerOpts = {
+        title: "Player",
+        riseOnHover: true,
+        zIndexOffset: 1000
+    };
+    diverMarkerOpts.icon = new L.Icon({
+        iconUrl: "data/diver.png",
+        iconSize: [32, 32],
+        iconAnchor: [16, 16]
+    });
+    var diverMarker = L.marker(L.latLng(0, 0), diverMarkerOpts);
+    layerPlayer.addLayer(diverMarker);
+    function SetPlayerInfo(data) {
+        $("#player-position").text("Biome: " + data.Biome + " | " + toCoordString(L.latLng(data.Y, data.X), data.Z));
+        diverMarker.setLatLng(L.latLng(data.Y, data.X));
+    }
+    function CheckPlayerInfo() {
+        $.getJSON("/?PlayerInfo=").done(function (data) {
+            SetPlayerInfo(data);
+        });
+    }
+    setInterval(function () { return CheckPlayerInfo(); }, 1000);
 }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 

@@ -83,6 +83,9 @@
     <Content Include="map\data\cc.attribution.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="map\data\diver.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="map\data\fountain.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
