@@ -221,28 +221,16 @@
                     var qs = context.Request.QueryString;
                     foreach (string key in qs.Keys)
                     {
-                        if (key == "PlayerInfo")
-                        {
-                            Log("PlayerInfo request");
-                            var json = JsonConvert.SerializeObject(PlayerInfo.Instance, Formatting.Indented);
-                            Log($"JSON: {json}");
-                            byte[] buffer = Encoding.UTF8.GetBytes(json);
-
-                            Log($"Set Headers");
-                            context.Response.StatusCode = (int) HttpStatusCode.OK;
-                            context.Response.ContentType = "application/json";
-                            context.Response.ContentLength64 = buffer.Length;
-                            context.Response.AddHeader("Date", DateTime.Now.ToString("r"));
-                            context.Response.AddHeader("Last-Modified", DateTime.Now.ToString("r"));
-
-                            Log($"Stream PlayerInfo");
-                            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-                            Log($"Flush Content");
-                            context.Response.OutputStream.Flush();
-                        }
-                        else
-                        {
-                            context.Response.StatusCode = (int) HttpStatusCode.NotFound;
+                        switch (key) {
+                            case "PlayerInfo":
+                                SendPlayerInfo(context);
+                                break;
+                            case "PingInfo":
+                                SendPingInfo(context);
+                                break;
+                            default:
+                                context.Response.StatusCode = (int) HttpStatusCode.NotFound;
+                                break;
                         }
 
                         context.Response.OutputStream.Close();
@@ -264,6 +252,70 @@
             {
                 _listener.BeginGetContext(GetContextCallback, null);
             }
+        }
+
+        private static void SendPingInfo(HttpListenerContext context)
+        {
+            Log("PingInfo request");
+
+            var pings = new List<PingInfo>();
+            using (var pingEnumerator = PingManager.GetEnumerator())
+            {
+                while (pingEnumerator.MoveNext())
+                {
+                    var ping = pingEnumerator.Current.Value;
+
+                    pings.Add(
+                        new PingInfo()
+                        {
+                            Color = ping.colorIndex,
+                            Label = ping.GetLabel(),
+                            // Yes, Z and Y are supposed to be reversed,
+                            // converting Subnautica coords to something more traditional.
+                            X = (int) Math.Round(ping.origin.position.x, MidpointRounding.AwayFromZero),
+                            Z = (int) Math.Round(ping.origin.position.y, MidpointRounding.AwayFromZero),
+                            Y = (int) Math.Round(ping.origin.position.z, MidpointRounding.AwayFromZero),
+                            Visible = ping.visible,
+                            Type = ping.pingType.ToString()
+                        });
+                }
+            }
+
+            var json = JsonConvert.SerializeObject(pings, Formatting.Indented);
+            Log($"JSON: {json}");
+            byte[] buffer = Encoding.UTF8.GetBytes(json);
+
+            Log($"Set Headers");
+            context.Response.StatusCode = (int)HttpStatusCode.OK;
+            context.Response.ContentType = "application/json";
+            context.Response.ContentLength64 = buffer.Length;
+            context.Response.AddHeader("Date", DateTime.Now.ToString("r"));
+            context.Response.AddHeader("Last-Modified", DateTime.Now.ToString("r"));
+
+            Log($"Stream PlayerInfo");
+            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+            Log($"Flush Content");
+            context.Response.OutputStream.Flush();
+        }
+
+        private static void SendPlayerInfo(HttpListenerContext context)
+        {
+            Log("PlayerInfo request");
+            var json = JsonConvert.SerializeObject(PlayerInfo.Instance, Formatting.Indented);
+            Log($"JSON: {json}");
+            byte[] buffer = Encoding.UTF8.GetBytes(json);
+
+            Log($"Set Headers");
+            context.Response.StatusCode = (int) HttpStatusCode.OK;
+            context.Response.ContentType = "application/json";
+            context.Response.ContentLength64 = buffer.Length;
+            context.Response.AddHeader("Date", DateTime.Now.ToString("r"));
+            context.Response.AddHeader("Last-Modified", DateTime.Now.ToString("r"));
+
+            Log($"Stream PlayerInfo");
+            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+            Log($"Flush Content");
+            context.Response.OutputStream.Flush();
         }
     }
 }
