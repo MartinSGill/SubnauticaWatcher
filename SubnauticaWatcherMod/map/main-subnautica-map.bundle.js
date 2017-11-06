@@ -67,23 +67,9 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// import * as ko from "knockout";
-//
-// class HelloViewModel {
-//     language: KnockoutObservable<string>
-//     framework: KnockoutObservable<string>
-//
-//     constructor(language: string, framework: string) {
-//         this.language = ko.observable(language);
-//         this.framework = ko.observable(framework);
-//     }
-// }
-//
-// ko.applyBindings(new HelloViewModel("TypeScript", "Knockout"));
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(1), __webpack_require__(2), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, L, $, _) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(1), __webpack_require__(2), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, L, $, _) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var PingJsonString = "\n[\n  {\n    \"Label\": null,\n    \"Color\": 4,\n    \"X\": -47,\n    \"Y\": 89,\n    \"Z\": 0,\n    \"Visible\": true,\n    \"Type\": \"Lifepod\"\n  },\n  {\n    \"Label\": \"Lifepod 3 - Crew reported their seaglide damaged\",\n    \"Color\": 3,\n    \"X\": -35,\n    \"Y\": 409,\n    \"Z\": -20,\n    \"Visible\": false,\n    \"Type\": \"Signal\"\n  },\n  {\n    \"Label\": \"Lifepod 19 - Second Officer Keen's last broadcast location\",\n    \"Color\": 3,\n    \"X\": -808,\n    \"Y\": -874,\n    \"Z\": -297,\n    \"Visible\": false,\n    \"Type\": \"Signal\"\n  },\n  {\n    \"Label\": \"Lifepod 17 - Stranded near a cave system and under attack\",\n    \"Color\": 4,\n    \"X\": -516,\n    \"Y\": -56,\n    \"Z\": -93,\n    \"Visible\": true,\n    \"Type\": \"Signal\"\n  },\n  {\n    \"Label\": \"Aurora Rendezvous Point\",\n    \"Color\": 3,\n    \"X\": -707,\n    \"Y\": -1097,\n    \"Z\": 2,\n    \"Visible\": false,\n    \"Type\": \"Signal\"\n  },\n  {\n    \"Label\": \"Lifepod 6 - Crew requested assistance navigating radiation\",\n    \"Color\": 3,\n    \"X\": 363,\n    \"Y\": 310,\n    \"Z\": -114,\n    \"Visible\": false,\n    \"Type\": \"Signal\"\n  },\n  {\n    \"Label\": \"Lifepod 13 - Carrying high priority passenger's remains\",\n    \"Color\": 3,\n    \"X\": -925,\n    \"Y\": 507,\n    \"Z\": -182,\n    \"Visible\": false,\n    \"Type\": \"Signal\"\n  },\n  {\n    \"Label\": \"Wreck A\",\n    \"Color\": 3,\n    \"X\": -397,\n    \"Y\": 648,\n    \"Z\": -122,\n    \"Visible\": false,\n    \"Type\": \"Beacon\"\n  },\n  {\n    \"Label\": \"Camera 1\",\n    \"Color\": 0,\n    \"X\": -538,\n    \"Y\": -32,\n    \"Z\": -76,\n    \"Visible\": false,\n    \"Type\": \"MapRoomCamera\"\n  },\n  {\n    \"Label\": \"Camera 2\",\n    \"Color\": 0,\n    \"X\": -537,\n    \"Y\": -38,\n    \"Z\": -76,\n    \"Visible\": false,\n    \"Type\": \"MapRoomCamera\"\n  },\n  {\n    \"Label\": \"Wreck B\",\n    \"Color\": 3,\n    \"X\": 388,\n    \"Y\": -190,\n    \"Z\": -14,\n    \"Visible\": false,\n    \"Type\": \"Beacon\"\n  },\n  {\n    \"Label\": \"Degasi - Shroom\",\n    \"Color\": 3,\n    \"X\": 96,\n    \"Y\": -369,\n    \"Z\": -253,\n    \"Visible\": false,\n    \"Type\": \"Beacon\"\n  },\n  {\n    \"Label\": \"Wreck C\",\n    \"Color\": 3,\n    \"X\": 65,\n    \"Y\": 387,\n    \"Z\": -29,\n    \"Visible\": false,\n    \"Type\": \"Beacon\"\n  },\n  {\n    \"Label\": \"Gun Platform\",\n    \"Color\": 0,\n    \"X\": 335,\n    \"Y\": 1162,\n    \"Z\": -7,\n    \"Visible\": false,\n    \"Type\": \"Beacon\"\n  },\n  {\n    \"Label\": \"Wreck D\",\n    \"Color\": 3,\n    \"X\": -646,\n    \"Y\": -24,\n    \"Z\": -74,\n    \"Visible\": false,\n    \"Type\": \"Beacon\"\n  },\n  {\n    \"Label\": \"Lifepod 12 - Sunk beyond 250m\",\n    \"Color\": 3,\n    \"X\": 1117,\n    \"Y\": 568,\n    \"Z\": -269,\n    \"Visible\": false,\n    \"Type\": \"Signal\"\n  },\n  {\n    \"Label\": \"Lifepod 4 - Radiation suit recommended before attempting rescue/salvage\",\n    \"Color\": 3,\n    \"X\": 713,\n    \"Y\": 161,\n    \"Z\": -2,\n    \"Visible\": false,\n    \"Type\": \"Signal\"\n  },\n  {\n    \"Label\": \"Proposed Degasi Habitat (500m)\",\n    \"Color\": 0,\n    \"X\": -647,\n    \"Y\": -948,\n    \"Z\": -508,\n    \"Visible\": true,\n    \"Type\": \"Signal\"\n  },\n  {\n    \"Label\": \"Energy Pulse Origin\",\n    \"Color\": 0,\n    \"X\": 428,\n    \"Y\": 1193,\n    \"Z\": -4,\n    \"Visible\": false,\n    \"Type\": \"Signal\"\n  },\n  {\n    \"Label\": \"Wreck E\",\n    \"Color\": 3,\n    \"X\": -795,\n    \"Y\": -774,\n    \"Z\": -197,\n    \"Visible\": false,\n    \"Type\": \"Beacon\"\n  },\n  {\n    \"Label\": \"Wreck F\",\n    \"Color\": 3,\n    \"X\": -1199,\n    \"Y\": -386,\n    \"Z\": -331,\n    \"Visible\": false,\n    \"Type\": \"Beacon\"\n  },\n  {\n    \"Label\": \"Wreck G\",\n    \"Color\": 3,\n    \"X\": -1142,\n    \"Y\": -729,\n    \"Z\": -129,\n    \"Visible\": false,\n    \"Type\": \"Beacon\"\n  },\n  {\n    \"Label\": \"Wreck H\",\n    \"Color\": 3,\n    \"X\": 906,\n    \"Y\": 619,\n    \"Z\": -169,\n    \"Visible\": false,\n    \"Type\": \"Beacon\"\n  },\n  {\n    \"Label\": \"Wreck I\",\n    \"Color\": 3,\n    \"X\": -1408,\n    \"Y\": 720,\n    \"Z\": -315,\n    \"Visible\": false,\n    \"Type\": \"Beacon\"\n  },\n  {\n    \"Label\": \"Wreck J\",\n    \"Color\": 3,\n    \"X\": -645,\n    \"Y\": 770,\n    \"Z\": -94,\n    \"Visible\": false,\n    \"Type\": \"Beacon\"\n  },\n  {\n    \"Label\": \"Deep Runner\",\n    \"Color\": 0,\n    \"X\": -476,\n    \"Y\": -20,\n    \"Z\": -65,\n    \"Visible\": true,\n    \"Type\": \"Cyclops\"\n  },\n  {\n    \"Label\": \"Lifepod 2 - CTO Yu sunk 500m before abandoning the pod\",\n    \"Color\": 0,\n    \"X\": -480,\n    \"Y\": 1324,\n    \"Z\": -501,\n    \"Visible\": true,\n    \"Type\": \"Signal\"\n  },\n  {\n    \"Label\": \"SEAMOTH\",\n    \"Color\": 0,\n    \"X\": -504,\n    \"Y\": -53,\n    \"Z\": -77,\n    \"Visible\": true,\n    \"Type\": \"Seamoth\"\n  },\n  {\n    \"Label\": \"PRAWN SUIT\",\n    \"Color\": 0,\n    \"X\": -481,\n    \"Y\": -23,\n    \"Z\": -68,\n    \"Visible\": true,\n    \"Type\": \"Exosuit\"\n  }\n]\n";
     var mymap = L.map('mapid', {
         crs: L.CRS.Simple,
         minZoom: -3,
@@ -100,15 +86,17 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// import * as k
         .addAttribution('Icons: <a href="http://www.freepik.com" title="Freepik" target="_blank">Freepik</a> from <a' +
         ' href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>, licensed by <a' +
         ' href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>')
-        .addAttribution('<a href="https://github.com/MartinSGill/subnautica-map" target="_blank">Source Code</a>')
+        .addAttribution('<a href="https://github.com/MartinSGill/SubnauticaWatcher" target="_blank">Source Code</a>')
         .addTo(mymap);
     // The Base Maps
     var bounds = [[-2000, -2000], [2000, 2000]];
+    var layerEmpty = L.imageOverlay('data/black.png', bounds).addTo(mymap);
     var layerBiomeImage = L.imageOverlay('data/BiomeMap_1024_new_May192017.png', bounds).addTo(mymap);
     var layerInactiveLavaZoneImage = L.imageOverlay('data/ilz_map_transparent.png', bounds);
     var layerLostRiverImage = L.imageOverlay('data/lost_river_transparent.png', bounds);
     var layerOutlineImage = L.imageOverlay('data/SNmapClean_cropped_transparent.png', bounds).addTo(mymap);
     var baseMaps = {
+        "None": layerEmpty,
         "Biomes": layerBiomeImage,
         "Lost River": layerLostRiverImage,
         "Inactive Lave Zone": layerInactiveLavaZoneImage
@@ -268,9 +256,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// import * as k
     function SetPingInfo(data) {
         for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
             var ping = data_1[_i];
-            if (!ping.Visible) {
-                continue;
-            }
+            // if (!ping.Visible) { continue; }
             var markerOpts = {
                 title: ping.Label
             };

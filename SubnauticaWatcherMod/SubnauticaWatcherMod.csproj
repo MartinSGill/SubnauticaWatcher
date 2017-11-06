@@ -81,6 +81,9 @@
     <Content Include="map\data\BiomeMap_1024_new_May192017.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="map\data\black.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="map\data\camera_drone.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
