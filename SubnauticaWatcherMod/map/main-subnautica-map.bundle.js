@@ -77,6 +77,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
         zoomDelta: 0.25,
         attributionControl: false
     });
+    Window.mymap = mymap;
     L.control.attribution({
         position: "bottomright",
         prefix: "<a href='http://leafletjs.com/' target='_blank'>Leaflet</a>"
@@ -245,8 +246,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
     var diverMarker = L.marker(L.latLng(0, 0), diverMarkerOpts);
     layerPlayer.addLayer(diverMarker);
     function SetPlayerInfo(data) {
-        $("#player-position").text("Biome: " + data.Biome + " | " + toCoordString(L.latLng(data.Y, data.X), data.Z));
-        diverMarker.setLatLng(L.latLng(data.Y, data.X));
+        var posLatLng = L.latLng(data.Y, data.X);
+        $("#player-position").text("Biome: " + data.Biome + " | " + toCoordString(posLatLng, data.Z));
+        diverMarker.setLatLng(posLatLng);
+        if ($("#follow-player")[0].checked === true) {
+            mymap.panTo(posLatLng);
+        }
     }
     function CheckPlayerInfo() {
         $.getJSON("/?PlayerInfo=").done(function (data) {
