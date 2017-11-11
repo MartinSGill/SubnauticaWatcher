@@ -282,7 +282,7 @@
             }
 
             var json = JsonConvert.SerializeObject(pings, Formatting.Indented);
-            Log($"JSON: {json}");
+            // Log($"JSON: {json}");
             byte[] buffer = Encoding.UTF8.GetBytes(json);
 
             Log($"Set Headers");
@@ -302,7 +302,7 @@
         {
             Log("PlayerInfo request");
             var json = JsonConvert.SerializeObject(PlayerInfo.Instance, Formatting.Indented);
-            Log($"JSON: {json}");
+            // Log($"JSON: {json}");
             byte[] buffer = Encoding.UTF8.GetBytes(json);
 
             Log($"Set Headers");
