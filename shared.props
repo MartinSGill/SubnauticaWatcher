@@ -1,0 +1,13 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0">  
+  <PropertyGroup>
+    <DirSteam Condition="''=='$(DirSteam)'">$(registry:HKEY_CURRENT_USER\Software\Valve\Steam@SteamPath)</DirSteam>
+    <DirSubnautica Condition="''=='$(DirSubnautica)'">$(DirSteam)\steamapps\common\Subnautica</DirSubnautica>
+    <DirSubnauticaManaged Condition="''=='$(DirSubnauticaManaged)'">$(DirSubnautica)\Subnautica_Data\Managed</DirSubnauticaManaged>
+    <VendorFilesFolder>$(MSBuildProjectDirectory)\SubnauticaWatcherMod\Vendor</VendorFilesFolder>
+  </PropertyGroup>
+
+  <Target BeforeTargets="build" Name="validate-shared-props">
+    <Error Condition="!Exists('$(DirSteam)')" Text="Steam Installation Not Found." />
+    <Error Condition="!Exists('$(DirSubnautica)')" Text="Subnautica Installation Not Found." />
+  </Target>
+</Project>  

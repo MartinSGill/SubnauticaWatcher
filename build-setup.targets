@@ -1,0 +1,16 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0">
+  <Import Project="$(MSBuildProjectDirectory)\shared.props" />
+  
+  <ItemGroup>
+    <VendorFiles Include="$(DirSubnauticaManaged)\Assembly-CSharp.dll" />
+    <VendorFiles Include="$(DirSubnauticaManaged)\Newtonsoft.Json.dll" />
+    <VendorFiles Include="$(DirSubnauticaManaged)\UnityEngine.dll" />
+  </ItemGroup>
+
+  <Target Name="CopyVendorFilesLocal" BeforeTargets="build">
+    <Copy SkipUnchangedFiles="true" 
+          ContinueOnError="false" 
+          SourceFiles="@(VendorFiles)" 
+          DestinationFolder="$(MSBuildProjectDirectory)\SubnauticaWatcherMod\Vendor" />
+  </Target>
+</Project>
