@@ -4,9 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputPath Condition=" '$(OutputPath)' == '' ">$(MSBuildProjectDirectory)\SubnauticaWatcherMod\bin\$(Configuration)</OutputPath>
+    <ModOutputPath Condition=" '$(OutputPath)' == '' ">$(MSBuildProjectDirectory)\SubnauticaWatcherMod\bin\$(Configuration)</ModOutputPath>
+    <InstallerOutputPath Condition=" '$(OutputPath)' == '' ">$(MSBuildProjectDirectory)\SubnauticaWatcherInstaller\bin\$(Configuration)</InstallerOutputPath>
+    <ModOutputPath Condition=" '$(OutputPath)' != '' ">$(OutputPath)</ModOutputPath>
+    <InstallerOutputPath Condition=" '$(OutputPath)' != '' ">$(OutputPath)</InstallerOutputPath>
   </PropertyGroup>
-
+ 
   <ItemGroup>
     <VendorFiles Include="$(DirSubnauticaManaged)\Assembly-CSharp.dll" />
     <VendorFiles Include="$(DirSubnauticaManaged)\Newtonsoft.Json.dll" />
@@ -20,23 +23,25 @@
           DestinationFolder="$(MSBuildProjectDirectory)\SubnauticaWatcherMod\Vendor" />
   </Target>
 
-  <ItemGroup>
-	<MapFiles Include="$(MSBuildProjectDirectory)\subnautica-map\dist\**\*" />
-  </ItemGroup>
-
-  <Target Name="deploy-map"
-		  Inputs="@(MapFiles)"
-		  Outputs="$(DirSubnauticaManaged)\map\$(RecursiveDir)">
+  <Target Name="deploy-map" DependsOnTargets="build-map">
+    <ItemGroup>
+      <MapFiles Include="$(MSBuildProjectDirectory)\subnautica-map\dist\**\*" />
+    </ItemGroup>
     <Copy SourceFiles="@(MapFiles)"
-		  DestinationFolder="$(DirSubnauticaManaged)\map\$(RecursiveDir)"
+		  DestinationFolder="$(DirSubnauticaManaged)\map\%(RecursiveDir)"
 		  SkipUnchangedFiles="true" />
   </Target>
 
   <Target Name="deploy-mod" DependsOnTargets="build-mod">
     <ItemGroup>
-      <ModFiles Include="$(OutputPath)\0Harmony.dll" />
-	  <ModFiles Include="$(OutputPath)\SubnauticaWatcherMod.dll" />
-	  <ModFiles Include="$(OutputPath)\SubnauticaWatcherMod.pdb" Condition="'$(Configuration)'=='Debug'" />
+      <ModFiles Include="$(ModOutputPath)\0Harmony.dll" />
+	    <ModFiles Include="$(ModOutputPath)\SubnauticaWatcherMod.dll" />
+	    <ModFiles Include="$(ModOutputPath)\SubnauticaWatcherMod.pdb" Condition="'$(Configuration)'=='Debug'" />
+      
+      <ModFiles Include="$(InstallerOutputPath)\Mono.*" />
+      <ModFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.exe" />
+      <ModFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.exe.config" />
+      <ModFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.pdb" Condition="'$(Configuration)'=='Debug'" />
     </ItemGroup>
 
     <Copy SourceFiles="@(ModFiles)"
@@ -51,6 +56,58 @@
   </ItemGroup>
   <Target Name="build-mod">
     <MSBuild Projects="@(ModProjects)" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
+  </Target>
+
+  <PropertyGroup>
+    <MapProjectFolder>$(MSBuildProjectDirectory)\subnautica-map</MapProjectFolder>
+  </PropertyGroup>
+  <ItemGroup>
+    <MapCompile Include="$(MapProjectFolder)\*.json" />
+    <MapCompile Include="$(MapProjectFolder)\*.ts" />
+    <MapCompile Include="$(MapProjectFolder)\src\*.ts" />
+    <MapCompile Include="$(MapProjectFolder)\index.html" />
+  </ItemGroup>
+  <Target Name="build-map" 
+          Inputs="@(MapCompile)"
+          Outputs="$(MapProjectFolder)\dist\index.html;$(MapProjectFolder)\dist\main-subnautica-map.bundle.js">
+    <Exec Command="yarn run build" 
+          ConsoleToMSBuild="true" 
+          WorkingDirectory="$(MapProjectFolder)" />
+  </Target>
+
+  <PropertyGroup>
+    <ReleasePackage>$(MSBuildProjectDirectory)\subnautica-watcher-release.zip</ReleasePackage>
+  </PropertyGroup>
+  <Target Name="package" DependsOnTargets="build-map;build-mod" Outputs="$(ReleasePackage)">
+    <PropertyGroup>
+      <PackageTempDir>$(MSBuildProjectDirectory)\package-tmp</PackageTempDir>
+    </PropertyGroup>
+    <RemoveDir Directories="$(PackageTempDir)" />
+    <Delete Files="$(ReleasePackage)" />
+    <MakeDir Directories="$(PackageTempDir)\Subnautica_Data\Managed" />
+    
+    <ItemGroup>
+      <ModFiles Include="$(ModOutputPath)\0Harmony.dll" />
+      <ModFiles Include="$(ModOutputPath)\SubnauticaWatcherMod.dll" />
+      <ModFiles Include="$(ModOutputPath)\SubnauticaWatcherMod.pdb" Condition="'$(Configuration)'=='Debug'" />
+      
+      <ModFiles Include="$(InstallerOutputPath)\Mono.*" />
+      <ModFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.exe" />
+      <ModFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.exe.config" />
+      <ModFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.pdb" Condition="'$(Configuration)'=='Debug'" />
+  
+      <MapFiles Include="$(MSBuildProjectDirectory)\subnautica-map\dist\**\*" />
+    </ItemGroup>
+    
+    <Copy SourceFiles="@(ModFiles)" DestinationFolder="$(PackageTempDir)\Subnautica_Data\Managed" />
+    <Copy SourceFiles="@(MapFiles)" DestinationFolder="$(PackageTempDir)\Subnautica_Data\Managed\map\%(RecursiveDir)" />
+
+    <ItemGroup>
+      <ZipFiles Include="$(PackageTempDir)\**\*" />
+    </ItemGroup>
+    <Exec Command="PowerShell -NoProfile -Command Compress-Archive $(PackageTempDir)\Subnautica_Data,$(MSBuildProjectDirectory)\LICENSE.md,$(MSBuildProjectDirectory)\readme.md -DestinationPath $(ReleasePackage)" />
+    
+    <RemoveDir Directories="$(PackageTempDir)" Condition="'' == '$(KeepPackageTempDir)'" />
   </Target>
 
 </Project>

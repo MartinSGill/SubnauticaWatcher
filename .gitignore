@@ -2,5 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/packages/Newtonsoft.Json.10.0.3
+/packages/
 /.vs
+*.zip

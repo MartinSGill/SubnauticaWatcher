@@ -307,5 +307,6 @@ function CheckPingInfo() {
   });
 }
 
+
 setInterval(() => CheckPlayerInfo(), 1000);
 setInterval(() => CheckPingInfo(), 2000);
