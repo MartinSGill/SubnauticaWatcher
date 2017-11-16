@@ -1,6 +1,10 @@
 ﻿namespace SubnauticaWatcherMod
 {
+    #region imports
+
     using Newtonsoft.Json;
+
+    #endregion
 
     [JsonObject(MemberSerialization.OptIn)]
     internal class PlayerInfo

@@ -156,7 +156,7 @@
                         break;
                     }
                 }
-            
+
             filename = Path.Combine(_rootDirectory, filename);
 
             if (File.Exists(filename))
@@ -165,7 +165,7 @@
                 {
                     Log($"Serving: {filename}");
                     Stream input = new FileStream(filename, FileMode.Open);
-                    context.Response.StatusCode = (int)HttpStatusCode.OK;
+                    context.Response.StatusCode = (int) HttpStatusCode.OK;
 
                     //Adding permanent http response headers
                     Log($"Set Headers");
@@ -209,8 +209,6 @@
             var context = _listener.EndGetContext(result);
             try
             {
-
-
                 foreach (string key in context.Request.QueryString.Keys)
                 {
                     Log($"Query:      {key} = {context.Request.QueryString[key]}");
@@ -221,7 +219,8 @@
                     var qs = context.Request.QueryString;
                     foreach (string key in qs.Keys)
                     {
-                        switch (key) {
+                        switch (key)
+                        {
                             case "PlayerInfo":
                                 SendPlayerInfo(context);
                                 break;
@@ -240,7 +239,6 @@
                 {
                     ServeFile(context);
                 }
-
             }
             catch (Exception e)
             {
@@ -266,7 +264,7 @@
                     var ping = pingEnumerator.Current.Value;
 
                     pings.Add(
-                        new PingInfo()
+                        new PingInfo
                         {
                             Color = ping.colorIndex,
                             Label = ping.GetLabel(),
@@ -283,10 +281,10 @@
 
             var json = JsonConvert.SerializeObject(pings, Formatting.Indented);
             // Log($"JSON: {json}");
-            byte[] buffer = Encoding.UTF8.GetBytes(json);
+            var buffer = Encoding.UTF8.GetBytes(json);
 
             Log($"Set Headers");
-            context.Response.StatusCode = (int)HttpStatusCode.OK;
+            context.Response.StatusCode = (int) HttpStatusCode.OK;
             context.Response.ContentType = "application/json";
             context.Response.ContentLength64 = buffer.Length;
             context.Response.AddHeader("Date", DateTime.Now.ToString("r"));
@@ -303,7 +301,7 @@
             Log("PlayerInfo request");
             var json = JsonConvert.SerializeObject(PlayerInfo.Instance, Formatting.Indented);
             // Log($"JSON: {json}");
-            byte[] buffer = Encoding.UTF8.GetBytes(json);
+            var buffer = Encoding.UTF8.GetBytes(json);
 
             Log($"Set Headers");
             context.Response.StatusCode = (int) HttpStatusCode.OK;

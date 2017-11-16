@@ -41,9 +41,15 @@
                 PlayerInfo.Instance.Biome = biome;
 
                 // Yes, Z and Y are supposed to be reversed. Converting Subnautica coords to something more traditional.
-                PlayerInfo.Instance.X = (int)Math.Round(__instance.transform.position.x, MidpointRounding.AwayFromZero);
-                PlayerInfo.Instance.Z = (int)Math.Round(__instance.transform.position.y, MidpointRounding.AwayFromZero);
-                PlayerInfo.Instance.Y = (int)Math.Round(__instance.transform.position.z, MidpointRounding.AwayFromZero);
+                PlayerInfo.Instance.X = (int) Math.Round(
+                    __instance.transform.position.x,
+                    MidpointRounding.AwayFromZero);
+                PlayerInfo.Instance.Z = (int) Math.Round(
+                    __instance.transform.position.y,
+                    MidpointRounding.AwayFromZero);
+                PlayerInfo.Instance.Y = (int) Math.Round(
+                    __instance.transform.position.z,
+                    MidpointRounding.AwayFromZero);
             }
         }
     }
