@@ -8,7 +8,7 @@
     using System.Net;
     using System.Reflection;
     using System.Text;
-    using Newtonsoft.Json;
+    using Oculus.Newtonsoft.Json;
     using UnityEngine;
 
     #endregion

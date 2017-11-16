@@ -86,6 +86,7 @@
     <MakeDir Directories="$(PackageTempDir)\Subnautica_Data\Managed" />
     
     <ItemGroup>
+      <!-- Not Happy these itemgroups are duplicated, need to find a fix  -->
       <ModFiles Include="$(ModOutputPath)\0Harmony.dll" />
       <ModFiles Include="$(ModOutputPath)\SubnauticaWatcherMod.dll" />
       <ModFiles Include="$(ModOutputPath)\SubnauticaWatcherMod.pdb" Condition="'$(Configuration)'=='Debug'" />
@@ -112,6 +113,7 @@
   <Target Name="Clean">
     <MSBuild Projects="@(ModProjects)" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="Clean" />
     <RemoveDir Directories="$(MSBuildProjectDirectory)\subnautica-map\dist" />
+    <Delete Files="@(VendorFiles)" />
     
     <RemoveDir Directories="$(PackageTempDir)" />
     <Delete Files="$(ReleasePackage)" />

@@ -2,7 +2,7 @@
 {
     #region imports
 
-    using Newtonsoft.Json;
+    using Oculus.Newtonsoft.Json;
 
     #endregion
 

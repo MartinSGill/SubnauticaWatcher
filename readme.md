@@ -19,14 +19,16 @@ __Caveats:__ Background images and additional overlay data taken from Wiki and m
 __Warning:__ While attempts have been made to ensure this mod does not interfere with other mods, this cannot
 be guaranteed.
 
+__Warning:__ Only works on __Experimental__ branch.
+
+__Warning:__ You may need to repeat steps 4 to 6 whenever Steam updates Subnautica.
+
 1. Download the latest Release zip
 2. Extract the zip into your Subnautica installation folder, (usually `Steam\steamapps\common\Subnautica`)
 3. Unless updating, or unless you have another mod installed it should not normally require overwriting of anything.
 4. In your `Steam\steamapps\common\Subnautica\Subnautica_Data\Managed` folder run `SubnauticaWatcherInstaller.exe`
 5. Click the "Install" button.
 6. Check for errors, then exit `SubnauticaWatcherInstaller.exe`.
-
-__Warning:__ You may need to repeat steps 4 to 6 whenever Steam updates Subnautica.
 
 ## Usage
 
