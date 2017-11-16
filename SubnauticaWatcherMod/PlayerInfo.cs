@@ -11,11 +11,11 @@
     {
         public static readonly PlayerInfo Instance = new PlayerInfo();
         private readonly object _lock = new object();
-        private string _biome;
-        private int _x;
-        private int _y;
-        private int _z;
-
+        private string _biome = string.Empty;
+        private int _x = 0;
+        private int _y = 0;
+        private int _z = 0;
+        
         [JsonProperty]
         public string Biome
         {
