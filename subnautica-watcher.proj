@@ -1,4 +1,4 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0" DefaultTargets="deploy">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0" DefaultTargets="package">
   <Import Project="$(MSBuildProjectDirectory)\shared.props" />
 
   <PropertyGroup>
@@ -8,6 +8,7 @@
     <InstallerOutputPath Condition=" '$(OutputPath)' == '' ">$(MSBuildProjectDirectory)\SubnauticaWatcherInstaller\bin\$(Configuration)</InstallerOutputPath>
     <ModOutputPath Condition=" '$(OutputPath)' != '' ">$(OutputPath)</ModOutputPath>
     <InstallerOutputPath Condition=" '$(OutputPath)' != '' ">$(OutputPath)</InstallerOutputPath>
+    <ReleaseVersion>0.1.0</ReleaseVersion>
   </PropertyGroup>
  
   <ItemGroup>
@@ -76,12 +77,10 @@
   </Target>
 
   <PropertyGroup>
-    <ReleasePackage>$(MSBuildProjectDirectory)\subnautica-watcher-release.zip</ReleasePackage>
+    <ReleasePackage>$(MSBuildProjectDirectory)\subnautica-watcher-release-$(ReleaseVersion).zip</ReleasePackage>
+    <PackageTempDir>$(MSBuildProjectDirectory)\package-tmp</PackageTempDir>
   </PropertyGroup>
   <Target Name="package" DependsOnTargets="build-map;build-mod" Outputs="$(ReleasePackage)">
-    <PropertyGroup>
-      <PackageTempDir>$(MSBuildProjectDirectory)\package-tmp</PackageTempDir>
-    </PropertyGroup>
     <RemoveDir Directories="$(PackageTempDir)" />
     <Delete Files="$(ReleasePackage)" />
     <MakeDir Directories="$(PackageTempDir)\Subnautica_Data\Managed" />
@@ -108,6 +107,14 @@
     <Exec Command="PowerShell -NoProfile -Command Compress-Archive $(PackageTempDir)\Subnautica_Data,$(MSBuildProjectDirectory)\LICENSE.md,$(MSBuildProjectDirectory)\readme.md -DestinationPath $(ReleasePackage)" />
     
     <RemoveDir Directories="$(PackageTempDir)" Condition="'' == '$(KeepPackageTempDir)'" />
+  </Target>
+
+  <Target Name="Clean">
+    <MSBuild Projects="@(ModProjects)" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="Clean" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\subnautica-map\dist" />
+    
+    <RemoveDir Directories="$(PackageTempDir)" />
+    <Delete Files="$(ReleasePackage)" />
   </Target>
 
 </Project>
