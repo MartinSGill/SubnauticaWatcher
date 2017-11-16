@@ -27,7 +27,16 @@ namespace SubnauticaWatcherInstaller
 
         internal void Log(string message)
         {
-            messageBox.Items.Add(message);
+            messageBox.Items.Add(
+                new ListViewItem()
+                {
+                    Text = message,
+                    ToolTipText = message,
+                    BackColor = message.StartsWith("Error", StringComparison.InvariantCultureIgnoreCase)
+                                    ? Color.OrangeRed
+                                    : Color.White
+
+                });
         }
 
         private void mainForm_Shown(object sender, EventArgs e)
@@ -56,6 +65,12 @@ namespace SubnauticaWatcherInstaller
         private void installButton_Click(object sender, EventArgs e)
         {
             Installer.Install();
+            UpdateInstallStatus();
+        }
+
+        private void uninstallButton_Click(object sender, EventArgs e)
+        {
+            Installer.Uninstall();
             UpdateInstallStatus();
         }
     }

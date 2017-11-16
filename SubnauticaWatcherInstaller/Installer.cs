@@ -74,8 +74,8 @@
             }
             catch (IOException ex)
             {
-                log("Exception attempting to create backup of Assembly-CSharp.dll.");
-                log(ex.Message);
+                log("Error: error attempting to create backup of Assembly-CSharp.dll.");
+                log($"Error: {ex.Message}");
                 return -4;
             }
 
@@ -98,13 +98,13 @@
                         return 0;
                     }
 
-                    log("Unable to determine Subnautica Data directory.");
+                    log("Error: Unable to determine Subnautica Data directory.");
                     return -3;
                 }
-                log("Unable to determine Subnautica install directory.");
+                log("Error: Unable to determine Subnautica install directory.");
                 return -2;
             }
-            log("Unable to determine Steam install directory.");
+            log("Error: Unable to determine Steam install directory.");
             return -1;
         }
 
@@ -133,8 +133,8 @@
                 }
                 catch (Exception ex)
                 {
-                    log("Failed to update Assembly-CSharp.dll.");
-                    log(ex.Message);
+                    log("Error: Failed to update Assembly-CSharp.dll.");
+                    log($"Error: {ex.Message}");
                     return -5;
                 }
             else
@@ -171,6 +171,15 @@
                                                           x => (x.Operand as MethodReference)?.DeclaringType.FullName
                                                                == "SubnauticaWatcherMod.Patching.Patcher");
             return hasPatchInstruction;
+        }
+
+        internal void Uninstall()
+        {
+            log("Error: Sorry, proper uninstall not implemented yet.");
+            log("Error: Please manually replace:");
+            log($"Error:    {SubnauticaDllPath}");
+            log("Error: with:");
+            log($"Error:    {SubnauticaDllBackupPath}");
         }
     }
 }

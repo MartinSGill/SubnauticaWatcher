@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.installStatus = new System.Windows.Forms.Label();
-            this.messageBox = new System.Windows.Forms.ListBox();
             this.installButton = new System.Windows.Forms.Button();
             this.uninstallButton = new System.Windows.Forms.Button();
+            this.messageBox = new System.Windows.Forms.ListView();
             this.SuspendLayout();
             // 
             // installStatus
@@ -46,14 +46,6 @@
             this.installStatus.TabIndex = 0;
             this.installStatus.Text = "Not Installed";
             this.installStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // messageBox
-            // 
-            this.messageBox.FormattingEnabled = true;
-            this.messageBox.Location = new System.Drawing.Point(12, 93);
-            this.messageBox.Name = "messageBox";
-            this.messageBox.Size = new System.Drawing.Size(428, 160);
-            this.messageBox.TabIndex = 1;
             // 
             // installButton
             // 
@@ -73,15 +65,30 @@
             this.uninstallButton.TabIndex = 3;
             this.uninstallButton.Text = "Uninstall";
             this.uninstallButton.UseVisualStyleBackColor = true;
+            this.uninstallButton.Click += new System.EventHandler(this.uninstallButton_Click);
+            // 
+            // messageBox
+            // 
+            this.messageBox.BackColor = System.Drawing.Color.White;
+            this.messageBox.ForeColor = System.Drawing.Color.Black;
+            this.messageBox.FullRowSelect = true;
+            this.messageBox.GridLines = true;
+            this.messageBox.Location = new System.Drawing.Point(12, 93);
+            this.messageBox.Name = "messageBox";
+            this.messageBox.ShowItemToolTips = true;
+            this.messageBox.Size = new System.Drawing.Size(428, 156);
+            this.messageBox.TabIndex = 4;
+            this.messageBox.UseCompatibleStateImageBehavior = false;
+            this.messageBox.View = System.Windows.Forms.View.List;
             // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(452, 261);
+            this.Controls.Add(this.messageBox);
             this.Controls.Add(this.uninstallButton);
             this.Controls.Add(this.installButton);
-            this.Controls.Add(this.messageBox);
             this.Controls.Add(this.installStatus);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "mainForm";
@@ -95,9 +102,9 @@
         #endregion
 
         private System.Windows.Forms.Label installStatus;
-        private System.Windows.Forms.ListBox messageBox;
         private System.Windows.Forms.Button installButton;
         private System.Windows.Forms.Button uninstallButton;
+        private System.Windows.Forms.ListView messageBox;
     }
 }
 

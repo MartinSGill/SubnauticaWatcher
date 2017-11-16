@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C740E78E-5057-4EC1-886A-EF77E6ADA109}"
 	ProjectSection(SolutionItems) = preProject
 		build.ps1 = build.ps1
+		project-version.cs = project-version.cs
 		shared.props = shared.props
 		subnautica-watcher.proj = subnautica-watcher.proj
 	EndProjectSection

@@ -68,6 +68,7 @@
     <Compile Include="PingInfo.cs" />
     <Compile Include="PlayerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\project-version.cs" />
     <Compile Include="Server\HttpServer.cs" />
   </ItemGroup>
   <ItemGroup>
