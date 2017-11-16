@@ -14,6 +14,8 @@ Should the Subnautica development team ever add an auto-map or ingame map featur
 
 __Caveats:__ Background images and additional overlay data taken from Wiki and may be out-of-date.
 
+![Mod in Use](images/mod-example-overlay.png "Mod In Use")
+
 ## Installation
 
 __Warning:__ While attempts have been made to ensure this mod does not interfere with other mods, this cannot
