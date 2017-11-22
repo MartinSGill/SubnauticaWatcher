@@ -28,7 +28,7 @@ __Warning:__ You may need to repeat steps 4 to 6 whenever Steam updates Subnauti
 1. Download the latest Release zip
 2. Extract the zip into your Subnautica installation folder, (usually `Steam\steamapps\common\Subnautica`)
 3. Unless updating, or unless you have another mod installed it should not normally require overwriting of anything.
-4. In your `Steam\steamapps\common\Subnautica\Subnautica_Data\Managed` folder run `SubnauticaWatcherInstaller.exe`
+4. In your `Steam\steamapps\common\Subnautica\SubnauticaWatcherInstaller` folder run `SubnauticaWatcherInstaller.exe`
 5. Click the "Install" button.
 6. Check for errors, then exit `SubnauticaWatcherInstaller.exe`.
 

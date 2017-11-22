@@ -79,11 +79,14 @@
   <PropertyGroup>
     <ReleasePackage>$(MSBuildProjectDirectory)\subnautica-watcher-release-$(ReleaseVersion).zip</ReleasePackage>
     <PackageTempDir>$(MSBuildProjectDirectory)\package-tmp</PackageTempDir>
+    <PackageModDir>$(PackageTempDir)\Subnautica_Data\Managed</PackageModDir>
+    <PackageInstallerDir>$(PackageTempDir)\SubnauticaWatcherInstaller</PackageInstallerDir>
   </PropertyGroup>
   <Target Name="package" DependsOnTargets="build-map;build-mod" Outputs="$(ReleasePackage)">
     <RemoveDir Directories="$(PackageTempDir)" />
     <Delete Files="$(ReleasePackage)" />
-    <MakeDir Directories="$(PackageTempDir)\Subnautica_Data\Managed" />
+    <MakeDir Directories="$(PackageModDir)" />
+    <MakeDir Directories="$(PackageInstallerDir)" />
     
     <ItemGroup>
       <!-- Not Happy these itemgroups are duplicated, need to find a fix  -->
@@ -91,21 +94,24 @@
       <ModFiles Include="$(ModOutputPath)\SubnauticaWatcherMod.dll" />
       <ModFiles Include="$(ModOutputPath)\SubnauticaWatcherMod.pdb" Condition="'$(Configuration)'=='Debug'" />
       
-      <ModFiles Include="$(InstallerOutputPath)\Mono.*" />
-      <ModFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.exe" />
-      <ModFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.exe.config" />
-      <ModFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.pdb" Condition="'$(Configuration)'=='Debug'" />
-  
+      <ModInstallerFiles Include="$(InstallerOutputPath)\Mono.*" />
+      <ModInstallerFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.exe" />
+      <ModInstallerFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.exe.config" />
+      <ModInstallerFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.pdb" Condition="'$(Configuration)'=='Debug'" />
+      <ModInstallerFiles Include="$(MSBuildProjectDirectory)\license.md" />
+      <ModInstallerFiles Include="$(MSBuildProjectDirectory)\readme.md" />
+
       <MapFiles Include="$(MSBuildProjectDirectory)\subnautica-map\dist\**\*" />
     </ItemGroup>
     
-    <Copy SourceFiles="@(ModFiles)" DestinationFolder="$(PackageTempDir)\Subnautica_Data\Managed" />
-    <Copy SourceFiles="@(MapFiles)" DestinationFolder="$(PackageTempDir)\Subnautica_Data\Managed\map\%(RecursiveDir)" />
+    <Copy SourceFiles="@(ModFiles)" DestinationFolder="$(PackageModDir)" />
+    <Copy SourceFiles="@(ModInstallerFiles)" DestinationFolder="$(PackageInstallerDir)" />
+    <Copy SourceFiles="@(MapFiles)" DestinationFolder="$(PackageModDir)\map\%(RecursiveDir)" />
 
     <ItemGroup>
       <ZipFiles Include="$(PackageTempDir)\**\*" />
     </ItemGroup>
-    <Exec Command="PowerShell -NoProfile -Command Compress-Archive $(PackageTempDir)\Subnautica_Data,$(MSBuildProjectDirectory)\LICENSE.md,$(MSBuildProjectDirectory)\readme.md -DestinationPath $(ReleasePackage)" />
+    <Exec Command="PowerShell -NoProfile -Command Compress-Archive $(PackageTempDir)\Subnautica_Data,$(PackageInstallerDir) -DestinationPath $(ReleasePackage)" />
     
     <RemoveDir Directories="$(PackageTempDir)" Condition="'' == '$(KeepPackageTempDir)'" />
   </Target>
