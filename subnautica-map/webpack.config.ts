@@ -1,8 +1,8 @@
+import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 import * as webpack from "webpack";
 import * as path from "path";
 import { CheckerPlugin } from "awesome-typescript-loader";
 import { AutoWebPlugin, WebPlugin } from "web-webpack-plugin";
-import * as ExtractTextPlugin from "extract-text-webpack-plugin";
 import * as CopyWebpackPlugin from "copy-webpack-plugin";
 
 declare var __dirname;
@@ -17,7 +17,14 @@ const config: webpack.Configuration = {
   },
 
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx']
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+
+    // Speed up incremental builds by splitting
+    // node modules into separate chunks.
+    modules: [
+      path.resolve('./'),
+      path.resolve('./node_modules'),
+    ]
   },
 
   // Source maps support ('inline-source-map' also works)
@@ -28,25 +35,18 @@ const config: webpack.Configuration = {
     rules: [
       {
         test: /\.tsx?$/,
+        include: path.resolve(__dirname, "src"),
+        exclude: /node_modules/,
         use : {
           loader: "awesome-typescript-loader"
         }
-      },
-      // {
-      //   test: /\.css$/,
-      //   exclude: /\/\//,
-      //   use : ExtractTextPlugin.extract({
-      //                                          fallback: "style-loader",
-      //                                          use: "css-loader"
-      //                                        })
-      // },
-      {
-        test: /\.(png|jpg|svg)$/,
-        use: 'file-loader'
       }
     ]
   },
   plugins: [
+    // new BundleAnalyzerPlugin({
+    //                            analyzerMode: 'static'
+    //                          }),
     new CheckerPlugin(),
     //new ExtractTextPlugin('[name].css'),
     new WebPlugin({
@@ -58,7 +58,16 @@ const config: webpack.Configuration = {
                     requires: ['main'],
                     template: path.resolve(__dirname, 'index.html')
                   }),
-    new CopyWebpackPlugin([{ from: 'data', to: 'data' }])
+    new CopyWebpackPlugin([{ from: 'data', to: 'data' }]),
+
+    new webpack.optimize.CommonsChunkPlugin({
+                                              name: 'node-static',
+                                              filename: 'node-static.js',
+                                              minChunks(module, count) {
+                                                const context = module.context;
+                                                return context && context.indexOf('node_modules') >= 0;
+                                              },
+                                            }),
   ]
 };
 

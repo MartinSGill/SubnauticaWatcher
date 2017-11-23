@@ -227,6 +227,9 @@
                             case "PingInfo":
                                 SendPingInfo(context);
                                 break;
+                            case "DayNightInfo":
+                                SendDayNightInfo(context);
+                                break;
                             default:
                                 context.Response.StatusCode = (int) HttpStatusCode.NotFound;
                                 break;
@@ -250,6 +253,38 @@
             {
                 _listener.BeginGetContext(GetContextCallback, null);
             }
+        }
+
+        private static void SendDayNightInfo(HttpListenerContext context)
+        {
+            Log("DayNightInfo Request");
+            
+            var dayNightCycle = DayNightCycle.main != null ? DayNightCycle.main.GetDayNightCycleTime() : 0.5f;
+            var dayScalar = DayNightCycle.main != null ? DayNightCycle.main.GetDayScalar() : 0.5f;
+            var day = DayNightCycle.main != null ? DayNightCycle.main.GetDay() : 1.0d;
+
+            var info = new DayNightInfo()
+            {
+                Day = day,
+                DayNightCycleTime = dayNightCycle,
+                DayScalar = dayScalar
+            };
+
+            var json = JsonConvert.SerializeObject(info, Formatting.Indented);
+            // Log($"JSON: {json}");
+            var buffer = Encoding.UTF8.GetBytes(json);
+
+            Log($"Set Headers");
+            context.Response.StatusCode = (int)HttpStatusCode.OK;
+            context.Response.ContentType = "application/json";
+            context.Response.ContentLength64 = buffer.Length;
+            context.Response.AddHeader("Date", DateTime.Now.ToString("r"));
+            context.Response.AddHeader("Last-Modified", DateTime.Now.ToString("r"));
+
+            Log($"Stream PlayerInfo");
+            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+            Log($"Flush Content");
+            context.Response.OutputStream.Flush();
         }
 
         private static void SendPingInfo(HttpListenerContext context)

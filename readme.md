@@ -55,8 +55,6 @@ You can find the logs in `Steam\steamapps\common\Subnautica\SubnauticaWatcherIns
 
 ### Restore Subnautica to pristine state
 
-
-
 1. Delete folder `Steam\steamapps\common\Subnautica\Subnautica_Data\Managed`
 2. This will remove not only this mod, but every single other mod/tools/change you've made to this folder.
 3. Open Steam

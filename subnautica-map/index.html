@@ -55,6 +55,25 @@
       z-index: 1000;
     }
 
+    #day-night-container {
+      text-align: left;
+      position: absolute;
+      bottom: 70px;
+      left: 10px;
+      background-color: transparent;
+      z-index: 1000;
+      width: 150px;
+      height: 55px;
+      overflow: hidden;
+    }
+
+    .day-night-crop {
+      vertical-align: middle;
+      width: 150px;
+      height: 110px;
+      transform-origin: center;
+    }
+
     .font-size-28 {
       font-size: 28px;
     }
@@ -80,7 +99,7 @@
       <a class="mdl-navigation__link" href="https://martinsgill.github.io/subnautica-map/">Homepage</a>
       <a class="mdl-navigation__link" href="https://unknownworlds.com/subnautica/">Subnautica Site</a>
       <a class="mdl-navigation__link" href="http://subnautica.wikia.com/wiki/Subnautica_Wiki">Subnautica Wiki</a>
-      <a class="mdl-navigation__link" href="https://github.com/MartinSGill/subnautica-map">Source Code</a>
+      <a class="mdl-navigation__link" href="https://github.com/MartinSGill/SubnauticaWatcher">Source Code</a>
       <a class="mdl-navigation__link" href="https://github.com/MartinSGill/SubnauticaWatcher/issues/new"><i class="material-icons">bug_report</i>Report Issue</a>
     </nav>
   </div>
@@ -102,8 +121,13 @@
         <span class="mdl-chip__text" id="position">0,0,0</span>
       </span>
     </div>
+    <div id="day-night-container">
+      <img src="data/day-night-wheel.png" class="day-night-crop" id="day-night-image" />
+      <div class="mdl-tooltip mdl-tooltip--top" data-mdl-for="day-night-image" id="day-night-tooltip">Day/Night Scaler: 0.0</div>
+    </div>
   </main>
 </div>
-<script src="main"></script>
+  <script src="node-static"></script>
+  <script src="main"></script>
 </body>
 </html>

@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DayNightInfo.cs" />
     <Compile Include="Patching\Patcher.cs" />
     <Compile Include="PingInfo.cs" />
     <Compile Include="PlayerInfo.cs" />

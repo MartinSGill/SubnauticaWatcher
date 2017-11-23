@@ -199,7 +199,8 @@ layerTransitions.remove();
 layerAlien.remove();
 layerOther.remove();
 
-mymap.on("mousemove", (ev: L.MouseEvent) => { $("#position").text(toCoordString(ev.latlng)) });
+
+mymap.on("mousemove", (ev: L.LeafletMouseEvent) => { $("#position").text(toCoordString(ev.latlng)) });
 
 interface IPlayerInfo {
   Biome:string,
@@ -251,6 +252,7 @@ interface IPingInfo {
 }
 
 function SetPingInfo (data :IPingInfo[]) {
+  layerPings.clearLayers();
   for (let ping of data) {
 
     // if (!ping.Visible) { continue; }
@@ -302,11 +304,33 @@ function SetPingInfo (data :IPingInfo[]) {
 
 function CheckPingInfo() {
   $.getJSON("/?PingInfo=").done((data: IPingInfo[]) => {
-    layerPings.clearLayers();
     SetPingInfo(data);
   });
 }
 
+function SetGameTimeCycle(time: number) {
+  // 0 is midnight
+  // 0.5 is noon
+
+  const angle = time * 360;
+  $("#day-night-image").css('transform', 'rotate(-' + angle + 'deg)');
+  $("#day-night-tooltip")[0].innerHTML = "Day/Night Scaler: " + time.toFixed(2);
+}
+
+interface IDayNightInfo {
+  DayScalar:number,
+  Day:number,
+  DayNightCycleTime:number
+}
+
+function CheckGameTime() {
+
+  $.getJSON("/?DayNightInfo=").done((data: IDayNightInfo) => {
+    layerPings.clearLayers();
+    SetGameTimeCycle(data.DayScalar);
+  });
+}
 
 setInterval(() => CheckPlayerInfo(), 1000);
 setInterval(() => CheckPingInfo(), 2000);
+setInterval(() => CheckGameTime(), 5000);
