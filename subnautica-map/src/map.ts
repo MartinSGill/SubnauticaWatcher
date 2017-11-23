@@ -219,7 +219,11 @@ layerPlayer.addLayer(diverMarker);
 
 function SetPlayerInfo(data : IPlayerInfo) {
   const posLatLng = L.latLng(data.Y, data.X);
-  $("#player-position").text(`Biome: ${data.Biome} | ${toCoordString(posLatLng, data.Z)}`);
+  
+  // Make biome string more readable.
+  let biome = _.startCase(data.Biome);
+
+  $("#player-position").text(`Biome: ${biome} | ${toCoordString(posLatLng, data.Z)}`);
   diverMarker.setLatLng(posLatLng);
 
   if (($("#follow-player")[0] as HTMLInputElement).checked === true) {
@@ -296,7 +300,6 @@ function UpdatePingMarker(index: number, ping: IPingInfo) {
     marker.options.icon = GetPingIcon(ping);
     marker.options.title = ping.Label;
     marker.setLatLng(L.latLng(ping.Y, ping.X));
-    console.debug("updating marker: " + marker.options.title)
   } else {
     // need to add a new marker
     let markerOpts: L.MarkerOptions = {
@@ -307,14 +310,12 @@ function UpdatePingMarker(index: number, ping: IPingInfo) {
     let marker = L.marker(L.latLng(ping.Y, ping.X), markerOpts);
     layerPings.addLayer(marker);
     pingMarkers.push(marker);
-    console.debug("adding marker: " + marker.options.title)
   }
 }
 
 function RemovePingMarkers(lastIndex: number) {
   while (pingMarkers.length > lastIndex + 1) {
     let marker = pingMarkers.pop();
-    console.debug("removing marker: " + marker.options.title);
     layerPings.removeLayer(marker);
   }
 }
@@ -351,7 +352,9 @@ function ToFuzzyTime(time:number): string {
 
 function SetGameTimeCycle(time: number, days: number) {
   const angle = time * 360;
+  ($("#day-night-image")[0] as HTMLImageElement).src = 'data/day-night-wheel.png';
   $("#day-night-image").css('transform', 'rotate(-' + angle + 'deg)');
+  $("#day-night-image").css('visibility', 'visible');
   $("#day-night-tooltip")[0].innerHTML = ToFuzzyTime(time) +  "<br/>Day " + Math.floor(days);
 }
 

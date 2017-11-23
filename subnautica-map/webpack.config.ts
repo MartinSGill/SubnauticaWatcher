@@ -55,7 +55,7 @@ const config: webpack.Configuration = {
                     filename: 'index.html',
                     // this html's requires entry,must be an array.dependent resource will inject into html use the
                     // order entry in array.
-                    requires: ['main'],
+                    requires: ['main', 'node-static'],
                     template: path.resolve(__dirname, 'index.html')
                   }),
     new CopyWebpackPlugin([{ from: 'data', to: 'data' }]),
