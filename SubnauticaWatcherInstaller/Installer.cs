@@ -58,18 +58,15 @@
 
         private int BackupSubnauticaDll()
         {
+            // Always create a backup, safer this way.
             var backupFilename = Path.GetFileName(SubnauticaDllBackupPath);
-            if (File.Exists(SubnauticaDllBackupPath))
-            {
-                log($"Backup ('{backupFilename}') already exists.");
-                return 0;
-            }
+            backupFilename += $".{DateTime.Now:yyyyMMddTHHmmss}";
 
             try
             {
                 File.Copy(
                     SubnauticaDllPath,
-                    SubnauticaDllBackupPath);
+                    backupFilename);
                 log($"Backup of Assembly-CSharp.dll created as '{backupFilename}'.");
             }
             catch (IOException ex)
@@ -128,6 +125,7 @@
                                 .InsertBefore(
                                     targetMethod.Body.Instructions[0],
                                     Instruction.Create(OpCodes.Call, targetMethod.Module.Import(modMethod)));
+                    log("Saving Assembly.");
                     targetAssembly.Write(SubnauticaDllPath);
                     log("Assembly-CSharp.dll successfully updated.");
                 }
@@ -173,13 +171,48 @@
             return hasPatchInstruction;
         }
 
-        internal void Uninstall()
+        internal int Uninstall()
         {
-            log("Error: Sorry, proper uninstall not implemented yet.");
-            log("Error: Please manually replace:");
-            log($"Error:    {SubnauticaDllPath}");
-            log("Error: with:");
-            log($"Error:    {SubnauticaDllBackupPath}");
+            // Need to be in the correct folder to resolve dependencies correctly
+            Directory.SetCurrentDirectory(SubnauticaManagedPath);
+
+            if (!IsPatched)
+            {
+                log("Error: Not Patched, uninstall not required.");
+                return -8;
+            }
+
+            if (BackupSubnauticaDll() != 0) return -9;
+            
+            var targetAssembly = AssemblyDefinition.ReadAssembly(SubnauticaDllPath);
+            var type = targetAssembly.MainModule.GetType("GameInput");
+            var methodDefinition = type.Methods.First(x => x.Name == "Awake");
+
+            // Something else might have updated the DLL, so the patch might no longer
+            // be the first instruction.
+            try
+            {
+                var instruction = methodDefinition.Body.Instructions
+                                                  .Where(
+                                                      x => x.OpCode
+                                                           == OpCodes.Call)
+                                                  .First(x => (x.Operand as MethodReference)
+                                                           ?.DeclaringType.FullName
+                                                           == "SubnauticaWatcherMod.Patching.Patcher");
+                log($"Removing {instruction.Operand}");
+                methodDefinition.Body.GetILProcessor().Remove(instruction);
+                log($"Removed {instruction.Operand}");
+
+                log("Saving Assembly.");
+                targetAssembly.Write(SubnauticaDllPath);
+            }
+            catch (Exception ex)
+            {
+                log($"Error: Exception removing patch: {ex.Message}");
+                return -7;
+            }
+                                
+            return 0;
         }
     }
 }

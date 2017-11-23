@@ -1,6 +1,6 @@
 ﻿namespace SubnauticaWatcherInstaller
 {
-    partial class mainForm
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -32,6 +32,7 @@
             this.installButton = new System.Windows.Forms.Button();
             this.uninstallButton = new System.Windows.Forms.Button();
             this.messageBox = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // installStatus
@@ -70,6 +71,8 @@
             // messageBox
             // 
             this.messageBox.BackColor = System.Drawing.Color.White;
+            this.messageBox.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
             this.messageBox.ForeColor = System.Drawing.Color.Black;
             this.messageBox.FullRowSelect = true;
             this.messageBox.GridLines = true;
@@ -79,9 +82,15 @@
             this.messageBox.Size = new System.Drawing.Size(428, 156);
             this.messageBox.TabIndex = 4;
             this.messageBox.UseCompatibleStateImageBehavior = false;
-            this.messageBox.View = System.Windows.Forms.View.List;
+            this.messageBox.View = System.Windows.Forms.View.Details;
+            this.messageBox.SelectedIndexChanged += new System.EventHandler(this.messageBox_SelectedIndexChanged);
             // 
-            // mainForm
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Messages";
+            this.columnHeader1.Width = 400;
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -91,7 +100,7 @@
             this.Controls.Add(this.installButton);
             this.Controls.Add(this.installStatus);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "mainForm";
+            this.Name = "MainForm";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "SubnauticaWatcher Installer";
             this.Shown += new System.EventHandler(this.mainForm_Shown);
@@ -105,6 +114,7 @@
         private System.Windows.Forms.Button installButton;
         private System.Windows.Forms.Button uninstallButton;
         private System.Windows.Forms.ListView messageBox;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }
 

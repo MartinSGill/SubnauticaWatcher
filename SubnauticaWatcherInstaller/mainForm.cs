@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace SubnauticaWatcherInstaller
+﻿namespace SubnauticaWatcherInstaller
 {
-    public partial class mainForm : Form
+    #region imports
+
+    using System;
+    using System.Drawing;
+    using System.Windows.Forms;
+
+    #endregion
+
+    public partial class MainForm : Form
     {
-        public mainForm()
+        public MainForm()
         {
             InitializeComponent();
             Log("Program Start.");
@@ -28,14 +26,13 @@ namespace SubnauticaWatcherInstaller
         internal void Log(string message)
         {
             messageBox.Items.Add(
-                new ListViewItem()
+                new ListViewItem
                 {
                     Text = message,
                     ToolTipText = message,
                     BackColor = message.StartsWith("Error", StringComparison.InvariantCultureIgnoreCase)
                                     ? Color.OrangeRed
                                     : Color.White
-
                 });
         }
 
@@ -72,6 +69,11 @@ namespace SubnauticaWatcherInstaller
         {
             Installer.Uninstall();
             UpdateInstallStatus();
+        }
+
+        private void messageBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

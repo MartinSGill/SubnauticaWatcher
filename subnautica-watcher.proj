@@ -1,16 +1,19 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0" DefaultTargets="package">
   <Import Project="$(MSBuildProjectDirectory)\shared.props" />
 
-  <PropertyGroup>
+  <PropertyGroup Label="Defaults">
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ModOutputPath Condition=" '$(OutputPath)' == '' ">$(MSBuildProjectDirectory)\SubnauticaWatcherMod\bin\$(Configuration)</ModOutputPath>
-    <InstallerOutputPath Condition=" '$(OutputPath)' == '' ">$(MSBuildProjectDirectory)\SubnauticaWatcherInstaller\bin\$(Configuration)</InstallerOutputPath>
-    <ModOutputPath Condition=" '$(OutputPath)' != '' ">$(OutputPath)</ModOutputPath>
-    <InstallerOutputPath Condition=" '$(OutputPath)' != '' ">$(OutputPath)</InstallerOutputPath>
     <ReleaseVersion>0.1.0</ReleaseVersion>
   </PropertyGroup>
  
+ <PropertyGroup Label="Output Paths">
+    <ModOutputPath Condition=" '$(OutputPath)' == '' ">$(MSBuildProjectDirectory)\SubnauticaWatcherMod\bin\$(Configuration)</ModOutputPath>
+    <ModOutputPath Condition=" '$(OutputPath)' != '' ">$(OutputPath)</ModOutputPath>
+    <InstallerOutputPath Condition=" '$(OutputPath)' == '' ">$(MSBuildProjectDirectory)\SubnauticaWatcherInstaller\bin\$(Configuration)</InstallerOutputPath>
+    <InstallerOutputPath Condition=" '$(OutputPath)' != '' ">$(OutputPath)</InstallerOutputPath>
+ </PropertyGroup>
+
   <ItemGroup>
     <VendorFiles Include="$(DirSubnauticaManaged)\Assembly-CSharp.dll" />
     <VendorFiles Include="$(DirSubnauticaManaged)\Newtonsoft.Json.dll" />
@@ -59,7 +62,7 @@
     <MSBuild Projects="@(ModProjects)" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
   </Target>
 
-  <PropertyGroup>
+  <PropertyGroup Label="Map Project">
     <MapProjectFolder>$(MSBuildProjectDirectory)\subnautica-map</MapProjectFolder>
   </PropertyGroup>
   <ItemGroup>
@@ -76,7 +79,7 @@
           WorkingDirectory="$(MapProjectFolder)" />
   </Target>
 
-  <PropertyGroup>
+  <PropertyGroup Label="Release Package">
     <ReleasePackage>$(MSBuildProjectDirectory)\subnautica-watcher-release-$(ReleaseVersion).zip</ReleasePackage>
     <PackageTempDir>$(MSBuildProjectDirectory)\package-tmp</PackageTempDir>
     <PackageModDir>$(PackageTempDir)\Subnautica_Data\Managed</PackageModDir>
