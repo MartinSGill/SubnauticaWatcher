@@ -4,8 +4,8 @@ import * as $ from "jquery";
 import * as _ from "lodash";
 import LatLng = L.LatLng;
 import LayersObject = L.Control.LayersObject;
-// import Layer = L.Layer;
 import LayerGroup = L.LayerGroup;
+import {} from "interfaces";
 
 const mymap = L.map('mapid', {
   crs               : L.CRS.Simple,
@@ -202,14 +202,6 @@ layerOther.remove();
 
 mymap.on("mousemove", (ev: L.LeafletMouseEvent) => { $("#position").text(toCoordString(ev.latlng)) });
 
-interface IPlayerInfo {
-  Biome:string,
-  X:number,
-  Y:number,
-  Z:number
-}
-
-
 let diverMarkerOpts: L.MarkerOptions = {
   title: "Player",
   riseOnHover: true,
@@ -241,64 +233,97 @@ function CheckPlayerInfo() {
   });
 }
 
-interface IPingInfo {
-  Label: string,
-  Color: number,
-  X: number,
-  Y: number,
-  Z: number,
-  Visible: boolean,
-  Type: string
+const pingMarkers: L.Marker[] = [];
+
+interface Map<T> {
+  [key: string]: T;
 }
 
-function SetPingInfo (data :IPingInfo[]) {
-  layerPings.clearLayers();
-  for (let ping of data) {
+const pingMarkerIcons: Map<L.Icon> = {
+  "Lifepod": new L.Icon({
+                         iconUrl   : `data/lifepod_5_transparent.png`,
+                         iconSize  : [48, 48],
+                         iconAnchor: [16, 16]
+                       }),
+  "Signal": new L.Icon({
+                        iconUrl   : `data/signal_ping.png`,
+                        iconSize  : [48, 48],
+                        iconAnchor: [16, 16]
+                      }),
 
-    // if (!ping.Visible) { continue; }
+  "Beacon": new L.Icon({
+                        iconUrl   : `data/beacon.png`,
+                        iconSize  : [48, 48],
+                        iconAnchor: [16, 16]
+                      }),
 
+  "MapRoomCamera": new L.Icon({
+                        iconUrl   : `data/camera_drone.png`,
+                        iconSize  : [48, 48],
+                        iconAnchor: [16, 16]
+                      }),
+
+  "Cyclops": new L.Icon({
+                        iconUrl   : `data/cyclops.png`,
+                        iconSize  : [48, 48],
+                        iconAnchor: [16, 16]
+                      }),
+
+  "Seamoth": new L.Icon({
+                        iconUrl   : `data/seamoth.png`,
+                        iconSize  : [48, 48],
+                        iconAnchor: [16, 16]
+                      }),
+  "Exosuit": new L.Icon({
+                        iconUrl   : `data/exosuit.png`,
+                        iconSize  : [48, 48],
+                        iconAnchor: [16, 16]
+                      })
+};
+
+function GetPingIcon(ping: IPingInfo) : L.Icon {
+  if (pingMarkerIcons.hasOwnProperty(ping.Type)) {
+    return pingMarkerIcons[ping.Type];
+  } else {
+    return pingMarkerIcons['Signal'];
+  }
+}
+
+function UpdatePingMarker(index: number, ping: IPingInfo) {
+  if (pingMarkers.length > index) {
+    // update existing marker
+    const marker = pingMarkers[index];
+    marker.options.icon = GetPingIcon(ping);
+    marker.options.title = ping.Label;
+    marker.setLatLng(L.latLng(ping.Y, ping.X));
+    console.debug("updating marker: " + marker.options.title)
+  } else {
+    // need to add a new marker
     let markerOpts: L.MarkerOptions = {
       title: ping.Label
     };
 
-    let icon = "";
-
-    switch (ping.Type) {
-      case "Lifepod":
-        icon = "lifepod_5_transparent.png";
-        break;
-      case "Signal":
-        icon = "signal_ping.png";
-        break;
-      case "Beacon":
-        icon = "beacon.png";
-        break;
-      case "MapRoomCamera":
-        icon = "camera_drone.png";
-        break;
-      case "Cyclops":
-        icon = "cyclops.png";
-        break;
-      case "Seamoth":
-        icon = "seamoth.png";
-        break;
-      case "Exosuit":
-        icon = "exosuit.png";
-        break;
-      default:
-        icon = "signal_ping.png";
-    }
-
-    if (icon) {
-      markerOpts.icon = new L.Icon({
-                                     iconUrl   : `data/${icon}`,
-                                     iconSize  : [48, 48],
-                                     iconAnchor: [16, 16]
-                                   });
-    }
-
+    markerOpts.icon = GetPingIcon(ping);
     let marker = L.marker(L.latLng(ping.Y, ping.X), markerOpts);
     layerPings.addLayer(marker);
+    pingMarkers.push(marker);
+    console.debug("adding marker: " + marker.options.title)
+  }
+}
+
+function RemovePingMarkers(lastIndex: number) {
+  while (pingMarkers.length > lastIndex + 1) {
+    let marker = pingMarkers.pop();
+    console.debug("removing marker: " + marker.options.title);
+    layerPings.removeLayer(marker);
+  }
+}
+
+function SetPingInfo (data :IPingInfo[]) {
+  RemovePingMarkers(data.length -1);
+
+  for (let index = 0; index < data.length; index++) {
+    UpdatePingMarker(index, data[index]);
   }
 }
 
@@ -317,16 +342,8 @@ function SetGameTimeCycle(time: number) {
   $("#day-night-tooltip")[0].innerHTML = "Day/Night Scaler: " + time.toFixed(2);
 }
 
-interface IDayNightInfo {
-  DayScalar:number,
-  Day:number,
-  DayNightCycleTime:number
-}
-
 function CheckGameTime() {
-
   $.getJSON("/?DayNightInfo=").done((data: IDayNightInfo) => {
-    layerPings.clearLayers();
     SetGameTimeCycle(data.DayScalar);
   });
 }
