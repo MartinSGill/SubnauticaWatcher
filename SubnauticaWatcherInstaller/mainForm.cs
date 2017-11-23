@@ -4,16 +4,20 @@
 
     using System;
     using System.Drawing;
+    using System.Reflection;
     using System.Windows.Forms;
+    using NLog;
 
     #endregion
 
     public partial class MainForm : Form
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public MainForm()
         {
             InitializeComponent();
-            Log("Program Start.");
+            Log($"Application Start - v{Assembly.GetEntryAssembly().GetName().Version}");
             Installer = new Installer(Log);
 
             if (Installer.ValidatePaths() == 0) return;
@@ -34,6 +38,12 @@
                                     ? Color.OrangeRed
                                     : Color.White
                 });
+
+            Logger.Log(
+                message.StartsWith("Error", StringComparison.InvariantCultureIgnoreCase)
+                    ? LogLevel.Error
+                    : LogLevel.Info,
+                message);
         }
 
         private void mainForm_Shown(object sender, EventArgs e)
@@ -74,6 +84,11 @@
         private void messageBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Logger.Info("Application Exited.");
         }
     }
 }

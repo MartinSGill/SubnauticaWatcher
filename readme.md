@@ -41,12 +41,29 @@ __Warning:__ You may need to repeat steps 4 to 6 whenever Steam updates Subnauti
 
 ## Troubleshooting
 
-If things start going very wrong...
+### Untrusted Publisher / Application
+
+If you receive this warning from Windows, it's because this application isn't signed.
+
+If you decide you want to trust this program, or you've read the source code and assured yourself it's benign, then you can [run the program anyway][1].
+
+### Logs
+
+As of version 0.3.0 the installer creates logs to help with error reporting and resolving issues.
+
+You can find the logs in `Steam\steamapps\common\Subnautica\SubnauticaWatcherInstaller\Logs\{data}.log`
+
+### Restore Subnautica to pristine state
+
+
 
 1. Delete folder `Steam\steamapps\common\Subnautica\Subnautica_Data\Managed`
-2. Open Steam
-3. Find Saubnautica in your games list
-4. Right-click and Select 'Properties'
-5. On the 'Local Files' tab click on 'Verify Integrity of Game Files...'
+2. This will remove not only this mod, but every single other mod/tools/change you've made to this folder.
+3. Open Steam
+4. Find Saubnautica in your games list
+5. Right-click and Select 'Properties'
+6. On the 'Local Files' tab click on 'Verify Integrity of Game Files...'
 
 This will cause steam to re-download all files that might have been changed by this mod, or other programs/mods.
+
+[1]:https://www.pcworld.com/article/3197443/windows/how-to-get-past-windows-defender-smartscreen-in-windows-10.html

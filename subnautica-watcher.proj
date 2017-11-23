@@ -4,7 +4,7 @@
   <PropertyGroup Label="Defaults">
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ReleaseVersion>0.2.0</ReleaseVersion>
+    <ReleaseVersion>0.3.0</ReleaseVersion>
   </PropertyGroup>
  
  <PropertyGroup Label="Output Paths">
@@ -46,6 +46,9 @@
       <ModFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.exe" />
       <ModFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.exe.config" />
       <ModFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.pdb" Condition="'$(Configuration)'=='Debug'" />
+      <ModFiles Include="$(InstallerOutputPath)\NLog.dll" />
+      <ModFiles Include="$(InstallerOutputPath)\NLog.config" />
+      <ModFiles Include="$(InstallerOutputPath)\NLog.xsd" />
     </ItemGroup>
 
     <Copy SourceFiles="@(ModFiles)"
@@ -103,6 +106,9 @@
       <ModInstallerFiles Include="$(InstallerOutputPath)\SubnauticaWatcherInstaller.pdb" Condition="'$(Configuration)'=='Debug'" />
       <ModInstallerFiles Include="$(MSBuildProjectDirectory)\license.md" />
       <ModInstallerFiles Include="$(MSBuildProjectDirectory)\readme.md" />
+      <ModInstallerFiles Include="$(InstallerOutputPath)\NLog.dll" />
+      <ModInstallerFiles Include="$(InstallerOutputPath)\NLog.config" />
+      <ModInstallerFiles Include="$(InstallerOutputPath)\NLog.xsd" />
 
       <MapFiles Include="$(MSBuildProjectDirectory)\subnautica-map\dist\**\*" />
     </ItemGroup>
@@ -114,7 +120,7 @@
     <ItemGroup>
       <ZipFiles Include="$(PackageTempDir)\**\*" />
     </ItemGroup>
-    <Exec Command="PowerShell -NoProfile -Command Compress-Archive $(PackageTempDir)\Subnautica_Data,$(PackageInstallerDir) -DestinationPath $(ReleasePackage)" />
+    <Exec Command="PowerShell -NoProfile -Command Compress-Archive $(PackageTempDir)\Subnautica_Data,$(PackageInstallerDir),readme.installation.subnauticawatcher.txt -DestinationPath $(ReleasePackage)" />
     
     <RemoveDir Directories="$(PackageTempDir)" Condition="'' == '$(KeepPackageTempDir)'" />
   </Target>

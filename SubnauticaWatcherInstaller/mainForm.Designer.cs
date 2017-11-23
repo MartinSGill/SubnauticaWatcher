@@ -103,6 +103,7 @@
             this.Name = "MainForm";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "SubnauticaWatcher Installer";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Shown += new System.EventHandler(this.mainForm_Shown);
             this.ResumeLayout(false);
 

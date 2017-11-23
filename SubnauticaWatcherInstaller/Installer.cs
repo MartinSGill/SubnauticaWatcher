@@ -5,10 +5,10 @@
     using System;
     using System.IO;
     using System.Linq;
-    using System.Linq.Expressions;
     using Microsoft.Win32;
     using Mono.Cecil;
     using Mono.Cecil.Cil;
+    using NLog;
 
     #endregion
 
@@ -17,7 +17,9 @@
     internal class Installer
     {
         private MessageCallback log;
-        
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         internal Installer(MessageCallback log)
         {
             this.log = log;
@@ -36,7 +38,11 @@
 
         internal int Install()
         {
+            Logger.Debug("Install Requested");
+            Logger.Debug($"Changing working dir: {SubnauticaManagedPath}");
             var initialDirectory = Directory.GetCurrentDirectory();
+            Directory.SetCurrentDirectory(SubnauticaManagedPath);
+
             try
             {
                 var exitCode = ValidatePaths();
@@ -46,12 +52,11 @@
                 if (exitCode != 0) return exitCode;
 
                 exitCode = UpdateSubnauticaDll();
-                if (exitCode != 0) return exitCode;
-
-                return 0;
+                return exitCode != 0 ? exitCode : 0;
             }
             finally
             {
+                Logger.Debug($"Restoring working dir: {initialDirectory}");
                 Directory.SetCurrentDirectory(initialDirectory);
             }
         }
@@ -61,6 +66,8 @@
             // Always create a backup, safer this way.
             var backupFilename = Path.GetFileName(SubnauticaDllBackupPath);
             backupFilename += $".{DateTime.Now:yyyyMMddTHHmmss}";
+
+            Logger.Debug("Backup of DLL requested.");
 
             try
             {
@@ -73,6 +80,7 @@
             {
                 log("Error: error attempting to create backup of Assembly-CSharp.dll.");
                 log($"Error: {ex.Message}");
+                Logger.Error(ex);
                 return -4;
             }
 
@@ -81,17 +89,18 @@
 
         internal int ValidatePaths()
         {
+            Logger.Debug("Validate Paths requested.");
             if (Directory.Exists(SteamPath))
             {
                 log($"Found Steam install directory. [{SteamPath}]");
 
                 if (Directory.Exists(SubnauticaPath))
                 {
-                    log("Found Subnautica install directory.");
+                    log($"Found Subnautica install directory. [{SubnauticaPath}]");
 
                     if (Directory.Exists(SubnauticaManagedPath))
                     {
-                        log("Found Subnautica Data directory.");
+                        log($"Found Subnautica Data directory. [{SubnauticaManagedPath}]");
                         return 0;
                     }
 
@@ -107,9 +116,6 @@
 
         private int UpdateSubnauticaDll()
         {
-            // Need to be in the correct folder to resolve dependencies correctly
-            Directory.SetCurrentDirectory(SubnauticaManagedPath);
-
             log("Updating Assembly-CSharp.dll to load SubnauticaWatcherMod.");
             var targetAssembly = AssemblyDefinition.ReadAssembly(SubnauticaDllPath);
             if (!CheckPatched(targetAssembly))
@@ -133,6 +139,7 @@
                 {
                     log("Error: Failed to update Assembly-CSharp.dll.");
                     log($"Error: {ex.Message}");
+                    Logger.Error(ex);
                     return -5;
                 }
             else
@@ -158,6 +165,7 @@
 
         private static bool CheckPatched(AssemblyDefinition targetAssembly)
         {
+            Logger.Debug("Checking DLL for existin patch.");
             var type = targetAssembly.MainModule.GetType("GameInput");
             var methodDefinition = type.Methods.First(x => x.Name == "Awake");
 
@@ -174,6 +182,9 @@
         internal int Uninstall()
         {
             // Need to be in the correct folder to resolve dependencies correctly
+            Logger.Debug("Uninstall Requested.");
+            var initialDirectory = Directory.GetCurrentDirectory();
+            Logger.Debug($"Changing working dir: {SubnauticaManagedPath}");
             Directory.SetCurrentDirectory(SubnauticaManagedPath);
 
             if (!IsPatched)
@@ -209,9 +220,15 @@
             catch (Exception ex)
             {
                 log($"Error: Exception removing patch: {ex.Message}");
+                Logger.Error(ex);
                 return -7;
             }
-                                
+            finally
+            {
+                Logger.Debug($"Restoring working dir: {initialDirectory}");
+                Directory.SetCurrentDirectory(initialDirectory);
+            }
+
             return 0;
         }
     }
