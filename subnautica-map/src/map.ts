@@ -333,18 +333,31 @@ function CheckPingInfo() {
   });
 }
 
-function SetGameTimeCycle(time: number) {
+function ToFuzzyTime(time:number): string {
   // 0 is midnight
   // 0.5 is noon
 
+  if (time < 0.05) return "Around Midnight";
+  if (time < 0.2)  return "After Midnight";
+  if (time < 0.3)  return "Early Morning";
+  if (time < 0.45) return "Morning";
+  if (time < 0.55) return "Around Noon";
+  if (time < 0.75) return "Afternoon";
+  if (time < 0.8)  return "Evening";
+  if (time < 0.95) return "Night";
+
+  return "Around Midnight";
+}
+
+function SetGameTimeCycle(time: number, days: number) {
   const angle = time * 360;
   $("#day-night-image").css('transform', 'rotate(-' + angle + 'deg)');
-  $("#day-night-tooltip")[0].innerHTML = "Day/Night Scaler: " + time.toFixed(2);
+  $("#day-night-tooltip")[0].innerHTML = ToFuzzyTime(time) +  "<br/>Day " + Math.floor(days);
 }
 
 function CheckGameTime() {
   $.getJSON("/?DayNightInfo=").done((data: IDayNightInfo) => {
-    SetGameTimeCycle(data.DayScalar);
+    SetGameTimeCycle(data.DayScalar, data.Day);
   });
 }
 
