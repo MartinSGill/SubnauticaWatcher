@@ -3,7 +3,7 @@
   <PropertyGroup Label="Defaults">
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ReleaseVersion>0.4.0</ReleaseVersion>
+    <BuildVersion Condition="'$(BuildVersion)' == ''" >0.4.0</BuildVersion>
   </PropertyGroup>
  
  <PropertyGroup Label="Output Paths">
@@ -98,7 +98,7 @@
   </Target>
 
   <PropertyGroup Label="Release Package">
-    <ReleasePackage>$(MSBuildProjectDirectory)\subnautica-watcher-release-$(ReleaseVersion).zip</ReleasePackage>
+    <ReleasePackage>$(MSBuildProjectDirectory)\subnautica-watcher-release-$(BuildVersion).zip</ReleasePackage>
     <PackageTempDir>$(MSBuildProjectDirectory)\package-tmp</PackageTempDir>
     <PackageModDir>$(PackageTempDir)\Subnautica_Data\Managed</PackageModDir>
     <PackageInstallerDir>$(PackageTempDir)\SubnauticaWatcherInstaller</PackageInstallerDir>
