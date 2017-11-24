@@ -1,4 +1,4 @@
-import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import * as webpack from "webpack";
 import * as path from "path";
 import { CheckerPlugin } from "awesome-typescript-loader";
@@ -10,15 +10,19 @@ declare var __dirname;
 
 var nbgv = require('nerdbank-gitversioning')
 nbgv.getVersion()
-    .then(r => fs.writeFileSync('dist/data/version-info.json', JSON.stringify(r, null, 2),"utf8"))
-    .catch(e => console.error(e));
+  .then(r => {
+    if (!fs.existsSync('dist/data')) {
+      fs.mkdirSync('dist/data');
+    }; fs.writeFileSync('dist/data/version-info.json', JSON.stringify(r, null, 2), "utf8")
+  })
+  .catch(e => console.error(e));
 
 const config: webpack.Configuration = {
-  entry : {
-    main      : path.resolve(__dirname, 'src/map.ts')
+  entry: {
+    main: path.resolve(__dirname, 'src/map.ts')
   },
   output: {
-    path    : path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist'),
     filename: '[name]-subnautica-map.bundle.js'
   },
 
@@ -37,13 +41,13 @@ const config: webpack.Configuration = {
   devtool: 'source-map',
 
   // Add the loader for .ts files.
-  module : {
+  module: {
     rules: [
       {
         test: /\.tsx?$/,
         include: path.resolve(__dirname, "src"),
         exclude: /node_modules/,
-        use : {
+        use: {
           loader: "awesome-typescript-loader"
         }
       }
@@ -56,24 +60,24 @@ const config: webpack.Configuration = {
     new CheckerPlugin(),
     //new ExtractTextPlugin('[name].css'),
     new WebPlugin({
-                    // file name for output file, required.
-                    // pay attention not to duplication of name,as is will cover other file
-                    filename: 'index.html',
-                    // this html's requires entry,must be an array.dependent resource will inject into html use the
-                    // order entry in array.
-                    requires: ['main', 'node-static'],
-                    template: path.resolve(__dirname, 'index.html')
-                  }),
+      // file name for output file, required.
+      // pay attention not to duplication of name,as is will cover other file
+      filename: 'index.html',
+      // this html's requires entry,must be an array.dependent resource will inject into html use the
+      // order entry in array.
+      requires: ['main', 'node-static'],
+      template: path.resolve(__dirname, 'index.html')
+    }),
     new CopyWebpackPlugin([{ from: 'data', to: 'data' }]),
 
     new webpack.optimize.CommonsChunkPlugin({
-                                              name: 'node-static',
-                                              filename: 'node-static.js',
-                                              minChunks(module, count) {
-                                                const context = module.context;
-                                                return context && context.indexOf('node_modules') >= 0;
-                                              },
-                                            }),
+      name: 'node-static',
+      filename: 'node-static.js',
+      minChunks(module, count) {
+        const context = module.context;
+        return context && context.indexOf('node_modules') >= 0;
+      },
+    }),
   ]
 };
 

@@ -89,10 +89,12 @@
           Outputs="$(MapProjectFolder)\dist\index.html;$(MapProjectFolder)\dist\main-subnautica-map.bundle.js;$(MapProjectFolder)\dist\node-static.js">
     <Exec Command="yarn" 
           ConsoleToMSBuild="true" 
-          WorkingDirectory="$(MapProjectFolder)" />
+          WorkingDirectory="$(MapProjectFolder)"
+          LogStandardErrorAsError="true" />
     <Exec Command="yarn run build" 
-          ConsoleToMSBuild="true" 
-          WorkingDirectory="$(MapProjectFolder)" />
+          ConsoleToMSBuild="true"
+          WorkingDirectory="$(MapProjectFolder)"
+          LogStandardErrorAsError="true" />
   </Target>
 
   <PropertyGroup Label="Release Package">
