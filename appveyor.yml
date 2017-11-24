@@ -1,5 +1,7 @@
 image: Visual Studio 2017
 
+version: '0.4.{build}'
+
 install:
   # Node on appveyor is too old
   - cinst nodejs --version  9.2.0
@@ -33,8 +35,7 @@ deploy:
   auth_token:
     secure: HyTlpe7AdOity1wfUhQuIhrFID/E2CtxE/TZfwQYU0D4lFuDfgXgWDGSvgU/7jQN # your encrypted token from GitHub
   artifact: 'subnautica-watcher-release-*.zip' # upload all packages to release assets
-  draft: false
+  draft: true
   prerelease: true
   on:
-    branch: master                 # release from master branch only
     appveyor_repo_tag: true        # deploy on tag push only
