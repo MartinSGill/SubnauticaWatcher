@@ -14,7 +14,7 @@ cache:
   - "%LOCALAPPDATA%\\Yarn"
 
 build_script:
-  - ps: ./build.ps1 /m /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /v:n
+  - msbuild /m /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /clp:v=n /bl /t:package subnautica-watcher.proj
 
 artifacts:
 - path: msbuild.binlog

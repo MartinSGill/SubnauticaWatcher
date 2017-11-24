@@ -17,7 +17,7 @@ try {
 if ($args.Count -gt 0) {
 	$cmdline =  @($args) + @("/bl", "subnautica-watcher.proj")
 } else {
-    $cmdline = @("/t:package", "/v:m", "/bl", "subnautica-watcher.proj")
+    $cmdline = @("/t:package", "/v:n", "/bl", "subnautica-watcher.proj")
 }
 
 & $msbuildExe $cmdline
