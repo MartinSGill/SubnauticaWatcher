@@ -14,6 +14,7 @@ cache:
   - "%LOCALAPPDATA%\\Yarn"
 
 build_script:
+  - nuget restore
   - msbuild /m /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /clp:v=n /bl /t:package subnautica-watcher.proj
 
 artifacts:
