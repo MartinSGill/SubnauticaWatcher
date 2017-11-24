@@ -1,5 +1,4 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0" DefaultTargets="package">
-  <Import Project="$(MSBuildProjectDirectory)\shared.props" />
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0" DefaultTargets="package" InitialTargets="validate-vendor-props">
 
   <PropertyGroup Label="Defaults">
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -14,13 +13,24 @@
     <InstallerOutputPath Condition=" '$(OutputPath)' != '' ">$(OutputPath)</InstallerOutputPath>
  </PropertyGroup>
 
+  <PropertyGroup>
+    <DirSteam Condition="''=='$(DirSteam)'">$(registry:HKEY_CURRENT_USER\Software\Valve\Steam@SteamPath)</DirSteam>
+    <DirSubnautica Condition="''=='$(DirSubnautica)'">$(DirSteam)\steamapps\common\Subnautica</DirSubnautica>
+    <DirSubnauticaManaged Condition="''=='$(DirSubnauticaManaged)'">$(DirSubnautica)\Subnautica_Data\Managed</DirSubnauticaManaged>
+    <VendorFilesFolder>$(MSBuildProjectDirectory)\SubnauticaWatcherMod\Vendor</VendorFilesFolder>
+  </PropertyGroup>
+
+  <Target Name="validate-vendor-props" Condition="'' == '$(CI)'">
+    <Error Condition="!Exists('$(DirSteam)')" Text="Steam Installation Not Found." />
+    <Error Condition="!Exists('$(DirSubnautica)')" Text="Subnautica Installation Not Found." />
+  </Target>
+
   <ItemGroup>
     <VendorFiles Include="$(DirSubnauticaManaged)\Assembly-CSharp.dll" />
     <VendorFiles Include="$(DirSubnauticaManaged)\Newtonsoft.Json.dll" />
     <VendorFiles Include="$(DirSubnauticaManaged)\UnityEngine.dll" />
   </ItemGroup>
-
-  <Target Name="CopyVendorFilesLocal" BeforeTargets="build">
+  <Target Name="CopyVendorFilesLocal" BeforeTargets="build" Condition="'' == '$(CI)'">
     <Copy SkipUnchangedFiles="true" 
           ContinueOnError="false" 
           SourceFiles="@(VendorFiles)" 

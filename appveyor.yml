@@ -10,7 +10,7 @@ cache:
   - "%LOCALAPPDATA%\\Yarn"
 
 build_script:
-  - ps: ./build.ps1 /m /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - ps: ./build.ps1 /m /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /v:n
 
 artifacts:
 - path: msbuild.binlog
