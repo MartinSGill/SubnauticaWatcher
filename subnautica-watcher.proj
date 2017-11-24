@@ -1,5 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0" DefaultTargets="package" InitialTargets="validate-vendor-props">
 
+  <Import Project="$(MSBuildProjectDirectory)\packages\Nerdbank.GitVersioning*\build\Nerdbank.GitVersioning.targets" />
+
   <PropertyGroup Label="Defaults">
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -103,7 +105,10 @@
     <PackageModDir>$(PackageTempDir)\Subnautica_Data\Managed</PackageModDir>
     <PackageInstallerDir>$(PackageTempDir)\SubnauticaWatcherInstaller</PackageInstallerDir>
   </PropertyGroup>
-  <Target Name="package" DependsOnTargets="build-map;build-mod" Outputs="$(ReleasePackage)">
+  <Target Name="package" DependsOnTargets="GetBuildVersion;build-map;build-mod" Outputs="$(ReleasePackage)">
+    <PropertyGroup>
+      <ReleasePackage>$(MSBuildProjectDirectory)\subnautica-watcher-release-$(BuildVersion).zip</ReleasePackage>
+    </PropertyGroup>
     <RemoveDir Directories="$(PackageTempDir)" />
     <Delete Files="$(ReleasePackage)" />
     <MakeDir Directories="$(PackageModDir)" />

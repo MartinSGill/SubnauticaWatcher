@@ -6,8 +6,7 @@
   },
   "buildNumberOffset": 0,
   "publicReleaseRefSpec": [
-    "^refs/heads/master$", // we release out of master
-    "^refs/heads/v\\d+(?:.\\d+)?$" // we also release out of vNN branches
+    "^refs/tags/v\\d+\\.\\d+" // we release out of vN.N branches
   ],
   "cloudBuild": {
     "buildNumber": {
