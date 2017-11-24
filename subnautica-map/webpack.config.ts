@@ -4,8 +4,14 @@ import * as path from "path";
 import { CheckerPlugin } from "awesome-typescript-loader";
 import { AutoWebPlugin, WebPlugin } from "web-webpack-plugin";
 import * as CopyWebpackPlugin from "copy-webpack-plugin";
+import * as fs from 'fs';
 
 declare var __dirname;
+
+var nbgv = require('nerdbank-gitversioning')
+nbgv.getVersion()
+    .then(r => fs.writeFileSync('dist/data/version-info.json', JSON.stringify(r, null, 2),"utf8"))
+    .catch(e => console.error(e));
 
 const config: webpack.Configuration = {
   entry : {

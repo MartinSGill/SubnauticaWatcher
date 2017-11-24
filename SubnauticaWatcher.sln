@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		readme.md = readme.md
 		shared.props = shared.props
 		subnautica-watcher.proj = subnautica-watcher.proj
+		version.json = version.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubnauticaWatcherInstaller", "SubnauticaWatcherInstaller\SubnauticaWatcherInstaller.csproj", "{20DCA7B3-1613-4639-AB1D-82D6AE87E9CA}"

@@ -2,9 +2,17 @@
 
 ## Purpose
 
-This mod adds a "live" map to the Subnautica game. This can be considered a spoiler for the game.
+This mod adds a "live" map to the [Subnautica][2] game. This can be considered a spoiler for the game.
 
 Should the Subnautica development team ever add an auto-map or ingame map feature, this mod will be obsoleted.
+
+## Motivation
+
+I tend to get lost a lot in Subnautica. Exploring is great fun, but once I've found something, once I know where something is, I really want to be able to find it again. Beacons help a great deal, but for some things, like resources, when I don't have a beacon available or when I simply want to know which way to turn to get to a biome a map is invaluable.
+
+If I were really trapped on 4546B I'd definitely be drawing a map, pinning it to wall in my cyclops, or drawing it in AlterraPaint on my PDA.
+
+This mod is my personal answer to not having an in-game map. I'm making it available as I'm sure there must be at least one other person that would like an in-game (ish) map.
 
 ## Capabilities
 
@@ -51,7 +59,7 @@ If you decide you want to trust this program, or you've read the source code and
 
 As of version 0.3.0 the installer creates logs to help with error reporting and resolving issues.
 
-You can find the logs in `Steam\steamapps\common\Subnautica\SubnauticaWatcherInstaller\Logs\{data}.log`
+You can find the logs in `Steam\steamapps\common\Subnautica\SubnauticaWatcherInstaller\Logs\{date}.log`
 
 ### Restore Subnautica to pristine state
 
@@ -65,3 +73,4 @@ You can find the logs in `Steam\steamapps\common\Subnautica\SubnauticaWatcherIns
 This will cause steam to re-download all files that might have been changed by this mod, or other programs/mods.
 
 [1]:https://www.pcworld.com/article/3197443/windows/how-to-get-past-windows-defender-smartscreen-in-windows-10.html
+[2]:https://store.steampowered.com/app/264710/Subnautica/

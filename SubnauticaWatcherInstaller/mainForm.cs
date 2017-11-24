@@ -17,9 +17,13 @@
         public MainForm()
         {
             InitializeComponent();
-            Log($"Application Start - v{Assembly.GetEntryAssembly().GetName().Version}");
-            Installer = new Installer(Log);
+            versionLabel.Text = $"v{ThisAssembly.AssemblyVersion}";
+            versionLabelTooltip.SetToolTip(versionLabel, ThisAssembly.AssemblyInformationalVersion);
 
+            Log($"Application Start - v{ThisAssembly.AssemblyInformationalVersion}");
+            Installer = new Installer(Log);
+            
+            // Disable buttons if paths invalid
             if (Installer.ValidatePaths() == 0) return;
             installButton.Enabled = false;
             uninstallButton.Enabled = false;

@@ -28,11 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.installStatus = new System.Windows.Forms.Label();
             this.installButton = new System.Windows.Forms.Button();
             this.uninstallButton = new System.Windows.Forms.Button();
             this.messageBox = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.versionLabel = new System.Windows.Forms.Label();
+            this.versionLabelTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // installStatus
@@ -90,11 +93,21 @@
             this.columnHeader1.Text = "Messages";
             this.columnHeader1.Width = 400;
             // 
+            // versionLabel
+            // 
+            this.versionLabel.Location = new System.Drawing.Point(94, 64);
+            this.versionLabel.Name = "versionLabel";
+            this.versionLabel.Size = new System.Drawing.Size(265, 23);
+            this.versionLabel.TabIndex = 5;
+            this.versionLabel.Text = "label1";
+            this.versionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(452, 261);
+            this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.messageBox);
             this.Controls.Add(this.uninstallButton);
             this.Controls.Add(this.installButton);
@@ -116,6 +129,8 @@
         private System.Windows.Forms.Button uninstallButton;
         private System.Windows.Forms.ListView messageBox;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.Label versionLabel;
+        private System.Windows.Forms.ToolTip versionLabelTooltip;
     }
 }
 

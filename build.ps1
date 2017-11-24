@@ -16,7 +16,7 @@ try {
 $msbuildExe = @(Get-ChildItem -Recurse -Path ((Get-VSSetupInstance).InstallationPath) -Filter "msbuild.exe" -ErrorAction Stop)[0].Fullname
 
 if ($args.Count -gt 0) {
-	$cmdline = @($args)
+	$cmdline =  @($args) + @("/bl", "subnautica-watcher.proj")
 } else {
     $cmdline = @("/t:package", "/v:m", "/bl", "subnautica-watcher.proj")
 }
