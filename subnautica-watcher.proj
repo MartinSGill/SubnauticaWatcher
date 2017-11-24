@@ -77,6 +77,9 @@
   <Target Name="build-map" 
           Inputs="@(MapCompile)"
           Outputs="$(MapProjectFolder)\dist\index.html;$(MapProjectFolder)\dist\main-subnautica-map.bundle.js;$(MapProjectFolder)\dist\node-static.js">
+    <Exec Command="yarn" 
+          ConsoleToMSBuild="true" 
+          WorkingDirectory="$(MapProjectFolder)" />
     <Exec Command="yarn run build" 
           ConsoleToMSBuild="true" 
           WorkingDirectory="$(MapProjectFolder)" />

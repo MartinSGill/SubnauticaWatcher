@@ -1,19 +1,18 @@
 
-try {
-    Import-Module VSSetup
-} catch {
-    try {
-        Write-Warning "VSSetup module missing, installing..."
-        Install-Module VSSetup
-        Import-Module VSSetup            
-    }
-    catch {
-        Write-Error "Unable to import VSSetup module."
-        throw
-    }
-}
 
-$msbuildExe = @(Get-ChildItem -Recurse -Path ((Get-VSSetupInstance).InstallationPath) -Filter "msbuild.exe" -ErrorAction Stop)[0].Fullname
+$msbuildExe = "msbuild"
+try { 
+    Get-Command msbuild -ErrorAction Stop  
+} catch { 
+    Write-Warning "MSBuild not in path, trying default install location"
+    $vs2017MsBuild = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\amd64\MSBuild.exe"
+    if (Test-Path $vs2017MsBuild)
+    {
+        $msbuildExe = $vs2017MsBuild
+    } else {
+        throw "Msbuild not found."
+    } 
+ }
 
 if ($args.Count -gt 0) {
 	$cmdline =  @($args) + @("/bl", "subnautica-watcher.proj")
@@ -22,4 +21,3 @@ if ($args.Count -gt 0) {
 }
 
 & $msbuildExe $cmdline
-# Invoke-Expression .\msbuild.binlog
