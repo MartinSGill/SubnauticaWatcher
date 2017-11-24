@@ -1,5 +1,9 @@
 image: Visual Studio 2017
 
+install:
+  # Node on appveyor is too old
+  - cinst nodejs --version  9.2.0
+
 matrix:
   fast_finish: true
 
