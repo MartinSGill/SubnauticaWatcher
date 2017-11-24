@@ -11,9 +11,9 @@ declare var __dirname;
 var nbgv = require('nerdbank-gitversioning')
 nbgv.getVersion()
   .then(r => {
-    if (!fs.existsSync('dist/data')) {
-      fs.mkdirSync('dist/data');
-    }; fs.writeFileSync('dist/data/version-info.json', JSON.stringify(r, null, 2), "utf8")
+      var mkdirp = require('mkdirp');
+      mkdirp.sync('dist/data');
+      fs.writeFileSync('dist/data/version-info.json', JSON.stringify(r, null, 2), "utf8")
   })
   .catch(e => console.error(e));
 
