@@ -25,3 +25,16 @@ artifacts:
 
 on_failure:
 - appveyor PushArtifact msbuild.binlog
+
+deploy:
+  release: v$(appveyor_build_version)
+  description: 'Automated Release'
+  provider: GitHub
+  auth_token:
+    secure: HyTlpe7AdOity1wfUhQuIhrFID/E2CtxE/TZfwQYU0D4lFuDfgXgWDGSvgU/7jQN # your encrypted token from GitHub
+  artifact: 'subnautica-watcher-release-*.zip' # upload all packages to release assets
+  draft: false
+  prerelease: true
+  on:
+    branch: master                 # release from master branch only
+    appveyor_repo_tag: true        # deploy on tag push only
