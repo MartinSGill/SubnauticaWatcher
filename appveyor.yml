@@ -5,12 +5,9 @@ matrix:
 
 cache:
   - packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
-  - node_modules                    # local npm modules
+  - subnautica-map\node_modules                    # local npm modules
   - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
-
-install:
-  - cup chocolatey
-  - cinst yarn
+  - "%LOCALAPPDATA%\\Yarn"
 
 build_script:
   - ps: ./build.ps1 /m /p:Configuration=Release /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
@@ -18,8 +15,8 @@ build_script:
 artifacts:
 - path: msbuild.binlog
   name: MSBuild Log
-- path: 'bin\**\msbuild-structured-log-viewer*.nupkg'
-  name: Chocolatey Package
+- path: 'subnautica-watcher-release-*.zip'
+  name: Release Zip
 
 on_failure:
 - appveyor PushArtifact msbuild.binlog
