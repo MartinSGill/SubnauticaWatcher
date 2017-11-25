@@ -5,7 +5,8 @@ import * as _ from "lodash";
 import LatLng = L.LatLng;
 import LayersObject = L.Control.LayersObject;
 import LayerGroup = L.LayerGroup;
-import {} from "interfaces";
+import { Map, IPlayerInfo, IPingInfo, IDayNightInfo } from "./interfaces";
+import PingManager from "./ping-manager";
 
 const mymap = L.map('mapid', {
   crs               : L.CRS.Simple,
@@ -59,6 +60,10 @@ function toCoordString(position: LatLng, depth: number = 0) {
 mymap.fitBounds(bounds);
 mymap.setView([0, 0], -1);
 
+// Layer Managers
+const pingManager = new PingManager(mymap);
+
+
 // The marker layers
 const layerThermals    = L.layerGroup([]).addTo(mymap);
 const layerGeysers     = L.layerGroup([]).addTo(mymap);
@@ -70,7 +75,7 @@ const layerTransitions = L.layerGroup([]).addTo(mymap);
 const layerAlien       = L.layerGroup([]).addTo(mymap);
 const layerOther       = L.layerGroup([]).addTo(mymap);
 const layerPlayer      = L.layerGroup([]).addTo(mymap);
-const layerPings       = L.layerGroup([]).addTo(mymap);
+const layerPings       = pingManager.mapLayer;
 
 
 function markerIconName(type: string): string {
@@ -237,103 +242,6 @@ function CheckPlayerInfo() {
   });
 }
 
-const pingMarkers: L.Marker[] = [];
-
-interface Map<T> {
-  [key: string]: T;
-}
-
-const pingMarkerIcons: Map<L.Icon> = {
-  "Lifepod": new L.Icon({
-                         iconUrl   : `data/lifepod_5_transparent.png`,
-                         iconSize  : [48, 48],
-                         iconAnchor: [16, 16]
-                       }),
-  "Signal": new L.Icon({
-                        iconUrl   : `data/signal_ping.png`,
-                        iconSize  : [48, 48],
-                        iconAnchor: [16, 16]
-                      }),
-
-  "Beacon": new L.Icon({
-                        iconUrl   : `data/beacon.png`,
-                        iconSize  : [48, 48],
-                        iconAnchor: [16, 16]
-                      }),
-
-  "MapRoomCamera": new L.Icon({
-                        iconUrl   : `data/camera_drone.png`,
-                        iconSize  : [48, 48],
-                        iconAnchor: [16, 16]
-                      }),
-
-  "Cyclops": new L.Icon({
-                        iconUrl   : `data/cyclops.png`,
-                        iconSize  : [48, 48],
-                        iconAnchor: [16, 16]
-                      }),
-
-  "Seamoth": new L.Icon({
-                        iconUrl   : `data/seamoth.png`,
-                        iconSize  : [48, 48],
-                        iconAnchor: [16, 16]
-                      }),
-  "Exosuit": new L.Icon({
-                        iconUrl   : `data/exosuit.png`,
-                        iconSize  : [48, 48],
-                        iconAnchor: [16, 16]
-                      })
-};
-
-function GetPingIcon(ping: IPingInfo) : L.Icon {
-  if (pingMarkerIcons.hasOwnProperty(ping.Type)) {
-    return pingMarkerIcons[ping.Type];
-  } else {
-    return pingMarkerIcons['Signal'];
-  }
-}
-
-function UpdatePingMarker(index: number, ping: IPingInfo) {
-  if (pingMarkers.length > index) {
-    // update existing marker
-    const marker = pingMarkers[index];
-    marker.options.icon = GetPingIcon(ping);
-    marker.options.title = ping.Label;
-    marker.setLatLng(L.latLng(ping.Y, ping.X));
-  } else {
-    // need to add a new marker
-    let markerOpts: L.MarkerOptions = {
-      title: ping.Label
-    };
-
-    markerOpts.icon = GetPingIcon(ping);
-    let marker = L.marker(L.latLng(ping.Y, ping.X), markerOpts);
-    layerPings.addLayer(marker);
-    pingMarkers.push(marker);
-  }
-}
-
-function RemovePingMarkers(lastIndex: number) {
-  while (pingMarkers.length > lastIndex + 1) {
-    let marker = pingMarkers.pop();
-    layerPings.removeLayer(marker);
-  }
-}
-
-function SetPingInfo (data :IPingInfo[]) {
-  RemovePingMarkers(data.length -1);
-
-  for (let index = 0; index < data.length; index++) {
-    UpdatePingMarker(index, data[index]);
-  }
-}
-
-function CheckPingInfo() {
-  $.getJSON("/?PingInfo=").done((data: IPingInfo[]) => {
-    SetPingInfo(data);
-  });
-}
-
 function ToFuzzyTime(time:number): string {
   // 0 is midnight
   // 0.5 is noon
@@ -365,5 +273,5 @@ function CheckGameTime() {
 }
 
 setInterval(() => CheckPlayerInfo(), 1000);
-setInterval(() => CheckPingInfo(), 2000);
+setInterval(() => pingManager.UpdateTrigger(), 2000);
 setInterval(() => CheckGameTime(), 5000);

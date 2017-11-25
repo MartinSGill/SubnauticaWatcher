@@ -1,11 +1,11 @@
 
-interface IDayNightInfo {
+export interface IDayNightInfo {
   DayScalar:number,
   Day:number,
   DayNightCycleTime:number
 }
 
-interface IPingInfo {
+export interface IPingInfo {
   Label: string,
   Color: number,
   X: number,
@@ -15,10 +15,13 @@ interface IPingInfo {
   Type: string
 }
 
-interface IPlayerInfo {
+export interface IPlayerInfo {
   Biome:string,
   X:number,
   Y:number,
   Z:number
 }
 
+export interface Map<T> {
+  [key: string]: T;
+}
