@@ -1,12 +1,11 @@
-
 import * as L from "leaflet";
 import * as $ from "jquery";
 import * as _ from "lodash";
-import LatLng = L.LatLng;
-import LayersObject = L.Control.LayersObject;
-import LayerGroup = L.LayerGroup;
-import { Map, IPlayerInfo, IPingInfo, IDayNightInfo } from "./interfaces";
+
 import PingManager from "./ping-manager";
+import { ToCoordString } from "./utilities";
+import PlayerManager from "./player-manager";
+import TimeManager from "./time-manager";
 
 const mymap = L.map('mapid', {
   crs               : L.CRS.Simple,
@@ -45,16 +44,6 @@ const baseMaps = {
   "Inactive Lave Zone": layerInactiveLavaZoneImage
 };
 
-type CoordinatesFormat = 'game' | 'map';
-let coordFormat: CoordinatesFormat = 'game';
-
-function toCoordString(position: LatLng, depth: number = 0) {
-  if (coordFormat === 'game') {
-    return `${Math.round(position.lng)}, ${depth}, ${Math.round(position.lat)}`
-  } else {
-    return `${Math.round(position.lng)}, ${Math.round(position.lat)}, ${depth}`
-  }
-}
 
 // Reset the view to something sensible
 mymap.fitBounds(bounds);
@@ -62,7 +51,8 @@ mymap.setView([0, 0], -1);
 
 // Layer Managers
 const pingManager = new PingManager(mymap);
-
+const playerManager = new PlayerManager(mymap);
+const timeManager = new TimeManager();
 
 // The marker layers
 const layerThermals    = L.layerGroup([]).addTo(mymap);
@@ -74,7 +64,7 @@ const layerCaves       = L.layerGroup([]).addTo(mymap);
 const layerTransitions = L.layerGroup([]).addTo(mymap);
 const layerAlien       = L.layerGroup([]).addTo(mymap);
 const layerOther       = L.layerGroup([]).addTo(mymap);
-const layerPlayer      = L.layerGroup([]).addTo(mymap);
+const layerPlayer      = playerManager.mapLayer;
 const layerPings       = pingManager.mapLayer;
 
 
@@ -111,7 +101,7 @@ $.getJSON("data/wiki_map_locations.json").done((data) => {
       if (!/biome/im.test(key)) {
         _.forEach(item, (obj) => {
                     let icon: string      = markerIconName(obj.Type);
-                    let layer: LayerGroup = layerOther;
+                    let layer: L.LayerGroup = layerOther;
                     if (/Thermal Vents/im.test(obj.RawComment)) {
                       layer = layerThermals;
                     } else if (/Lava Geyser/im.test(obj.RawComment)) {
@@ -175,7 +165,7 @@ $.getJSON("data/wiki_map_locations.json").done((data) => {
     })
 });
 
-let overlays: LayersObject = {
+let overlays: L.Control.LayersObject = {
   "Outline"      : layerOutlineImage,
   "Thermal Vents": layerThermals,
   "Lava Geyser"  : layerGeysers,
@@ -205,73 +195,9 @@ layerAlien.remove();
 layerOther.remove();
 
 
-mymap.on("mousemove", (ev: L.LeafletMouseEvent) => { $("#position").text(toCoordString(ev.latlng)) });
+// Mouse Coordinate Display
+mymap.on("mousemove", (ev: L.LeafletMouseEvent) => { $("#position").text(ToCoordString(ev.latlng)) });
 
-let diverMarkerOpts: L.MarkerOptions = {
-  title: "Player",
-  riseOnHover: true,
-  zIndexOffset: 1000
-};
-
-diverMarkerOpts.icon = new L.Icon({
-                               iconUrl   : `data/diver.png`,
-                               iconSize  : [32, 32],
-                               iconAnchor: [16, 16]
-                             });
-
-let diverMarker = L.marker(L.latLng(0, 0), diverMarkerOpts);
-layerPlayer.addLayer(diverMarker);
-
-function SetPlayerInfo(data : IPlayerInfo) {
-  const posLatLng = L.latLng(data.Y, data.X);
-  
-  // Make biome string more readable.
-  let biome = _.startCase(data.Biome);
-
-  $("#player-position").text(`Biome: ${biome} | ${toCoordString(posLatLng, data.Z)}`);
-  diverMarker.setLatLng(posLatLng);
-
-  if (($("#follow-player")[0] as HTMLInputElement).checked === true) {
-    mymap.panTo(posLatLng);
-  }
-}
-
-function CheckPlayerInfo() {
-  $.getJSON("/?PlayerInfo=").done((data: IPlayerInfo) => {
-    SetPlayerInfo(data);
-  });
-}
-
-function ToFuzzyTime(time:number): string {
-  // 0 is midnight
-  // 0.5 is noon
-
-  if (time < 0.05) return "Around Midnight";
-  if (time < 0.2)  return "After Midnight";
-  if (time < 0.3)  return "Early Morning";
-  if (time < 0.45) return "Morning";
-  if (time < 0.55) return "Around Noon";
-  if (time < 0.75) return "Afternoon";
-  if (time < 0.8)  return "Evening";
-  if (time < 0.95) return "Night";
-
-  return "Around Midnight";
-}
-
-function SetGameTimeCycle(time: number, days: number) {
-  const angle = time * 360;
-  ($("#day-night-image")[0] as HTMLImageElement).src = 'data/day-night-wheel.png';
-  $("#day-night-image").css('transform', 'rotate(-' + angle + 'deg)');
-  $("#day-night-image").css('visibility', 'visible');
-  $("#day-night-tooltip")[0].innerHTML = ToFuzzyTime(time) +  "<br/>Day " + Math.floor(days);
-}
-
-function CheckGameTime() {
-  $.getJSON("/?DayNightInfo=").done((data: IDayNightInfo) => {
-    SetGameTimeCycle(data.DayScalar, data.Day);
-  });
-}
-
-setInterval(() => CheckPlayerInfo(), 1000);
+setInterval(() => playerManager.UpdateTrigger(), 1000);
 setInterval(() => pingManager.UpdateTrigger(), 2000);
-setInterval(() => CheckGameTime(), 5000);
+setInterval(() => timeManager.UpdateTrigger(), 5000);
