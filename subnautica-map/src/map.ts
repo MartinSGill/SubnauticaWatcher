@@ -64,6 +64,7 @@ const layerSeabases    = wikiDataManager.layerSeabases;
 const layerCaves       = wikiDataManager.layerCaves;
 const layerTransitions = wikiDataManager.layerTransitions;
 const layerAlien       = wikiDataManager.layerAlien;
+const layerLeviathans  = wikiDataManager.layerLeviathans;
 const layerOther       = wikiDataManager.layerOther;
 const layerPlayer      = playerManager.mapLayer;
 const layerPings       = pingManager.mapLayer;
@@ -78,6 +79,7 @@ let overlays: L.Control.LayersObject = {
   "Caves"        : layerCaves,
   "Transitions"  : layerTransitions,
   "Precursor"    : layerAlien,
+  "Leviathans"   : layerLeviathans,
   "Miscellaneous": layerOther,
   "Player"       : layerPlayer,
   "Pings"        : layerPings
@@ -98,6 +100,7 @@ layerSeabases.remove();
 layerCaves.remove();
 layerTransitions.remove();
 layerAlien.remove();
+layerLeviathans.remove();
 layerOther.remove();
 
 // Mouse Coordinate Display

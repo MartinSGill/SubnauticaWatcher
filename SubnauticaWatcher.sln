@@ -18,6 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubnauticaWatcherInstaller", "SubnauticaWatcherInstaller\SubnauticaWatcherInstaller.csproj", "{20DCA7B3-1613-4639-AB1D-82D6AE87E9CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubnauticaWatcherWikiScraper", "SubnauticaWatcherWikiScraper\SubnauticaWatcherWikiScraper.csproj", "{935B3128-D3D2-4102-94A5-B53A07E5BFFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubnauticaWatcherWikiScraper.Tests", "SubnauticaWatcherWikiScraper.Tests\SubnauticaWatcherWikiScraper.Tests.csproj", "{6BE86C16-CCD5-408B-977A-6A20C235E9C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +36,14 @@ Global
 		{20DCA7B3-1613-4639-AB1D-82D6AE87E9CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20DCA7B3-1613-4639-AB1D-82D6AE87E9CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20DCA7B3-1613-4639-AB1D-82D6AE87E9CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{935B3128-D3D2-4102-94A5-B53A07E5BFFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{935B3128-D3D2-4102-94A5-B53A07E5BFFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{935B3128-D3D2-4102-94A5-B53A07E5BFFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{935B3128-D3D2-4102-94A5-B53A07E5BFFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BE86C16-CCD5-408B-977A-6A20C235E9C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BE86C16-CCD5-408B-977A-6A20C235E9C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BE86C16-CCD5-408B-977A-6A20C235E9C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BE86C16-CCD5-408B-977A-6A20C235E9C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

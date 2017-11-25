@@ -1,7 +1,7 @@
 import * as L from "leaflet";
 import * as _ from "lodash";
 import * as $ from "jquery";
-import { IWikiDataItem, Map, WikiItemType } from "./interfaces";
+import { IWikiDataItem, Map } from "./interfaces";
 
 export default class WikiDataManager {
 
@@ -15,6 +15,7 @@ export default class WikiDataManager {
   private readonly _layerCaves: L.LayerGroup;
   private readonly _layerTransitions: L.LayerGroup;
   private readonly _layerAlien: L.LayerGroup;
+  private readonly _layerLeviathans: L.LayerGroup;
   private readonly _layerOther: L.LayerGroup;
 
   get layerThermals(): L.LayerGroup {
@@ -47,6 +48,10 @@ export default class WikiDataManager {
 
   get layerAlien(): L.LayerGroup {
     return this._layerAlien;
+  }
+
+  get layerLeviathans(): L.LayerGroup {
+    return this._layerLeviathans;
   }
 
   get layerOther(): L.LayerGroup {
@@ -94,6 +99,21 @@ export default class WikiDataManager {
                                 iconSize  : [32, 32],
                                 iconAnchor: [16, 16]
                               }),
+    'Ghost'      : new L.Icon({
+                                    iconUrl   : `data/ghost-leviathan.png`,
+                                    iconSize  : [64, 64],
+                                    iconAnchor: [16, 16]
+                                  }),
+    'Reaper'     : new L.Icon({
+                                    iconUrl   : `data/reaper-leviathan.png`,
+                                    iconSize  : [64, 64],
+                                    iconAnchor: [16, 16]
+                                  }),
+    'Sea Dragon' : new L.Icon({
+                           iconUrl   : `data/sea-dragon-leviathan.png`,
+                           iconSize  : [64, 64],
+                           iconAnchor: [16, 16]
+                         }),
     'Other'      : new L.Icon({
                                 iconUrl   : `data/question.png`,
                                 iconSize  : [32, 32],
@@ -111,37 +131,59 @@ export default class WikiDataManager {
     this._layerCaves       = L.layerGroup([]).addTo(this._gameMap);
     this._layerTransitions = L.layerGroup([]).addTo(this._gameMap);
     this._layerAlien       = L.layerGroup([]).addTo(this._gameMap);
+    this._layerLeviathans  = L.layerGroup([]).addTo(this._gameMap);
     this._layerOther       = L.layerGroup([]).addTo(this._gameMap);
     this.LoadData();
   }
 
-  private GetMarkerIconName(type: WikiItemType): L.Icon {
-    if (this._featureTypeToIconMap.hasOwnProperty(type)) {
-      return this._featureTypeToIconMap[type];
-    } else {
-      return this._featureTypeToIconMap['Other'];
+  private GetMarkerIcon(dataItem: IWikiDataItem): L.Icon {
+      if (dataItem.Type === "Leviathan") {
+
+        if (/reaper/im.test(dataItem.RawComment)) {
+          return this._featureTypeToIconMap['Reaper']
+        }
+
+        if (/ghost/im.test(dataItem.RawComment)) {
+          return this._featureTypeToIconMap['Ghost']
+        }
+
+        if (/dragon/im.test(dataItem.RawComment)) {
+          return this._featureTypeToIconMap['Sea Dragon']
+        }
+
+        // Cannot ID leviathan, so use "other" icon
+        return this._featureTypeToIconMap['Other'];
+      }
+
+    if (this._featureTypeToIconMap.hasOwnProperty(dataItem.Type)) {
+      return this._featureTypeToIconMap[dataItem.Type];
     }
+
+    // Unrecognised type, so use "other" icon
+    return this._featureTypeToIconMap['Other'];
   }
 
   private GetMapLayer(dataItem: IWikiDataItem): L.LayerGroup {
     switch (dataItem.Type) {
       case "ThermalVent":
         return this._layerThermals;
-      case"LavaGeyser":
+      case "LavaGeyser":
         return this._layerGeysers;
-      case"Wrecks":
+      case "Wrecks":
         return this._layerWrecks;
-      case"Lifepods":
+      case "Lifepods":
         return this._layerLifepods;
-      case"Seabases":
+      case "Seabases":
         return this._layerSeabases;
-      case"Transition":
+      case "Transition":
         return this._layerTransitions;
-      case"Caves":
+      case "Caves":
         return this._layerCaves;
-      case"Precursor":
+      case "Precursor":
         return this._layerAlien;
-      case"Other":
+      case "Leviathan":
+        return this._layerLeviathans;
+      case "Other":
         return this._layerOther;
       default:
         return this._layerOther;
@@ -149,21 +191,21 @@ export default class WikiDataManager {
   }
 
   private CreateDataItem = (dataItem: IWikiDataItem, key: string): void => {
-    let layer                       = this.GetMapLayer(dataItem);
+    let targetLayer                 = this.GetMapLayer(dataItem);
     let biome                       = _(dataItem.Biome).join(', ');
     let markerOpts: L.MarkerOptions = {
       title: dataItem.RawComment,
-      icon : this.GetMarkerIconName(dataItem.Type)
+      icon : this.GetMarkerIcon(dataItem)
     };
 
     const popupContent = `
 <div class="mdl-card__title mdl-color--teal">
     <h4 class="mdl-card__title-text mdl-color-text--white"><i class="material-icons font-size-28 mdl-color-text--white">info&nbsp;&nbsp;</i>Details</h4>
  </div>
-<div class="mdl-card__supporting-text mdl-card--border">
+ <!--<div class="mdl-card__supporting-text mdl-card--border">
    <span>${key}</span>
 </div>
-<div class="mdl-card__supporting-text mdl-card--border">
+--><div class="mdl-card__supporting-text mdl-card--border">
    <span class="">${dataItem.RawComment}</span>
 </div>
 <div class="mdl-card__supporting-text mdl-card--border">
@@ -181,7 +223,7 @@ export default class WikiDataManager {
     };
 
     let marker = L.marker(L.latLng(dataItem.Y, dataItem.X), markerOpts).bindPopup(popupContent, popupOptions);
-    layer.addLayer(marker);
+    targetLayer.addLayer(marker);
   };
 
   private LoadData() {

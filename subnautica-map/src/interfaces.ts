@@ -35,6 +35,7 @@ export type WikiItemType =
   "Transition" |
   "Caves" |
   "Precursor" |
+  "Leviathan" |
   "Other";
 
 export interface IWikiDataItem {

@@ -85,6 +85,7 @@
     <MapCompile Include="$(MapProjectFolder)\*.ts" />
     <MapCompile Include="$(MapProjectFolder)\src\*.ts" />
     <MapCompile Include="$(MapProjectFolder)\index.html" />
+    <MapCompile Include="$(MapProjectFolder)\data\*" />
   </ItemGroup>
   <Target Name="build-map" 
           Inputs="@(MapCompile)"
@@ -145,6 +146,15 @@
     <RemoveDir Directories="$(PackageTempDir)" Condition="'' == '$(KeepPackageTempDir)'" />
   </Target>
 
+  <Target Name="update-wiki-data" DependsOnTargets="build-mod">
+    <PropertyGroup>
+      <WikiScraper>$(MSBuildProjectDirectory)\SubnauticaWatcherWikiScraper\bin\$(Configuration)\SubnauticaWatcherWikiScraper.exe</WikiScraper>
+    </PropertyGroup>
+    <Exec ConsoleToMSBuild="true"
+          Command="$(WikiScraper)"
+          WorkingDirectory="$(MSBuildProjectDirectory)\subnautica-map\data" />
+  </Target>
+  
   <Target Name="Clean">
     <MSBuild Projects="@(ModProjects)" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="Clean" />
     <RemoveDir Directories="$(MSBuildProjectDirectory)\subnautica-map\dist" />
