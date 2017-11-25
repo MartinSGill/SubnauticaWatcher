@@ -107,5 +107,4 @@ export default class PingManager {
       this.UpdatePingMarker(index, data[index]);
     }
   }
-
 }

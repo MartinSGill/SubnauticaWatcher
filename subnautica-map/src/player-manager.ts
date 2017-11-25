@@ -58,5 +58,4 @@ export default class PlayerManager {
       this._gameMap.panTo(posLatLng);
     }
   }
-
 }
