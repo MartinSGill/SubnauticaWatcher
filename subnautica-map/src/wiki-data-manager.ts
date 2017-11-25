@@ -1,7 +1,7 @@
 import * as L from "leaflet";
 import * as _ from "lodash";
 import * as $ from "jquery";
-import { IWikiDataItem, Map } from "./interfaces";
+import { IWikiDataItem, Map, WikiItemType } from "./interfaces";
 
 export default class WikiDataManager {
 
@@ -36,15 +36,19 @@ export default class WikiDataManager {
   get layerSeabases(): L.LayerGroup {
     return this._layerSeabases;
   }
+
   get layerCaves(): L.LayerGroup {
     return this._layerCaves;
   }
+
   get layerTransitions(): L.LayerGroup {
     return this._layerTransitions;
   }
+
   get layerAlien(): L.LayerGroup {
     return this._layerAlien;
   }
+
   get layerOther(): L.LayerGroup {
     return this._layerOther;
   }
@@ -75,7 +79,7 @@ export default class WikiDataManager {
     this.LoadData();
   }
 
-  private GetMarkerIconName(type: string): string {
+  private GetMarkerIconName(type: WikiItemType): string {
     if (this._featureTypeToIconMap.hasOwnProperty(type)) {
       return this._featureTypeToIconMap[type];
     } else {
@@ -108,56 +112,57 @@ export default class WikiDataManager {
     }
   }
 
+  private CreateDataItem = (dataItem: IWikiDataItem, key:string) : void => {
+    let icon: string                = this.GetMarkerIconName(dataItem.Type);
+    let layer: L.LayerGroup         = this.GetMapLayer(dataItem);
+    let biome                       = _(dataItem.Biome).join(', ');
+    let markerOpts: L.MarkerOptions = {
+      title: dataItem.RawComment
+    };
+
+    if (icon) {
+      markerOpts.icon = new L.Icon({
+                                     iconUrl   : `data/${icon}`,
+                                     iconSize  : [32, 32],
+                                     iconAnchor: [16, 16]
+                                   });
+    }
+
+    const popupContent = `
+<div class="mdl-card__title mdl-color--teal">
+    <h4 class="mdl-card__title-text mdl-color-text--white"><i class="material-icons font-size-28 mdl-color-text--white">info&nbsp;&nbsp;</i>Details</h4>
+ </div>
+<div class="mdl-card__supporting-text mdl-card--border">
+   <span>${key}</span>
+</div>
+<div class="mdl-card__supporting-text mdl-card--border">
+   <span class="">${dataItem.RawComment}</span>
+</div>
+<div class="mdl-card__supporting-text mdl-card--border">
+   <span class="">Biome: ${biome}</span>
+</div>
+<div class="mdl-card__supporting-text mdl-card--border">
+   <span class="">Depth:&nbsp;</span><span>${dataItem.Z}</span>
+</div>`;
+    const popupOptions = {
+      className  : "mdl-card",
+      closeButton: false,
+      minWidth   : 350,
+      maxWidth   : 500,
+      offset     : L.point(0, 15)
+    };
+
+    let marker = L.marker(L.latLng(dataItem.Y, dataItem.X), markerOpts).bindPopup(popupContent, popupOptions);
+    layer.addLayer(marker);
+  }
+
   private LoadData() {
     $.getJSON("data/wiki_map_locations.json").done((data: IWikiDataItem[]) => {
       _(data)
         .groupBy((l: any) => l.RawCategory)
         .forEach((item: any, key: any) => {
           if (!/biome/im.test(key)) {
-            _.forEach(item, (obj) => {
-                        let icon: string       = this.GetMarkerIconName(obj.Type);
-                        let layer: L.LayerGroup = this.GetMapLayer(obj);
-                        let biome                       = _(obj.Biome).join(', ');
-                        let markerOpts: L.MarkerOptions = {
-                          title: obj.RawComment
-                        };
-
-                        if (icon) {
-                          markerOpts.icon = new L.Icon({
-                                                         iconUrl   : `data/${icon}`,
-                                                         iconSize  : [32, 32],
-                                                         iconAnchor: [16, 16]
-                                                       });
-                        }
-
-                        let marker = L.marker(L.latLng(obj.Y, obj.X), markerOpts).bindPopup(
-                          `
-  <div class="mdl-card__title mdl-color--teal">
-      <h4 class="mdl-card__title-text mdl-color-text--white"><i class="material-icons font-size-28 mdl-color-text--white">info&nbsp;&nbsp;</i>Details</h4>
-   </div>
-  <div class="mdl-card__supporting-text mdl-card--border">
-     <span>${key}</span>
-  </div>
-  <div class="mdl-card__supporting-text mdl-card--border">
-     <span class="">${obj.RawComment}</span>
-  </div>
-  <div class="mdl-card__supporting-text mdl-card--border">
-     <span class="">Biome: ${biome}</span>
-  </div>
-  <div class="mdl-card__supporting-text mdl-card--border">
-     <span class="">Depth:&nbsp;</span><span>${obj.Z}</span>
-</div>`, {
-                            className  : "mdl-card",
-                            closeButton: false,
-                            minWidth   : 350,
-                            maxWidth   : 500,
-                            offset     : L.point(0, 15)
-                          }
-                        );
-
-                        layer.addLayer(marker);
-                      }
-            );
+            _.forEach(item, this.CreateDataItem);
           }
         })
     });
