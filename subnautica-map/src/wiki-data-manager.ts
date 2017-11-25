@@ -53,16 +53,52 @@ export default class WikiDataManager {
     return this._layerOther;
   }
 
-  private readonly _featureTypeToIconMap: Map<string> = {
-    'ThermalVent': "thermometer.png",
-    'LavaGeyser' : "fountain.png",
-    'Wrecks'     : "wrecking-ball.png",
-    'Lifepods'   : "sos.png",
-    'Seabases'   : "house.png",
-    'Caves'      : "cave.png",
-    'Precursor'  : "alien.png",
-    'Transition' : "lift.png",
-    'Other'      : "question.png",
+  private readonly _featureTypeToIconMap: Map<L.Icon> = {
+    'ThermalVent': new L.Icon({
+                                iconUrl   : `data/thermometer.png`,
+                                iconSize  : [32, 32],
+                                iconAnchor: [16, 16]
+                              }),
+    'LavaGeyser' : new L.Icon({
+                                iconUrl   : `data/fountain.png`,
+                                iconSize  : [32, 32],
+                                iconAnchor: [16, 16]
+                              }),
+    'Wrecks'     : new L.Icon({
+                                iconUrl   : `data/wrecking-ball.png`,
+                                iconSize  : [32, 32],
+                                iconAnchor: [16, 16]
+                              }),
+    'Lifepods'   : new L.Icon({
+                                iconUrl   : `data/sos.png`,
+                                iconSize  : [32, 32],
+                                iconAnchor: [16, 16]
+                              }),
+    'Seabases'   : new L.Icon({
+                                iconUrl   : `data/house.png`,
+                                iconSize  : [32, 32],
+                                iconAnchor: [16, 16]
+                              }),
+    'Caves'      : new L.Icon({
+                                iconUrl   : `data/cave.png`,
+                                iconSize  : [32, 32],
+                                iconAnchor: [16, 16]
+                              }),
+    'Precursor'  : new L.Icon({
+                                iconUrl   : `data/alien.png`,
+                                iconSize  : [32, 32],
+                                iconAnchor: [16, 16]
+                              }),
+    'Transition' : new L.Icon({
+                                iconUrl   : `data/lift.png`,
+                                iconSize  : [32, 32],
+                                iconAnchor: [16, 16]
+                              }),
+    'Other'      : new L.Icon({
+                                iconUrl   : `data/question.png`,
+                                iconSize  : [32, 32],
+                                iconAnchor: [16, 16]
+                              }),
   };
 
   public constructor(gameMap: L.Map) {
@@ -79,7 +115,7 @@ export default class WikiDataManager {
     this.LoadData();
   }
 
-  private GetMarkerIconName(type: WikiItemType): string {
+  private GetMarkerIconName(type: WikiItemType): L.Icon {
     if (this._featureTypeToIconMap.hasOwnProperty(type)) {
       return this._featureTypeToIconMap[type];
     } else {
@@ -112,21 +148,13 @@ export default class WikiDataManager {
     }
   }
 
-  private CreateDataItem = (dataItem: IWikiDataItem, key:string) : void => {
-    let icon: string                = this.GetMarkerIconName(dataItem.Type);
-    let layer: L.LayerGroup         = this.GetMapLayer(dataItem);
+  private CreateDataItem = (dataItem: IWikiDataItem, key: string): void => {
+    let layer                       = this.GetMapLayer(dataItem);
     let biome                       = _(dataItem.Biome).join(', ');
     let markerOpts: L.MarkerOptions = {
-      title: dataItem.RawComment
+      title: dataItem.RawComment,
+      icon : this.GetMarkerIconName(dataItem.Type)
     };
-
-    if (icon) {
-      markerOpts.icon = new L.Icon({
-                                     iconUrl   : `data/${icon}`,
-                                     iconSize  : [32, 32],
-                                     iconAnchor: [16, 16]
-                                   });
-    }
 
     const popupContent = `
 <div class="mdl-card__title mdl-color--teal">
@@ -154,7 +182,7 @@ export default class WikiDataManager {
 
     let marker = L.marker(L.latLng(dataItem.Y, dataItem.X), markerOpts).bindPopup(popupContent, popupOptions);
     layer.addLayer(marker);
-  }
+  };
 
   private LoadData() {
     $.getJSON("data/wiki_map_locations.json").done((data: IWikiDataItem[]) => {
