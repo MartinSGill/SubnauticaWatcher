@@ -29,7 +29,7 @@ export interface Map<T> {
 export type WikiItemType =
   "ThermalVent" |
   "LavaGeyser" |
-  "Wreck" |
+  "Wrecks" |
   "Lifepods" |
   "Seabases" |
   "Transition" |

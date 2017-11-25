@@ -89,7 +89,7 @@ export default class WikiDataManager {
         return this._layerThermals;
       case"LavaGeyser":
         return this._layerGeysers;
-      case"Wreck":
+      case"Wrecks":
         return this._layerWrecks;
       case"Lifepods":
         return this._layerLifepods;
