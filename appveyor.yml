@@ -1,6 +1,6 @@
 image: Visual Studio 2017
 
-version: '0.4.{build}'
+version: '0.5.{build}'
 
 install:
   # Node on appveyor is too old
@@ -11,9 +11,9 @@ matrix:
 
 cache:
   - packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
-  - subnautica-map\node_modules                    # local npm modules
+  - subnautica-map\node_modules     # local npm modules
   - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
-  - "%LOCALAPPDATA%\\Yarn"
+  - "%LOCALAPPDATA%\\Yarn"          # yarn cache
 
 build_script:
   - nuget restore
@@ -30,12 +30,13 @@ on_failure:
 
 deploy:
   release: v$(appveyor_build_version)
-  description: 'Automated Release'
+  description: 'SubnauticaWatcher cloud build release for v$(appveyor_build_version)'
   provider: GitHub
   auth_token:
     secure: HyTlpe7AdOity1wfUhQuIhrFID/E2CtxE/TZfwQYU0D4lFuDfgXgWDGSvgU/7jQN # your encrypted token from GitHub
-  artifact: 'subnautica-watcher-release-*.zip' # upload all packages to release assets
+  artifact: /subnautica-watcher-release-.*\.zip/ # upload all packages to release assets
   draft: true
   prerelease: true
   on:
+    branch: master    
     appveyor_repo_tag: true        # deploy on tag push only
