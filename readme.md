@@ -1,5 +1,9 @@
 # SubnauticaWatcher Mod
 
+[![Build status](https://ci.appveyor.com/api/projects/status/3r9gd5tsnw7e0uah/branch/master?svg=true)](https://ci.appveyor.com/project/MartinSGill/subnauticawatcher/branch/master)
+[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat)](http://opensource.org/licenses/MIT)
+[![GitHub release](https://img.shields.io/badge/Current%20Release-v0.4-blue.svg?style=flat)](https://github.com/MartinSGill/SubnauticaWatcher/releases/tag/v0.4.14)
+
 ## Purpose
 
 This mod adds a "live" map to the [Subnautica][2] game. This can be considered a spoiler for the game.
