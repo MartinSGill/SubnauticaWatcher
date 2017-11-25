@@ -25,3 +25,24 @@ export interface IPlayerInfo {
 export interface Map<T> {
   [key: string]: T;
 }
+
+export type WikiItemType =
+  "ThermalVent" |
+  "LavaGeyser" |
+  "Wreck" |
+  "Lifepods" |
+  "Seabases" |
+  "Transition" |
+  "Caves" |
+  "Precursor" |
+  "Other";
+
+export interface IWikiDataItem {
+  "X": number,
+  "Y": number,
+  "Z": number,
+  "Biome": string[],
+  "Type": WikiItemType,
+  "RawComment": string,
+  "RawCategory": string
+}

@@ -1,7 +1,7 @@
 import * as L from "leaflet";
 import * as _ from "lodash";
 import * as $ from "jquery";
-import { Map } from "./interfaces";
+import { IWikiDataItem, Map } from "./interfaces";
 
 export default class WikiDataManager {
 
@@ -49,7 +49,7 @@ export default class WikiDataManager {
     return this._layerOther;
   }
 
-  private readonly _layerMap: Map<string> = {
+  private readonly _featureTypeToIconMap: Map<string> = {
     'ThermalVent': "thermometer.png",
     'LavaGeyser' : "fountain.png",
     'Wrecks'     : "wrecking-ball.png",
@@ -76,47 +76,47 @@ export default class WikiDataManager {
   }
 
   private GetMarkerIconName(type: string): string {
-    if (this._layerMap.hasOwnProperty(type)) {
-      return this._layerMap[type];
+    if (this._featureTypeToIconMap.hasOwnProperty(type)) {
+      return this._featureTypeToIconMap[type];
     } else {
-      return this._layerMap['Other'];
+      return this._featureTypeToIconMap['Other'];
     }
   }
 
-  private GetMapLayer(dataItem: any): L.LayerGroup {
-    let layer: L.LayerGroup = this._layerOther;
-    if (/Thermal Vents/im.test(dataItem.RawComment)) {
-      layer = this._layerThermals;
-    } else if (/Lava Geyser/im.test(dataItem.RawComment)) {
-      layer = this._layerGeysers;
-    } else if (/wreck/im.test(dataItem.RawComment)) {
-      layer = this._layerWrecks;
-    } else if (/lifepod/im.test(dataItem.RawComment)) {
-      layer = this._layerLifepods;
-    } else if (/seabase/im.test(dataItem.RawComment)) {
-      layer = this._layerSeabases;
-    } else if (/cave/im.test(dataItem.RawComment)) {
-      layer = this._layerCaves;
-    } else if (/precursor/im.test(dataItem.RawCategory)) {
-      layer = this._layerAlien;
-    } else if (/minor/im.test(dataItem.RawCategory)) {
-      layer = this._layerOther;
-    } else {
-      layer = this._layerOther;
+  private GetMapLayer(dataItem: IWikiDataItem): L.LayerGroup {
+    switch (dataItem.Type) {
+      case "ThermalVent":
+        return this._layerThermals;
+      case"LavaGeyser":
+        return this._layerGeysers;
+      case"Wreck":
+        return this._layerWrecks;
+      case"Lifepods":
+        return this._layerLifepods;
+      case"Seabases":
+        return this._layerSeabases;
+      case"Transition":
+        return this._layerTransitions;
+      case"Caves":
+        return this._layerCaves;
+      case"Precursor":
+        return this._layerAlien;
+      case"Other":
+        return this._layerOther;
+      default:
+        return this._layerOther;
     }
-    return layer;
   }
 
   private LoadData() {
-    $.getJSON("data/wiki_map_locations.json").done((data) => {
+    $.getJSON("data/wiki_map_locations.json").done((data: IWikiDataItem[]) => {
       _(data)
         .groupBy((l: any) => l.RawCategory)
         .forEach((item: any, key: any) => {
           if (!/biome/im.test(key)) {
             _.forEach(item, (obj) => {
-                        let icon: string        = this.GetMarkerIconName(obj.Type);
+                        let icon: string       = this.GetMarkerIconName(obj.Type);
                         let layer: L.LayerGroup = this.GetMapLayer(obj);
-
                         let biome                       = _(obj.Biome).join(', ');
                         let markerOpts: L.MarkerOptions = {
                           title: obj.RawComment
