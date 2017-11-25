@@ -16,9 +16,12 @@ This mod is my personal answer to not having an in-game map. I'm making it avail
 
 ## Capabilities
 
-* Shows current player position
-* Shows lifepod position
-* Shows all beacons/pings available to player.
+* Works in a web-browser (chrome), and hence in Steam Overlay.
+* Displays the current player position (icon, coords) and current biome
+* Displays all ping manager items on the map (beacons, signals, vessels)
+* Has multiple background layers (blank, biomes(default), lost river, etc).
+* Has a store of POIs, taken from the wiki, (off by default), for things like wrecks, degasi bases, vents etc. (very much spoilers, also probably out-of-date).
+* v0.4 - Day / Night indicator
 
 __Caveats:__ Background images and additional overlay data taken from Wiki and may be out-of-date.
 
