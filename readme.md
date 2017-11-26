@@ -2,7 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/3r9gd5tsnw7e0uah/branch/master?svg=true)](https://ci.appveyor.com/project/MartinSGill/subnauticawatcher/branch/master)
 [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat)](http://opensource.org/licenses/MIT)
-[![GitHub release](https://img.shields.io/badge/Current%20Release-v0.4-blue.svg?style=flat)](https://github.com/MartinSGill/SubnauticaWatcher/releases/tag/v0.4.14)
+[![GitHub release](https://img.shields.io/badge/Current%20Release-v0.5-blue.svg?style=flat)](https://github.com/MartinSGill/SubnauticaWatcher/releases/tag/v0.5.36)
 
 ## Purpose
 
@@ -26,6 +26,8 @@ This mod is my personal answer to not having an in-game map. I'm making it avail
 * Has multiple background layers (blank, biomes(default), lost river, etc).
 * Has a store of POIs, taken from the wiki, (off by default), for things like wrecks, degasi bases, vents etc. (very much spoilers, also probably out-of-date).
 * v0.4 - Day / Night indicator
+* v0.5 - Leviathan Spawns now in their own layer.
+* v0.6 - Now able to automatically switch to correct base layer (e.g. Lost River, Lava Zone)
 
 __Caveats:__ Background images and additional overlay data taken from Wiki and may be out-of-date.
 
