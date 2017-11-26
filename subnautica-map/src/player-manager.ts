@@ -5,6 +5,7 @@ import * as _ from "lodash";
 import { IPlayerInfo } from "./interfaces";
 import { ToCoordString } from "./utilities";
 import ConnectionMonitor from "./connection-monitor";
+import BaseLayerManager from "./base-layer-manager";
 
 export default class PlayerManager {
   private readonly _gameMap: L.Map;
@@ -13,18 +14,20 @@ export default class PlayerManager {
   private readonly _connection: ConnectionMonitor;
   private readonly _settingsElement: any;
   private readonly _positionElement: any;
+  private readonly _baseLayerManager: BaseLayerManager;
 
   get mapLayer(): L.LayerGroup {
     return this._mapLayer;
   }
 
-  public constructor(gameMap: L.Map, connection: ConnectionMonitor) {
+  public constructor(gameMap: L.Map, connection: ConnectionMonitor, baseLayerManager: BaseLayerManager) {
     this._gameMap = gameMap;
     this._mapLayer = L.layerGroup([]).addTo(this._gameMap);
     this._connection = connection;
 
     this._diverMarker = PlayerManager.CreateDiverMarker();
     this._mapLayer.addLayer(this._diverMarker);
+    this._baseLayerManager = baseLayerManager;
 
     this._positionElement = $("#player-position");
     this._settingsElement = $("#follow-player");
@@ -63,6 +66,7 @@ export default class PlayerManager {
 
     // Make biome string more readable.
     let biome = _.startCase(data.Biome);
+    this._baseLayerManager.SetBaseLayerFromBiome(data.Biome);
 
     this._positionElement.text(`Biome: ${biome} | ${ToCoordString(posLatLng, data.Z)}`);
     this._diverMarker.setLatLng(posLatLng);

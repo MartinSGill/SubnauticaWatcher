@@ -1,5 +1,5 @@
 import * as L from "leaflet";
-import { HashMap } from "./interfaces";
+import * as $ from "jquery";
 
 export type BaseMapNames =
   "None"              |
@@ -19,32 +19,26 @@ export default class BaseLayerManager {
   private readonly _baseLayerBiomeImage: L.ImageOverlay;
   private readonly _baseLayerInactiveLavaZoneImage: L.ImageOverlay;
   private readonly _baseLayerLostRiverImage: L.ImageOverlay;
+  private readonly _settingsElement: any;
 
   private readonly _baseMaps: BaseMapType;
   private _currentBaseLayer: BaseMapNames;
-
-  private readonly _biomes = [
-    "void",
-    "safeShallows",
-    "lostRiver",
-    "inactiveLavaZone"
-  ];
-
-  private readonly _biomeToBaseLayerMap: HashMap<BaseMapNames> = {
-    "void": "Biomes",
-    "safeShallows": "Biomes",
-    "lostRiver": "Lost River",
-    "inactiveLavaZone": "Inactive Lava Zone"
-  };
+  private _currentBiome: string;
 
   get currentBaseLayer(): BaseMapNames {
     return this._currentBaseLayer;
   }
 
   set currentBaseLayer(value: BaseMapNames) {
-    if (this.currentBaseLayer != value) {
-      this._baseMaps[value].addTo(this._gameMap);
-      this._currentBaseLayer = value;
+    if (this._settingsElement.is('.is-checked') && this.currentBaseLayer != value) {
+      console.debug(`BaseLayer change detected ${this.currentBaseLayer} -> ${value}`);
+      if (this._baseMaps.hasOwnProperty(value)) {
+        this._baseMaps[this.currentBaseLayer].remove();
+        this._baseMaps[value].addTo(this._gameMap);
+        this._currentBaseLayer = value;
+      } else {
+        console.warn("Unable to change base map to: " + value);
+      }
     }
   }
 
@@ -55,6 +49,7 @@ export default class BaseLayerManager {
   public constructor(gameMap: L.Map, bounds: L.LatLngBoundsExpression) {
     this._gameMap = gameMap;
     this._bounds = bounds;
+    this._settingsElement = $("#auto-layer");
 
     // Create base Layers
     this._baseLayerEmpty                 = L.imageOverlay('data/black.png', this._bounds);
@@ -68,15 +63,36 @@ export default class BaseLayerManager {
       "Inactive Lava Zone": this._baseLayerInactiveLavaZoneImage
     };
 
-    this.currentBaseLayer = "Biomes";
+    this._currentBaseLayer = "Biomes";
+    this._baseLayerBiomeImage.addTo(this._gameMap);
+    this._currentBiome = "safeShallows";
+  }
+
+  private DetermineBaseMap(biome: string): BaseMapNames {
+    if (/ilz|lava/im.test(biome)) {
+      return "Inactive Lava Zone";
+    }
+    // Power plant is precursor gun, whereas actual gun/
+    if (/(precursorgun$)|thermalroom|prison/im.test(biome)) {
+      return "Inactive Lava Zone";
+    }
+    if (/lostriver|ghosttree/im.test(biome)) {
+      return "Lost River";
+    }
+    if (/jellyshroom/im.test(biome)) {
+      return "Biomes";
+    }
+    if (/deepgrandreef/im.test(biome)) {
+      return "Biomes";
+    }
+    return "Biomes";
   }
 
   public SetBaseLayerFromBiome(biome: string) {
-    if (this._biomes.indexOf(biome) < 0) {
-      console.warn("Unhandled Biome: " + biome);
-      this.currentBaseLayer = "Biomes";
-    } else {
-      this.currentBaseLayer = this._biomeToBaseLayerMap[biome];
+    if (biome !== this._currentBiome) {
+      console.debug(`Biome change detected ${this._currentBiome} -> ${biome}`);
+      this.currentBaseLayer = this.DetermineBaseMap(biome);
+      this._currentBiome = biome;
     }
   }
 }

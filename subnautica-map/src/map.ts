@@ -27,7 +27,7 @@ const connectionMonitor = new ConnectionMonitor();
 // Layer Managers
 const baseLayerManager = new BaseLayerManager(theMap, bounds);
 const pingManager = new PingManager(theMap, connectionMonitor);
-const playerManager = new PlayerManager(theMap, connectionMonitor);
+const playerManager = new PlayerManager(theMap, connectionMonitor, baseLayerManager);
 const timeManager = new TimeManager(connectionMonitor);
 const wikiDataManager = new WikiDataManager(theMap);
 
