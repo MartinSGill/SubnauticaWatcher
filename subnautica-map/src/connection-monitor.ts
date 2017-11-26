@@ -1,5 +1,4 @@
 import * as $ from "jquery";
-import "dialog-polyfill";
 
 export default class ConnectionMonitor {
 
