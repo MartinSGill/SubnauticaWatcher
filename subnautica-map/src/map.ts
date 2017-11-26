@@ -7,6 +7,7 @@ import PlayerManager from "./player-manager";
 import TimeManager from "./time-manager";
 import WikiDataManager from "./wiki-data-manager";
 import BaseLayerManager from "./base-layer-manager";
+import ConnectionMonitor from "./connection-monitor";
 
 // Create the map
 const theMap = L.map('mapid', {
@@ -20,11 +21,14 @@ const theMap = L.map('mapid', {
 // Define the world size
 const bounds: L.BoundsExpression     = [[-2000, -2000], [2000, 2000]];
 
+// Connection Monitor
+const connectionMonitor = new ConnectionMonitor();
+
 // Layer Managers
 const baseLayerManager = new BaseLayerManager(theMap, bounds);
-const pingManager = new PingManager(theMap);
-const playerManager = new PlayerManager(theMap);
-const timeManager = new TimeManager();
+const pingManager = new PingManager(theMap, connectionMonitor);
+const playerManager = new PlayerManager(theMap, connectionMonitor);
+const timeManager = new TimeManager(connectionMonitor);
 const wikiDataManager = new WikiDataManager(theMap);
 
 // The POI layers

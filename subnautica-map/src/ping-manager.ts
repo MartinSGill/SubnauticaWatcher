@@ -1,6 +1,7 @@
 import * as L from "leaflet";
 import * as $ from "jquery";
 import { HashMap, IPingInfo } from "./interfaces";
+import ConnectionMonitor from "./connection-monitor";
 
 export default class PingManager {
 
@@ -49,20 +50,27 @@ export default class PingManager {
 
   private readonly _gameMap: L.Map;
   private readonly _mapLayer: L.LayerGroup;
+  private readonly _connection: ConnectionMonitor;
 
   get mapLayer(): L.LayerGroup {
     return this._mapLayer;
   }
 
-  public constructor(gameMap: L.Map) {
+  public constructor(gameMap: L.Map, connection: ConnectionMonitor) {
     this._gameMap = gameMap;
     this._mapLayer = L.layerGroup([]).addTo(this._gameMap);
+    this._connection = connection;
   }
 
   public UpdateTrigger() {
-    $.getJSON("/?PingInfo=").done((data: IPingInfo[]) => {
-      this.SetPingInfo(data);
-    });
+    if (this._connection.AreUpdatesEnabled()) {
+      $.getJSON("/?PingInfo=")
+        .done((data: IPingInfo[]) => {
+          this._connection.Success();
+          this.SetPingInfo(data);
+        })
+        .fail(() => this._connection.Fail());
+    }
   }
 
   private GetPingIcon(ping: IPingInfo) : L.Icon {

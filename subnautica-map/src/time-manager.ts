@@ -1,12 +1,24 @@
 import * as $ from "jquery";
 import { IDayNightInfo } from "./interfaces";
+import ConnectionMonitor from "./connection-monitor";
 
 export default class TimeManager {
 
+  private readonly _connection: ConnectionMonitor;
+
+  public constructor(connection: ConnectionMonitor) {
+    this._connection = connection;
+  }
+
   public UpdateTrigger() {
-    $.getJSON("/?DayNightInfo=").done((data: IDayNightInfo) => {
-      TimeManager.SetGameTimeCycle(data.DayScalar, data.Day);
-    });
+    if (this._connection.AreUpdatesEnabled()) {
+      $.getJSON("/?DayNightInfo=")
+        .done((data: IDayNightInfo) => {
+          this._connection.Success();
+          TimeManager.SetGameTimeCycle(data.DayScalar, data.Day);
+      })
+      .fail(() => this._connection.Fail());
+    }
   }
 
   private static ToFuzzyTime(time:number): string {

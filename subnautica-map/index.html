@@ -77,6 +77,12 @@
     .font-size-28 {
       font-size: 28px;
     }
+
+    .settings-list__item {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+
   </style>
 </head>
 <body>
@@ -94,14 +100,33 @@
     </div>
   </header>
   <div class="mdl-layout__drawer">
-    <span class="mdl-layout-title">Links</span>
+    <span class="mdl-layout-title">Settings <i class="material-icons" style="vertical-align: middle">settings</i></span>
+    <ul class="mdl-list">
+      <li class="mdl-list__item settings-list__item">
+        <span class="mdl-list__item-primary-content">
+          Game Updates
+        </span>
+        <span class="mdl-list__item-secondary-action">
+          <label id="game-updates" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="game-updates-1">
+            <input type="checkbox" id="game-updates-1" class="mdl-switch__input" checked>
+          </label>
+        </span>
+      </li>
+    </ul>
+
+    <span class="mdl-layout-title">Links <i class="material-icons" style="vertical-align: middle">link</i></span>
     <nav class="mdl-navigation">
       <a class="mdl-navigation__link" href="https://unknownworlds.com/subnautica/" target="_blank">Subnautica Site</a>
       <a class="mdl-navigation__link" href="http://subnautica.wikia.com/wiki/Subnautica_Wiki" target="_blank">Subnautica Wiki</a>
       <a class="mdl-navigation__link" href="https://github.com/MartinSGill/SubnauticaWatcher" target="_blank">Source Code</a>
+    </nav>
+
+    <span class="mdl-layout-title">Issues</span>
+    <nav class="mdl-navigation">
       <a class="mdl-navigation__link" href="https://github.com/MartinSGill/SubnauticaWatcher/issues/new" target="_blank"><i class="material-icons">bug_report</i>Report Issue</a>
     </nav>
   </div>
+
   <main class="mdl-layout__content">
     <div id="mapid" class="page-content"></div>
     <div id="player-container">
@@ -109,8 +134,8 @@
         <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">P</span>
         <span class="mdl-chip__text" id="player-position">0,0,0</span>
         <span class="mdl-chip__text">&nbsp;&nbsp;|&nbsp;&nbsp;Follow&nbsp;</span>
-        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="follow-player">
-          <input type="checkbox" id="follow-player" class="mdl-switch__input mdl-color--teal" checked>
+        <label id="follow-player" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="follow-player-1">
+          <input type="checkbox" id="follow-player-1" class="mdl-switch__input mdl-color--teal" checked>
         </label>
       </span>
     </div>
@@ -128,5 +153,10 @@
 </div>
   <script src="node-static"></script>
   <script src="main"></script>
+
+  <div aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
+    <div class="mdl-snackbar__text"></div>
+    <button type="button" class="mdl-snackbar__action"></button>
+  </div>
 </body>
 </html>

@@ -4,22 +4,30 @@ import * as _ from "lodash";
 
 import { IPlayerInfo } from "./interfaces";
 import { ToCoordString } from "./utilities";
+import ConnectionMonitor from "./connection-monitor";
 
 export default class PlayerManager {
   private readonly _gameMap: L.Map;
   private readonly _mapLayer: L.LayerGroup;
   private readonly _diverMarker: L.Marker;
+  private readonly _connection: ConnectionMonitor;
+  private readonly _settingsElement: any;
+  private readonly _positionElement: any;
 
   get mapLayer(): L.LayerGroup {
     return this._mapLayer;
   }
 
-  public constructor(gameMap: L.Map) {
+  public constructor(gameMap: L.Map, connection: ConnectionMonitor) {
     this._gameMap = gameMap;
     this._mapLayer = L.layerGroup([]).addTo(this._gameMap);
+    this._connection = connection;
 
     this._diverMarker = PlayerManager.CreateDiverMarker();
     this._mapLayer.addLayer(this._diverMarker);
+
+    this._positionElement = $("#player-position");
+    this._settingsElement = $("#follow-player");
   }
 
   private static CreateDiverMarker() {
@@ -40,9 +48,14 @@ export default class PlayerManager {
   }
 
   public UpdateTrigger() {
-    $.getJSON("/?PlayerInfo=").done((data: IPlayerInfo) => {
-      this.SetPlayerInfo(data);
-    });
+    if (this._connection.AreUpdatesEnabled()) {
+      $.getJSON("/?PlayerInfo=")
+        .done((data: IPlayerInfo) => {
+          this._connection.Success();
+          this.SetPlayerInfo(data);
+        })
+        .fail(() => this._connection.Fail());
+    }
   }
 
   private SetPlayerInfo(data : IPlayerInfo) {
@@ -51,10 +64,10 @@ export default class PlayerManager {
     // Make biome string more readable.
     let biome = _.startCase(data.Biome);
 
-    $("#player-position").text(`Biome: ${biome} | ${ToCoordString(posLatLng, data.Z)}`);
+    this._positionElement.text(`Biome: ${biome} | ${ToCoordString(posLatLng, data.Z)}`);
     this._diverMarker.setLatLng(posLatLng);
-
-    if (($("#follow-player")[0] as HTMLInputElement).checked === true) {
+    if (this._settingsElement.is('.is-checked'))
+    {
       this._gameMap.panTo(posLatLng);
     }
   }
