@@ -1,7 +1,7 @@
 import * as L from "leaflet";
 import * as _ from "lodash";
 import * as $ from "jquery";
-import { IWikiDataItem, Map } from "./interfaces";
+import { IWikiDataItem, HashMap } from "./interfaces";
 
 export default class WikiDataManager {
 
@@ -58,7 +58,7 @@ export default class WikiDataManager {
     return this._layerOther;
   }
 
-  private readonly _featureTypeToIconMap: Map<L.Icon> = {
+  private readonly _featureTypeToIconMap: HashMap<L.Icon> = {
     'ThermalVent': new L.Icon({
                                 iconUrl   : `data/thermometer.png`,
                                 iconSize  : [32, 32],

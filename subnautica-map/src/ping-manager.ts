@@ -1,11 +1,11 @@
 import * as L from "leaflet";
 import * as $ from "jquery";
-import { Map, IPingInfo } from "./interfaces";
+import { HashMap, IPingInfo } from "./interfaces";
 
 export default class PingManager {
 
   private _pingMarkers: L.Marker[] = [];
-  private _pingMarkerIcons: Map<L.Icon> = {
+  private _pingMarkerIcons: HashMap<L.Icon> = {
     "Lifepod": new L.Icon({
                             iconUrl   : `data/lifepod_5_transparent.png`,
                             iconSize  : [48, 48],

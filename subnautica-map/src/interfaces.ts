@@ -22,7 +22,7 @@ export interface IPlayerInfo {
   Z:number
 }
 
-export interface Map<T> {
+export interface HashMap<T> {
   [key: string]: T;
 }
 
