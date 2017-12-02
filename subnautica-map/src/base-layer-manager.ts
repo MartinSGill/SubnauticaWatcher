@@ -53,7 +53,7 @@ export default class BaseLayerManager {
 
     // Create base Layers
     this._baseLayerEmpty                 = L.imageOverlay('data/black.png', this._bounds);
-    this._baseLayerBiomeImage            = L.imageOverlay('data/BiomeMap_1024_new_May192017.png', this._bounds);
+    this._baseLayerBiomeImage            = L.imageOverlay('data/biome-map.png', this._bounds);
     this._baseLayerInactiveLavaZoneImage = L.imageOverlay('data/ilz_map_transparent.png', this._bounds);
     this._baseLayerLostRiverImage        = L.imageOverlay('data/lost_river_transparent.png', this._bounds);
     this._baseMaps                       = {
