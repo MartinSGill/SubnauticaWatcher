@@ -18,21 +18,19 @@ If I were really trapped on 4546B I'd definitely be drawing a map, pinning it to
 
 This mod is my personal answer to not having an in-game map. I'm making it available as I'm sure there must be at least one other person that would like an in-game (ish) map.
 
-## Capabilities
+## Features
 
-* Works in a web-browser (chrome), and hence in Steam Overlay.
-* Displays the current player position (icon, coords) and current biome
-* Displays all ping manager items on the map (beacons, signals, vessels)
-* Has multiple background layers (blank, biomes(default), lost river, etc).
-* Has a store of POIs, taken from the wiki, (off by default), for things like wrecks, degasi bases, vents etc. (very much spoilers, also probably out-of-date).
+Check out the [List of Features](docs/features.md).
+
+## Change Log
+
 * v0.4 - Day / Night indicator
 * v0.5 - Leviathan Spawns now in their own layer.
 * v0.6 - Now able to automatically switch to correct base layer (e.g. Lost River, Lava Zone)
 * v0.7 - Installer now handles cases where Subnautica is not in the default Steam library.
+* v0.8 - New and updated biome layers
 
-__Caveats:__ Background images and additional overlay data taken from Wiki and may be out-of-date.
-
-![Mod in Use](images/mod-example-overlay.png "Mod In Use")
+![Mod in Use](docs/images/mod-example-overlay.png "Mod In Use")
 
 ## Installation
 
