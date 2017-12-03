@@ -1,5 +1,11 @@
 # Features
 
+1. [Run In Overlay](#run-in-overlay)
+1. [Live Game Data](#live-game-data)
+1. [Points of Interest](#points-of-interest)
+1. [Location Aware](#location-aware)
+1. [No Spoilers Please!](#no-spoilers-please)
+
 ## Run in Overlay
 
 Run in Steam Overlay or in browser on a second screen.
