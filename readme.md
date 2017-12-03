@@ -34,6 +34,8 @@ Check out the [List of Features](docs/features.md).
 
 ## Installation
 
+The instructions below should work for experienced users. If you're struggling with the installation, take a look at the [The Really Detailed Installation Guide](docs/installation.md)
+
 __Warning:__ While attempts have been made to ensure this mod does not interfere with other mods, this cannot
 be guaranteed.
 
