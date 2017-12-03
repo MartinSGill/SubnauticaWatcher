@@ -2,7 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/3r9gd5tsnw7e0uah/branch/master?svg=true)](https://ci.appveyor.com/project/MartinSGill/subnauticawatcher/branch/master)
 [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat)](http://opensource.org/licenses/MIT)
-[![GitHub release](https://img.shields.io/badge/Current%20Release-v0.5-blue.svg?style=flat)](https://github.com/MartinSGill/SubnauticaWatcher/releases/tag/v0.5.36)
+[![GitHub release](https://img.shields.io/badge/Current%20Release-v0.7-blue.svg?style=flat)](https://github.com/MartinSGill/SubnauticaWatcher/releases/tag/0.7)
 
 ## Purpose
 
