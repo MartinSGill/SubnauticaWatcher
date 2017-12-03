@@ -7,7 +7,8 @@ export type BaseMapNames =
   "Jellyshroom Cave"  |
   "Deep Grand Reef"   |
   "Lost River"        |
-  "Inactive Lava Zone";
+  "Inactive Lava Zone"|
+  "Active Lava Zone";
 
 export type BaseMapType = { [k in BaseMapNames]?: L.ImageOverlay }
 
@@ -22,6 +23,7 @@ export default class BaseLayerManager {
   private readonly _baseLayerJellyShroomImage: L.ImageOverlay;
   private readonly _baseLayerDeepGrandReefImage: L.ImageOverlay;
   private readonly _baseLayerInactiveLavaZoneImage: L.ImageOverlay;
+  private readonly _baseLayerActiveLavaZoneImage: L.ImageOverlay;
   private readonly _baseLayerLostRiverImage: L.ImageOverlay;
 
   private readonly _settingsElement: any;
@@ -61,7 +63,8 @@ export default class BaseLayerManager {
     this._baseLayerBiomeImage            = L.imageOverlay('data/biome-map.png', this._bounds);
     this._baseLayerJellyShroomImage      = L.imageOverlay('data/jellyshroom-cave.png', this._bounds);
     this._baseLayerDeepGrandReefImage    = L.imageOverlay('data/deepgrandreef.png', this._bounds);
-    this._baseLayerInactiveLavaZoneImage = L.imageOverlay('data/ilz_map_transparent.png', this._bounds);
+    this._baseLayerInactiveLavaZoneImage = L.imageOverlay('data/ilz.png', this._bounds);
+    this._baseLayerActiveLavaZoneImage   = L.imageOverlay('data/alz.png', this._bounds);
     this._baseLayerLostRiverImage        = L.imageOverlay('data/lost-river-polygon.png', this._bounds);
     this._baseMaps                       = {
       "None"              : this._baseLayerEmpty,
@@ -69,7 +72,8 @@ export default class BaseLayerManager {
       "Jellyshroom Cave"  : this._baseLayerJellyShroomImage,
       "Deep Grand Reef"   : this._baseLayerDeepGrandReefImage,
       "Lost River"        : this._baseLayerLostRiverImage,
-      "Inactive Lava Zone": this._baseLayerInactiveLavaZoneImage
+      "Inactive Lava Zone": this._baseLayerInactiveLavaZoneImage,
+      "Active Lava Zone"  : this._baseLayerActiveLavaZoneImage
     };
 
     this._currentBaseLayer = "Biomes";
@@ -78,11 +82,14 @@ export default class BaseLayerManager {
   }
 
   private DetermineBaseMap(biome: string): BaseMapNames {
-    if (/ilz|lava/im.test(biome)) {
+    if (/ilz/im.test(biome)) {
       return "Inactive Lava Zone";
     }
+    if (/prison|lavafalls|lavapits|lavalakes|alzchamber/im.test(biome)) {
+      return "Active Lava Zone";
+    }
     // Power plant is precursor gun, whereas actual gun/
-    if (/(precursorgun$)|thermalroom|prison/im.test(biome)) {
+    if (/(precursorgun$)|thermalroom/im.test(biome)) {
       return "Inactive Lava Zone";
     }
     if (/lostriver|ghosttree/im.test(biome)) {
