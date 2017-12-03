@@ -4,6 +4,7 @@
 
     using System;
     using System.Reflection;
+    using Data;
     using Harmony;
     using Server;
     using UnityEngine;
@@ -50,6 +51,8 @@
                 PlayerInfo.Instance.Y = (int) Math.Round(
                     (double)__instance.transform.position.z,
                     MidpointRounding.AwayFromZero);
+
+                PlayerInfo.Record();
             }
         }
     }

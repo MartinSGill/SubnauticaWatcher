@@ -1,8 +1,6 @@
-﻿namespace SubnauticaWatcherMod
+﻿namespace SubnauticaWatcherMod.Data
 {
     #region imports
-
-    using Oculus.Newtonsoft.Json;
 
     #endregion
 

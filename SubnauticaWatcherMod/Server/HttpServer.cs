@@ -8,6 +8,7 @@
     using System.Net;
     using System.Reflection;
     using System.Text;
+    using Data;
     using Oculus.Newtonsoft.Json;
     using UnityEngine;
 
@@ -230,6 +231,15 @@
                             case "DayNightInfo":
                                 SendDayNightInfo(context);
                                 break;
+                            case "StartTrack":
+                                SendTracking(context, true);
+                                break;
+                            case "StopTrack":
+                                SendTracking(context, false);
+                                break;
+                            case "GetTrack":
+                                SendTrack(context);
+                                break;
                             default:
                                 context.Response.StatusCode = (int) HttpStatusCode.NotFound;
                                 break;
@@ -255,6 +265,53 @@
             }
         }
 
+        private void SendTrack(HttpListenerContext context)
+        {
+            Log("Track request");
+            var json = JsonConvert.SerializeObject(PlayerInfo.Track, Formatting.Indented);
+            var buffer = Encoding.UTF8.GetBytes(json);
+
+            Log($"Set Headers");
+            context.Response.StatusCode = (int)HttpStatusCode.OK;
+            context.Response.ContentType = "application/json";
+            context.Response.ContentLength64 = buffer.Length;
+            context.Response.AddHeader("Date", DateTime.Now.ToString("r"));
+            context.Response.AddHeader("Last-Modified", DateTime.Now.ToString("r"));
+
+            Log($"Stream Track");
+            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+            Log($"Flush Content");
+            context.Response.OutputStream.Flush();
+        }
+
+        private void SendTracking(HttpListenerContext context, bool startTracking)
+        {
+            Log("TrackStart/Stop request");
+            if (startTracking)
+            {
+                PlayerInfo.StartRecording();
+            }
+            else
+            {
+                PlayerInfo.StopRecording();
+            }
+
+            var json = @"{ ""tracking"": """ + startTracking + @""" }";
+            var buffer = Encoding.UTF8.GetBytes(json);
+
+            Log($"Set Headers");
+            context.Response.StatusCode = (int)HttpStatusCode.OK;
+            context.Response.ContentType = "application/json";
+            context.Response.ContentLength64 = buffer.Length;
+            context.Response.AddHeader("Date", DateTime.Now.ToString("r"));
+            context.Response.AddHeader("Last-Modified", DateTime.Now.ToString("r"));
+
+            Log($"Stream TrackStart/Stop");
+            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+            Log($"Flush Content");
+            context.Response.OutputStream.Flush();
+        }
+
         private static void SendDayNightInfo(HttpListenerContext context)
         {
             Log("DayNightInfo Request");
@@ -263,7 +320,7 @@
             var dayScalar = DayNightCycle.main != null ? DayNightCycle.main.GetDayScalar() : 0.5f;
             var day = DayNightCycle.main != null ? DayNightCycle.main.GetDay() : 1.0d;
 
-            var info = new DayNightInfo()
+            var info = new DayNightInfo
             {
                 Day = day,
                 DayNightCycleTime = dayNightCycle,

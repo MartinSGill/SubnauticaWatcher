@@ -1,4 +1,4 @@
-﻿namespace SubnauticaWatcherMod
+﻿namespace SubnauticaWatcherMod.Data
 {
     internal class PingInfo
     {

@@ -66,10 +66,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DayNightInfo.cs" />
+    <Compile Include="Data\DayNightInfo.cs" />
     <Compile Include="Patching\Patcher.cs" />
-    <Compile Include="PingInfo.cs" />
-    <Compile Include="PlayerInfo.cs" />
+    <Compile Include="Data\PingInfo.cs" />
+    <Compile Include="Data\PlayerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\HttpServer.cs" />
   </ItemGroup>
