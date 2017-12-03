@@ -3,7 +3,8 @@ $startTag = '<svg xmlns="http://www.w3.org/2000/svg" width="4096" height="4096">
 $endTag = '</svg>'
 
 # $points = ConvertFrom-Json -InputObject (Get-Content -Path lost_river_fixed.json -Raw)
-$points = ConvertFrom-Json -InputObject (Get-Content -Path jellyshroomcave-fixed.json -Raw)
+# $points = ConvertFrom-Json -InputObject (Get-Content -Path jellyshroomcave-fixed.json -Raw)
+$points = ConvertFrom-Json -InputObject (Get-Content -Path deepGrandReef-fixed.json -Raw)
 
 $sortedByBiome = $points | Sort-Object -Property Biome
 
@@ -12,6 +13,8 @@ $colourMap = @{
     "BloodKelp_Trench" = "#DB7093"
     "bloodKelpTwo" = "#DB7093"
     "deepGrandReef" = "#4169E1"
+    "grandReef" = "#b3d4fc"
+    "grandReef2" = "#b3d4fc"
     "kelpForest" = "#FFA500"
     "kooshZone" = "#663399"
     "LostRiver_BonesField" = "#718c22"

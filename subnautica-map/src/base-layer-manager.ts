@@ -5,6 +5,7 @@ export type BaseMapNames =
   "None"              |
   "Biomes"            |
   "Jellyshroom Cave"  |
+  "Deep Grand Reef"   |
   "Lost River"        |
   "Inactive Lava Zone";
 
@@ -19,6 +20,7 @@ export default class BaseLayerManager {
   private readonly _baseLayerEmpty: L.ImageOverlay;
   private readonly _baseLayerBiomeImage: L.ImageOverlay;
   private readonly _baseLayerJellyShroomImage: L.ImageOverlay;
+  private readonly _baseLayerDeepGrandReefImage: L.ImageOverlay;
   private readonly _baseLayerInactiveLavaZoneImage: L.ImageOverlay;
   private readonly _baseLayerLostRiverImage: L.ImageOverlay;
 
@@ -58,12 +60,14 @@ export default class BaseLayerManager {
     this._baseLayerEmpty                 = L.imageOverlay('data/black.png', this._bounds);
     this._baseLayerBiomeImage            = L.imageOverlay('data/biome-map.png', this._bounds);
     this._baseLayerJellyShroomImage      = L.imageOverlay('data/jellyshroom-cave.png', this._bounds);
+    this._baseLayerDeepGrandReefImage    = L.imageOverlay('data/deepgrandreef.png', this._bounds);
     this._baseLayerInactiveLavaZoneImage = L.imageOverlay('data/ilz_map_transparent.png', this._bounds);
     this._baseLayerLostRiverImage        = L.imageOverlay('data/lost-river-polygon.png', this._bounds);
     this._baseMaps                       = {
       "None"              : this._baseLayerEmpty,
       "Biomes"            : this._baseLayerBiomeImage,
       "Jellyshroom Cave"  : this._baseLayerJellyShroomImage,
+      "Deep Grand Reef"   : this._baseLayerDeepGrandReefImage,
       "Lost River"        : this._baseLayerLostRiverImage,
       "Inactive Lava Zone": this._baseLayerInactiveLavaZoneImage
     };
@@ -88,7 +92,7 @@ export default class BaseLayerManager {
       return "Jellyshroom Cave";
     }
     if (/deepgrandreef/im.test(biome)) {
-      return "Biomes";
+      return "Deep Grand Reef";
     }
     return "Biomes";
   }
