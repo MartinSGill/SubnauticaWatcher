@@ -4,7 +4,8 @@ $endTag = '</svg>'
 
 # $points = ConvertFrom-Json -InputObject (Get-Content -Path lost_river_fixed.json -Raw)
 # $points = ConvertFrom-Json -InputObject (Get-Content -Path jellyshroomcave-fixed.json -Raw)
-$points = ConvertFrom-Json -InputObject (Get-Content -Path deepGrandReef-fixed.json -Raw)
+# $points = ConvertFrom-Json -InputObject (Get-Content -Path deepGrandReef-fixed.json -Raw)
+$points = ConvertFrom-Json -InputObject (Get-Content -Path ilz-fixed.json -Raw)
 
 $sortedByBiome = $points | Sort-Object -Property Biome
 
@@ -33,6 +34,8 @@ $colourMap = @{
     "seaTreaderPath" = "#CD853F"
     "underwaterIslands" = "#E9967A"
     "JellyshroomCaves" = "#EE82EE"
+    "ILZChamber" = "#FF8C00"
+    "ILZCorridor" = "#cc7000"
 }
 
 function BiomePolygons() {
