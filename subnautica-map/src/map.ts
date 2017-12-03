@@ -19,7 +19,7 @@ const theMap = L.map('mapid', {
 });
 
 // Define the world size
-const bounds: L.BoundsExpression     = [[-2000, -2000], [2000, 2000]];
+const bounds: L.BoundsExpression     = [[-2048, -2048], [2048, 2048]];
 
 // Connection Monitor
 const connectionMonitor = new ConnectionMonitor();
