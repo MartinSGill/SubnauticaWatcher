@@ -4,6 +4,7 @@
 
     using System;
     using System.Drawing;
+    using System.IO;
     using System.Reflection;
     using System.Windows.Forms;
     using NLog;
@@ -24,7 +25,27 @@
             Installer = new Installer(Log);
             
             // Disable buttons if paths invalid
-            if (Installer.ValidatePaths() == 0) return;
+            if (Installer.ValidatePaths() != 0)
+            {
+                if (!Directory.Exists(Installer.SubnauticaPath))
+                {
+                    var dialog = new FolderBrowserDialog
+                    {
+                        RootFolder = Environment.SpecialFolder.MyComputer,
+                        Description = @"Your Subnautica folder is not in the default Steam Library.
+Please select your Subnautica install folder (something like: <steamlibrary>\steamapps\common\Subnautica)
+"
+                    };
+                    var result = dialog.ShowDialog();
+                    if (result == DialogResult.OK)
+                    {
+                        Installer.SubnauticaPath = dialog.SelectedPath;
+                        Log($"User Selected Path: {Installer.SubnauticaPath}");
+                        return;
+                    }
+                    Log("Error: User aborted path selection.");
+                }
+            }
             installButton.Enabled = false;
             uninstallButton.Enabled = false;
         }

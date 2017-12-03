@@ -28,6 +28,7 @@ This mod is my personal answer to not having an in-game map. I'm making it avail
 * v0.4 - Day / Night indicator
 * v0.5 - Leviathan Spawns now in their own layer.
 * v0.6 - Now able to automatically switch to correct base layer (e.g. Lost River, Lava Zone)
+* v0.7 - Installer now handles cases where Subnautica is not in the default Steam library.
 
 __Caveats:__ Background images and additional overlay data taken from Wiki and may be out-of-date.
 

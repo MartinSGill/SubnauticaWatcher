@@ -23,12 +23,13 @@
         internal Installer(MessageCallback log)
         {
             this.log = log;
+            SubnauticaPath = Path.Combine(SteamPath, @"steamapps\common\Subnautica");
         }
 
         private string SteamPath =>
             Registry.GetValue(@"HKEY_CURRENT_USER\Software\Valve\Steam", "SteamPath", null) as string;
 
-        private string SubnauticaPath => Path.Combine(SteamPath, @"steamapps\common\Subnautica");
+        public string SubnauticaPath { get; set; }
 
         private string SubnauticaManagedPath => Path.Combine(SubnauticaPath, @"Subnautica_Data\Managed");
 
