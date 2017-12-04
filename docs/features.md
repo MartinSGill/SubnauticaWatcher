@@ -14,7 +14,7 @@ Run in Steam Overlay or in browser on a second screen.
 
 ## Live Game Data
 
-Live Updates from the tunning game:
+Live Updates from the running game:
 
 ![Signals](images/game-data-pings.png)
 
