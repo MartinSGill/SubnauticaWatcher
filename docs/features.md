@@ -43,7 +43,7 @@ Points of Interest taken from the Wiki:
 
 ## Location Aware
 
-Will automatically chose the best map for your location:
+Will automatically choose the best map for your location:
 
 ![Biomes](images/biome-layers.gif)
 
