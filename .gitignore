@@ -5,3 +5,5 @@
 /packages/
 /.vs
 *.zip
+
+*.binlog
