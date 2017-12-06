@@ -65,6 +65,10 @@ If you receive this warning from Windows, it's because this application isn't si
 
 If you decide you want to trust this program, or you've read the source code and assured yourself it's benign, then you can [run the program anyway][1].
 
+### Steam -102 Error
+
+It's been reported that sometimes you get an error from Steam when typing the full URL into the Overlay Browser. Using merely localhost:63030 without the protocol part (http://) appears to work around this issue.
+
 ### Logs
 
 As of version 0.3.0 the installer creates logs to help with error reporting and resolving issues.
