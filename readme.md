@@ -2,7 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/3r9gd5tsnw7e0uah/branch/master?svg=true)](https://ci.appveyor.com/project/MartinSGill/subnauticawatcher/branch/master)
 [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat)](http://opensource.org/licenses/MIT)
-[![GitHub release](https://img.shields.io/badge/Current%20Release-v0.7-blue.svg?style=flat)](https://github.com/MartinSGill/SubnauticaWatcher/releases/tag/0.7)
+[![GitHub release](https://img.shields.io/badge/Current%20Release-v0.8-blue.svg?style=flat)](https://github.com/MartinSGill/SubnauticaWatcher/releases/tag/0.8.2)
 
 ## Purpose
 
@@ -64,6 +64,10 @@ __Warning:__ You may need to repeat steps 4 to 6 whenever Steam updates Subnauti
 If you receive this warning from Windows, it's because this application isn't signed.
 
 If you decide you want to trust this program, or you've read the source code and assured yourself it's benign, then you can [run the program anyway][1].
+
+### Steam -102 Error
+
+It's been reported that sometimes you get an error from Steam when typing the full URL into the Overlay Browser. Using merely localhost:63030 without the protocol part (http://) appears to work around this issue.
 
 ### Logs
 
