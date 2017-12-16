@@ -23,6 +23,7 @@
         private int _x;
         private int _y;
         private int _z;
+        private int _heading;
 
         public static IList<PlayerInfo> Track => TrackStore.ToArray();
 
@@ -103,6 +104,25 @@
                 lock (_lock)
                 {
                     _z = value;
+                }
+            }
+        }
+
+        [JsonProperty]
+        public int Heading
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    return _heading;
+                }
+            }
+            set
+            {
+                lock (_lock)
+                {
+                    _heading = value;
                 }
             }
         }

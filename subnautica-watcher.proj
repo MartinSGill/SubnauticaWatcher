@@ -35,6 +35,7 @@
 
   <ItemGroup Label="Vendor Files">
     <VendorFiles Include="$(DirSubnauticaManaged)\Assembly-CSharp.dll" />
+    <VendorFiles Include="$(DirSubnauticaManaged)\Assembly-CSharp-firstpass.dll" />
     <VendorFiles Include="$(DirSubnauticaManaged)\Newtonsoft.Json.dll" />
     <VendorFiles Include="$(DirSubnauticaManaged)\UnityEngine.dll" />
   </ItemGroup>

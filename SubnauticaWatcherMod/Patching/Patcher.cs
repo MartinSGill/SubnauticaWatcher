@@ -52,6 +52,10 @@
                     (double)__instance.transform.position.z,
                     MidpointRounding.AwayFromZero);
 
+                PlayerInfo.Instance.Heading = (int) Math.Round(
+                    (float) MainCamera.camera.transform.eulerAngles.y,
+                    MidpointRounding.AwayFromZero);
+
                 PlayerInfo.Record();
             }
         }
