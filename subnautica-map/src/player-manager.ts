@@ -1,6 +1,7 @@
 import * as L from "leaflet";
 import * as $ from "jquery";
 import * as _ from "lodash";
+import "leaflet-rotatedmarker";
 
 import { IPlayerInfo } from "./interfaces";
 import { ToCoordString } from "./utilities";
@@ -41,7 +42,7 @@ export default class PlayerManager {
     };
 
     diverMarkerOpts.icon = new L.Icon({
-                                        iconUrl   : `data/diver.png`,
+                                        iconUrl   : `data/player_arrow.png`,
                                         iconSize  : [32, 32],
                                         iconAnchor: [16, 16]
                                       });
@@ -70,6 +71,8 @@ export default class PlayerManager {
 
     this._positionElement.text(`Biome: ${biome} | ${ToCoordString(posLatLng, data.Z)}`);
     this._diverMarker.setLatLng(posLatLng);
+    this._diverMarker.setRotationAngle(data.Heading);
+
     if (this._settingsElement.is('.is-checked'))
     {
       this._gameMap.panTo(posLatLng);

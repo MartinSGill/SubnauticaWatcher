@@ -37,9 +37,11 @@
     "webpack-dev-server": "^2.5.0"
   },
   "dependencies": {
+    "@types/leaflet-rotatedmarker": "^0.2.1",
     "jquery": "^3.2.1",
     "knockout": "^3.4.2",
     "leaflet": "^1.0.3",
+    "leaflet-rotatedmarker": "^0.2.0",
     "lodash": "^4.17.4"
   }
 }

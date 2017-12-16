@@ -19,7 +19,8 @@ export interface IPlayerInfo {
   Biome:string,
   X:number,
   Y:number,
-  Z:number
+  Z:number,
+  Heading:number
 }
 
 export interface HashMap<T> {
