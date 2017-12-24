@@ -65,6 +65,17 @@ If you receive this warning from Windows, it's because this application isn't si
 
 If you decide you want to trust this program, or you've read the source code and assured yourself it's benign, then you can [run the program anyway][1].
 
+### My install is not detected!
+
+The installer should correctly find Subnautica in almost all cases.
+One edge case where it fails to correctly detect your install location is if you've moved your install.
+
+For example you installed Subnautica in the default location, then moved or re-installed it on a different drive.
+
+The problem is that the default/old installation folder (usually `c:\program files (x86)\steam\steamapps\common\Subnautica`) still exists.
+
+Please delete or rename this folder and try installing again.
+
 ### Steam -102 Error
 
 It's been reported that sometimes you get an error from Steam when typing the full URL into the Overlay Browser. Using merely localhost:63030 without the protocol part (http://) appears to work around this issue.
