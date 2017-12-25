@@ -25,15 +25,13 @@
             this.log = log;
             try
             {
-
                 SubnauticaPath = SteamFinder.FindSteamGamePath(264710, "Subnautica");
             }
             catch (Exception ex)
             {
                 log("Error: " + ex.Message);
+                SubnauticaPath = Path.Combine(SteamPath, @"steamapps\common\Subnautica");
             }
-
-            SubnauticaPath = Path.Combine(SteamPath, @"steamapps\common\Subnautica");
         }
 
         private string SteamPath =>
