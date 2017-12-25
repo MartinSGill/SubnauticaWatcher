@@ -2,7 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/3r9gd5tsnw7e0uah/branch/master?svg=true)](https://ci.appveyor.com/project/MartinSGill/subnauticawatcher/branch/master)
 [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat)](http://opensource.org/licenses/MIT)
-[![GitHub release](https://img.shields.io/badge/Current%20Release-v0.8-blue.svg?style=flat)](https://github.com/MartinSGill/SubnauticaWatcher/releases/tag/0.8.2)
+[![GitHub release](https://img.shields.io/badge/Current%20Release-v0.9-blue.svg?style=flat)](https://github.com/MartinSGill/SubnauticaWatcher/releases/tag/0.9.5)
 
 ## Purpose
 
@@ -29,6 +29,7 @@ Check out the [List of Features](docs/features.md).
 * v0.6 - Now able to automatically switch to correct base layer (e.g. Lost River, Lava Zone)
 * v0.7 - Installer now handles cases where Subnautica is not in the default Steam library.
 * v0.8 - New and updated biome layers
+* v0.9 - Player view direction now indicated on map
 
 ![Mod in Use](docs/images/mod-example-overlay.png "Mod In Use")
 
@@ -64,6 +65,17 @@ __Warning:__ You may need to repeat steps 4 to 6 whenever Steam updates Subnauti
 If you receive this warning from Windows, it's because this application isn't signed.
 
 If you decide you want to trust this program, or you've read the source code and assured yourself it's benign, then you can [run the program anyway][1].
+
+### My install is not detected!
+
+The installer should correctly find Subnautica in almost all cases.
+One edge case where it fails to correctly detect your install location is if you've moved your install.
+
+For example you installed Subnautica in the default location, then moved or re-installed it on a different drive.
+
+The problem is that the default/old installation folder (usually `c:\program files (x86)\steam\steamapps\common\Subnautica`) still exists.
+
+Please delete or rename this folder and try installing again.
 
 ### Steam -102 Error
 
