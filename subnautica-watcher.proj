@@ -5,7 +5,7 @@
   <PropertyGroup Label="Defaults">
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <BuildVersion Condition="'$(BuildVersion)' == ''" >0.4.0</BuildVersion>
+    <BuildVersion Condition="'$(BuildVersion)' == ''" >0.10.0</BuildVersion>
   </PropertyGroup>
  
   <PropertyGroup Label="Output Paths">
