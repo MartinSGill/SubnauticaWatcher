@@ -40,8 +40,6 @@ The instructions below should work for experienced users. If you're struggling w
 __Warning:__ While attempts have been made to ensure this mod does not interfere with other mods, this cannot
 be guaranteed.
 
-__Warning:__ Only works on __Experimental__ branch.
-
 __Warning:__ You may need to repeat steps 4 to 6 whenever Steam updates Subnautica.
 
 1. Download the latest Release zip
