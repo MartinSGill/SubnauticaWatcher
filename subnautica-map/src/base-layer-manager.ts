@@ -26,7 +26,8 @@ export default class BaseLayerManager {
   private readonly _baseLayerActiveLavaZoneImage: L.ImageOverlay;
   private readonly _baseLayerLostRiverImage: L.ImageOverlay;
 
-  private readonly _settingsElement: any;
+  private readonly _settingElementAutoLayer: any;
+  private readonly _settingElementBiomeLegend: any;
 
   private readonly _baseMaps: BaseMapType;
   private _currentBaseLayer: BaseMapNames;
@@ -37,7 +38,7 @@ export default class BaseLayerManager {
   }
 
   set currentBaseLayer(value: BaseMapNames) {
-    if (this._settingsElement.is('.is-checked') && this.currentBaseLayer != value) {
+    if (this._settingElementAutoLayer.is('.is-checked') && this.currentBaseLayer != value) {
       console.debug(`BaseLayer change detected ${this.currentBaseLayer} -> ${value}`);
       if (this._baseMaps.hasOwnProperty(value)) {
         this._baseMaps[this.currentBaseLayer].remove();
@@ -56,7 +57,8 @@ export default class BaseLayerManager {
   public constructor(gameMap: L.Map, bounds: L.LatLngBoundsExpression) {
     this._gameMap = gameMap;
     this._bounds = bounds;
-    this._settingsElement = $("#auto-layer");
+    this._settingElementAutoLayer = $("#auto-layer");
+    this._settingElementBiomeLegend = $("#biome-legend-switch-1");
 
     // Create base Layers
     this._baseLayerEmpty                 = L.imageOverlay('data/black.png', this._bounds);
@@ -79,6 +81,14 @@ export default class BaseLayerManager {
     this._currentBaseLayer = "Biomes";
     this._baseLayerBiomeImage.addTo(this._gameMap);
     this._currentBiome = "safeShallows";
+
+    this._settingElementBiomeLegend.change( function () {
+        if (this.checked) {
+          $("#biome-legend").show();
+        } else {
+          $("#biome-legend").hide();
+        }
+    });
   }
 
   private DetermineBaseMap(biome: string): BaseMapNames {

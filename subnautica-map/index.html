@@ -55,6 +55,45 @@
       z-index: 1000;
     }
 
+    #biome-legend {
+      display: none;
+      text-align: left;
+      position:absolute;
+      top: 80px;
+      left: 10px;
+      background-color: transparent;
+      z-index: 1000;
+    }
+
+    #biome-legend h1 {
+      text-align: center;
+      font-size: small;
+      padding: 0;
+      margin: 0;
+    }
+
+    #biome-legend table,
+    #biome-legend tbody,
+    #biome-legend tr,
+    #biome-legend td {
+      text-align: center;
+      font-size: small;
+      margin: 0;
+      width: 160px;
+      border-spacing: 0;
+    }
+
+    #biome-legend table {
+      background-color: #00000026;
+      border-radius: 16px;
+    }
+
+    #biome-legend .mdl-chip {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
     #day-night-container {
       text-align: left;
       position: absolute;
@@ -83,6 +122,22 @@
       padding-right: 40px;
     }
 
+    .color-grassy-plateau { background-color: #ca4665; color: white; }
+    .color-safe-shallows { background-color: #76878f; color: white; }
+    .color-kelp-forest { background-color: #afe17e; color: black; }
+    .color-mushroom-forest { background-color: #364ea8; color: white; }
+    .color-sparse-reef { background-color: #3e644e; color: white; }
+    .color-sea-treaders-path { background-color: #7ca0bd; color: black; }
+    .color-underwater-islands { background-color: #b7775d; color: black; }
+    .color-mountains { background-color: #2b3134; color: white; }
+    .color-grand-reef { background-color: #4792bb; color: black; }
+    .color-crag-field { background-color: #5b1501; color: white; }
+    .color-crash-zone { background-color: #7f5a5b; color: white; }
+    .color-void { background-color: black; color: white; }
+    .color-blood-kelps { background-color: #833b6e; color: white }
+    .color-blood-kelpn { background-color: #e251ff; color: black }
+    .color-dunes { background-color: #f6e5a9; color: black }
+    .color-koosh-zone { background-color: #9e90d4; color: black }
   </style>
 </head>
 <body>
@@ -122,6 +177,16 @@
           </label>
         </span>
       </li>
+      <li class="mdl-list__item settings-list__item">
+        <span class="mdl-list__item-primary-content">
+          Biome Legend
+        </span>
+        <span class="mdl-list__item-secondary-action">
+          <label id="biome-legend-switch" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="biome-legend-switch-1">
+            <input type="checkbox" id="biome-legend-switch-1" class="mdl-switch__input">
+          </label>
+        </span>
+      </li>
     </ul>
 
     <span class="mdl-layout-title">Links <i class="material-icons" style="vertical-align: middle">link</i></span>
@@ -158,6 +223,28 @@
     <div id="day-night-container">
       <img src="" class="day-night-crop" id="day-night-image" style="visibility: hidden" />
       <div class="mdl-tooltip mdl-tooltip--top" data-mdl-for="day-night-image" id="day-night-tooltip">Day/Night Scaler: 0.0</div>
+    </div>
+    <div id="biome-legend">
+      <table>
+        <tbody>
+        <tr><td><span class="mdl-chip color-dunes"><span class="mdl-chip__text">Dunes</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-blood-kelpn"><span class="mdl-chip__text">Blood Kelp N.</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-mountains"><span class="mdl-chip__text">Mountains</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-underwater-islands"><span class="mdl-chip__text">Underwater Islands</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-mushroom-forest"><span class="mdl-chip__text">Mushroom Forest</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-grassy-plateau"><span class="mdl-chip__text">Grassy Plateau</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-kelp-forest"><span class="mdl-chip__text">Kelp Forest</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-safe-shallows"><span class="mdl-chip__text">Safe Shallows</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-koosh-zone"><span class="mdl-chip__text">Koosh Zone</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-crash-zone"><span class="mdl-chip__text">Crash Zone</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-blood-kelps"><span class="mdl-chip__text">Blood Kelp S.</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-sparse-reef"><span class="mdl-chip__text">Sparse Reef</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-sea-treaders-path"><span class="mdl-chip__text">Sea Treader's Path</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-grand-reef"><span class="mdl-chip__text">Grand Reef</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-crag-field"><span class="mdl-chip__text">Crag Field</span></span></td></tr>
+        <tr><td><span class="mdl-chip color-void"><span class="mdl-chip__text">Void</span></span></td></tr>
+        </tbody>
+      </table>
     </div>
   </main>
 </div>
